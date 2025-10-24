@@ -1170,6 +1170,172 @@
     }
   },
   {
+    "file": "Sample 10 SHOCKWAVES Effectgs and Audio.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {}
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
     "file": "The Imperial March - Darth Vader 2024.xsq",
     "root_tag": "xsequence",
     "attributes": [
