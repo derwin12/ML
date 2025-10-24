@@ -1,0 +1,1473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsequence BaseChannel="0" ChanCtrlBasic="0" ChanCtrlColor="0" FixedPointTiming="1" ModelBlending="true">
+  <head>
+    <version>2025.11</version>
+    <author></author>
+    <author-email></author-email>
+    <author-website></author-website>
+    <song>Pretty Baby (Official Music Video)</song>
+    <artist>Alex Sampson</artist>
+    <album></album>
+    <MusicURL></MusicURL>
+    <comment></comment>
+    <sequenceTiming>25 ms</sequenceTiming>
+    <sequenceType>Media</sequenceType>
+    <mediaFile>E:\2023\ShowFolder3D\Audio\Pretty Baby - Alex Sampson.mp3</mediaFile>
+    <sequenceDuration>205.992</sequenceDuration>
+    <imageDir/>
+  </head>
+  <nextid>1</nextid>
+  <Jukebox/>
+  <ColorPalettes>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=0,C_CHECKBOX_Palette2=1,C_CHECKBOX_Palette3=0,C_CHECKBOX_Palette4=0,C_CHECKBOX_Palette5=1,C_CHECKBOX_Palette6=1,C_CHECKBOX_Palette7=1,C_CHECKBOX_Palette8=1</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=1,C_CHECKBOX_Palette2=1</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=0,C_CHECKBOX_Palette2=1,C_CHECKBOX_Palette3=0,C_CHECKBOX_Palette4=1,C_CHECKBOX_Palette5=0,C_CHECKBOX_Palette6=1,C_CHECKBOX_Palette7=1,C_CHECKBOX_Palette8=1</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=0,C_CHECKBOX_Palette2=1,C_CHECKBOX_Palette3=1,C_CHECKBOX_Palette4=1,C_CHECKBOX_Palette5=0,C_CHECKBOX_Palette6=1,C_CHECKBOX_Palette7=0,C_CHECKBOX_Palette8=0</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=0,C_CHECKBOX_Palette2=0,C_CHECKBOX_Palette3=0,C_CHECKBOX_Palette4=1,C_CHECKBOX_Palette5=0,C_CHECKBOX_Palette6=0,C_CHECKBOX_Palette7=1,C_CHECKBOX_Palette8=1</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=0,C_CHECKBOX_Palette2=1,C_CHECKBOX_Palette3=0,C_CHECKBOX_Palette4=1,C_CHECKBOX_Palette5=1,C_CHECKBOX_Palette6=1,C_CHECKBOX_Palette7=0,C_CHECKBOX_Palette8=0</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=0,C_CHECKBOX_Palette2=0,C_CHECKBOX_Palette3=0,C_CHECKBOX_Palette4=1,C_CHECKBOX_Palette5=1,C_CHECKBOX_Palette6=0,C_CHECKBOX_Palette7=0,C_CHECKBOX_Palette8=0</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=1,C_CHECKBOX_Palette2=1,C_CHECKBOX_Palette3=1,C_CHECKBOX_Palette4=0,C_CHECKBOX_Palette5=0,C_CHECKBOX_Palette6=1,C_CHECKBOX_Palette7=1,C_CHECKBOX_Palette8=0</ColorPalette>
+    <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=0,C_CHECKBOX_Palette2=0,C_CHECKBOX_Palette3=0,C_CHECKBOX_Palette4=0,C_CHECKBOX_Palette5=0,C_CHECKBOX_Palette6=1,C_CHECKBOX_Palette7=1,C_CHECKBOX_Palette8=0</ColorPalette>
+  </ColorPalettes>
+  <EffectDB>
+    <Effect>E_CHECKBOX_Spirals_3D=1,E_CHECKBOX_Spirals_Blend=1,E_CHECKBOX_Spirals_Grow=0,E_CHECKBOX_Spirals_Shrink=1,E_SLIDER_Spirals_Count=4,E_SLIDER_Spirals_Rotation=-93,E_SLIDER_Spirals_Thickness=83,E_TEXTCTRL_Spirals_Movement=-8.9</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=0,E_CHECKBOX_Spirals_Blend=0,E_CHECKBOX_Spirals_Grow=0,E_CHECKBOX_Spirals_Shrink=0,E_SLIDER_Spirals_Count=1,E_SLIDER_Spirals_Rotation=20,E_SLIDER_Spirals_Thickness=50,E_TEXTCTRL_Spirals_Movement=1.0</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=1,E_CHECKBOX_Spirals_Blend=1,E_CHECKBOX_Spirals_Grow=1,E_CHECKBOX_Spirals_Shrink=0,E_SLIDER_Spirals_Count=2,E_SLIDER_Spirals_Rotation=-174,E_SLIDER_Spirals_Thickness=57,E_TEXTCTRL_Spirals_Movement=-6.3</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=1,E_CHECKBOX_Spirals_Blend=0,E_CHECKBOX_Spirals_Grow=1,E_CHECKBOX_Spirals_Shrink=0,E_SLIDER_Spirals_Count=2,E_SLIDER_Spirals_Rotation=-79,E_SLIDER_Spirals_Thickness=70,E_TEXTCTRL_Spirals_Movement=-17.4</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=0,E_CHECKBOX_Spirals_Blend=1,E_CHECKBOX_Spirals_Grow=1,E_CHECKBOX_Spirals_Shrink=1,E_SLIDER_Spirals_Count=3,E_SLIDER_Spirals_Rotation=252,E_SLIDER_Spirals_Thickness=43,E_TEXTCTRL_Spirals_Movement=9.6</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=1,E_CHECKBOX_Spirals_Blend=1,E_CHECKBOX_Spirals_Grow=0,E_CHECKBOX_Spirals_Shrink=1,E_SLIDER_Spirals_Count=4,E_SLIDER_Spirals_Rotation=-223,E_SLIDER_Spirals_Thickness=0,E_TEXTCTRL_Spirals_Movement=-14.2</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=1,E_CHECKBOX_Spirals_Blend=0,E_CHECKBOX_Spirals_Grow=0,E_CHECKBOX_Spirals_Shrink=1,E_SLIDER_Spirals_Count=1,E_SLIDER_Spirals_Rotation=93,E_SLIDER_Spirals_Thickness=84,E_TEXTCTRL_Spirals_Movement=0.5</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=1,E_CHECKBOX_Spirals_Blend=0,E_CHECKBOX_Spirals_Grow=0,E_CHECKBOX_Spirals_Shrink=1,E_SLIDER_Spirals_Count=2,E_SLIDER_Spirals_Rotation=276,E_SLIDER_Spirals_Thickness=5,E_TEXTCTRL_Spirals_Movement=-3.8</Effect>
+    <Effect>E_CHECKBOX_Spirals_3D=0,E_CHECKBOX_Spirals_Blend=0,E_CHECKBOX_Spirals_Grow=1,E_CHECKBOX_Spirals_Shrink=1,E_SLIDER_Spirals_Count=2,E_SLIDER_Spirals_Rotation=-71,E_SLIDER_Spirals_Thickness=65,E_TEXTCTRL_Spirals_Movement=-4.1</Effect>
+  </EffectDB>
+  <DataLayers>
+    <DataLayer lor_params="5373997" channel_offset="0" num_channels="0" num_frames="0" data="&lt;rendered: erase-mode&gt;" source="&lt;auto-generated&gt;" name="Nutcracker"/>
+  </DataLayers>
+  <DisplayElements>
+    <Element collapsed="0" type="timing" name="New Timing" visible="1" views="Master View,Sequencing,Trees,Stars,MH,Flakes,Singing,All Models Sorted,Matrix,EZ Map,2024 New,Radio" active="1"/>
+    <Element collapsed="0" type="timing" name="Beats" visible="1" views="All Models Sorted" active="1"/>
+    <Element collapsed="0" type="model" name="01 Everything" visible="1"/>
+    <Element collapsed="0" type="model" name="02 Whole House No Matrix" visible="1"/>
+    <Element collapsed="0" type="model" name="02 All No Forest No MT" visible="1"/>
+    <Element collapsed="0" type="model" name="02b All No Forest No MT No Matrix" visible="1"/>
+    <Element collapsed="0" type="model" name="03 Whole House No Matrix No Tree" visible="1"/>
+    <Element collapsed="0" type="model" name="04 Whole House Minus Mega and Matrix" visible="1"/>
+    <Element collapsed="0" type="model" name="05 Whole House Minus MegaMiniMatrix" visible="1"/>
+    <Element collapsed="0" type="model" name="06 Whole House NO YARD" visible="1"/>
+    <Element collapsed="0" type="model" name="07 All House" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - House Outline" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - House Verticals" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - House Horizontals" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Whole Yard" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Yard Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Yard Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Floods" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Mini Trees Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Mini Trees Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Mega Tree and Topper" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Mega Trees" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Mega Stars" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral Trees" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Arches" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Triple Arches" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixie Spheres" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixie Poles" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixie Poles - Center Lines" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - MickeyStakes" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Eaves" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - PixStakes" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Presents" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Presents 3D" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflakes" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Big Bulbs" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Candy Canes" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Candy Canes (Striped)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Column Matrices" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Driveway Lights" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Every Other Star 1" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Every Other Star 2" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Flat Trees And Stars" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Flat Tree Stars" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Flat Trees" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - HFlakes" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - HSpinners" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - HSpinners Outer Rings" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - HSpinners All Spokes" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - House Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - House Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Icicles Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Icicles Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Live Tree" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Matrix Virtual" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Garage Matrix" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Matrixes" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Mini Matrices" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Moving Heads" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - PixStakes - Back Half" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - PixStakes - Front Half" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixel Stakes Front Layers" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixel Stakes Rows" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixel Tree" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixel Tree Stars" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Pixel Tree and Stars" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Poles and Stars" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Railings" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Roof" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - SnowBursts" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflake Arms" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflake Tips" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflakes (Small)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflake Tips (Small)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflake Arms (Small)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflake Lefts Arms (Small)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflake Right Arms (Small)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Snowflake Rings" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinner Arms" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinner Small Arms" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinner Big Arms" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners (Inner Band)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners (Inner Ring)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners (Mid Band)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners (Outer Band)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners (Outer Ring)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners (Pedals Even)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinners (Pedals Odd)" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spinner Rings" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - ALL" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Balls" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Spiral Big" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Green Tree" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Outline" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Spiral and Star" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Star" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Front Spiral" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Stars" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Stars on Trees" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Trees" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Trees - Large" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Trees - Medium" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Virtual Spinners" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Window Frames and Doors" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Windows" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Windows - Bottom" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Windows - Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Windows - Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Windows - Top" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Wreath" visible="1"/>
+    <Element collapsed="0" type="model" name="Group - Yard Boarders" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Center Piece" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Center Rings" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Outer Diamonds" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Petals" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Rings" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Spiral All" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Spiral CClockwise" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Spiral Clockwise" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Star" visible="1"/>
+    <Element collapsed="0" type="model" name="Mega Star" visible="1"/>
+    <Element collapsed="0" type="model" name="AA Mega Tree" visible="1"/>
+    <Element collapsed="0" type="model" name="Mega Super Star" visible="1"/>
+    <Element collapsed="0" type="model" name="AA Mega Super Tree" visible="1"/>
+    <Element collapsed="0" type="model" name="Garage Vert - Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Garage Vert - Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Garage Outline - 01L" visible="1"/>
+    <Element collapsed="0" type="model" name="Garage Outline - 02R" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Left" visible="1"/>
+    <Element collapsed="0" type="model" name="PC Spinner Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Ornament Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Ornament Right" visible="1"/>
+    <Element collapsed="0" type="model" name="3D Cube-1" visible="1"/>
+    <Element collapsed="0" type="model" name="3D Cube-2" visible="1"/>
+    <Element collapsed="0" type="model" name="3D Cube-3" visible="1"/>
+    <Element collapsed="0" type="model" name="3D Cube-4" visible="1"/>
+    <Element collapsed="0" type="model" name="3D Star" visible="1"/>
+    <Element collapsed="0" type="model" name="Arches-1-Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Arches-2-Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Arches-3-LL" visible="1"/>
+    <Element collapsed="0" type="model" name="Arches-4-L" visible="1"/>
+    <Element collapsed="0" type="model" name="Arches-5-M" visible="1"/>
+    <Element collapsed="0" type="model" name="Arches-6-R" visible="1"/>
+    <Element collapsed="0" type="model" name="Arches-7-RR" visible="1"/>
+    <Element collapsed="0" type="model" name="BigBulb - 1" visible="1"/>
+    <Element collapsed="0" type="model" name="BigBulb - 2" visible="1"/>
+    <Element collapsed="0" type="model" name="BigBulb - 3" visible="1"/>
+    <Element collapsed="0" type="model" name="BigBulb - 4" visible="1"/>
+    <Element collapsed="0" type="model" name="BigBulb - 5" visible="1"/>
+    <Element collapsed="0" type="model" name="Bulb Blue" visible="1"/>
+    <Element collapsed="0" type="model" name="Bulb Green" visible="1"/>
+    <Element collapsed="0" type="model" name="Bulb Red" visible="1"/>
+    <Element collapsed="0" type="model" name="Bulb Yellow" visible="1"/>
+    <Element collapsed="0" type="model" name="Cane-1" visible="1"/>
+    <Element collapsed="0" type="model" name="Cane-2" visible="1"/>
+    <Element collapsed="0" type="model" name="Cane-3" visible="1"/>
+    <Element collapsed="0" type="model" name="Cane-4" visible="1"/>
+    <Element collapsed="0" type="model" name="ChromaFlake 36 3 Prong - 01L" visible="1"/>
+    <Element collapsed="0" type="model" name="ChromaFlake 36 3 Prong - 02R" visible="1"/>
+    <Element collapsed="0" type="model" name="Driveway - 01L" visible="1"/>
+    <Element collapsed="0" type="model" name="Driveway - 02R" visible="1"/>
+    <Element collapsed="0" type="model" name="EFlake46" visible="1"/>
+    <Element collapsed="0" type="model" name="Eaves - Icicles" visible="1"/>
+    <Element collapsed="0" type="model" name="Eaves - Lower - C9 Lights" visible="1"/>
+    <Element collapsed="0" type="model" name="Eaves - Upper - C9 Lights" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTree-1" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTree-2" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTree-3" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTree-4" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTree-5" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTree-6" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTreeStar-1" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTreeStar-2" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTreeStar-3" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTreeStar-4" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTreeStar-5" visible="1"/>
+    <Element collapsed="0" type="model" name="FlatTreeStar-6" visible="1"/>
+    <Element collapsed="0" type="model" name="Flood1" visible="1"/>
+    <Element collapsed="0" type="model" name="Flood2" visible="1"/>
+    <Element collapsed="0" type="model" name="Flood3" visible="1"/>
+    <Element collapsed="0" type="model" name="FrontYard - Left" visible="1"/>
+    <Element collapsed="0" type="model" name="FrontYard - Right" visible="1"/>
+    <Element collapsed="0" type="model" name="HFlake1" visible="1"/>
+    <Element collapsed="0" type="model" name="HFlake2" visible="1"/>
+    <Element collapsed="0" type="model" name="HFlake3" visible="1"/>
+    <Element collapsed="0" type="model" name="HFlake4" visible="1"/>
+    <Element collapsed="0" type="model" name="HFlake5" visible="1"/>
+    <Element collapsed="0" type="model" name="HSpinner1" visible="1"/>
+    <Element collapsed="0" type="model" name="HSpinner2" visible="1"/>
+    <Element collapsed="0" type="model" name="HSpinner3" visible="1"/>
+    <Element collapsed="0" type="model" name="HSpinner4" visible="1"/>
+    <Element collapsed="0" type="model" name="HSpinner5" visible="1"/>
+    <Element collapsed="0" type="model" name="Icicles Single String" visible="1"/>
+    <Element collapsed="0" type="model" name="Lg 360 Mini Tree Coro - 01L" visible="1"/>
+    <Element collapsed="0" type="model" name="Lg 360 Mini Tree Coro - 02R" visible="1"/>
+    <Element collapsed="0" type="model" name="Lg Star - 01" visible="1"/>
+    <Element collapsed="0" type="model" name="Lg Star - 02" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-1" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-2" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-3" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-4" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-5" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-6" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-7" visible="1"/>
+    <Element collapsed="0" type="model" name="MH-8" visible="1"/>
+    <Element collapsed="0" type="model" name="MH - Dimmers" visible="1"/>
+    <Element collapsed="0" type="model" name="MH - Pan" visible="1"/>
+    <Element collapsed="0" type="model" name="MH - Shutter" visible="1"/>
+    <Element collapsed="0" type="model" name="MH - Tilt" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix - 1L" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix - 2R" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix - 1L-Virtual" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix - 2R-Virtual" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix - ColL" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix - ColR" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix Garage Left" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix Garage Right" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix-mini-left" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix-mini-right" visible="1"/>
+    <Element collapsed="0" type="model" name="Matrix Seeds" visible="1"/>
+    <Element collapsed="0" type="model" name="Md 360 Mini Tree Coro - 01L" visible="1"/>
+    <Element collapsed="0" type="model" name="Md 360 Mini Tree Coro - 02R" visible="1"/>
+    <Element collapsed="0" type="model" name="Md Star - 01" visible="1"/>
+    <Element collapsed="0" type="model" name="Md Star - 02" visible="1"/>
+    <Element collapsed="0" type="model" name="MediumPresent-1" visible="1"/>
+    <Element collapsed="0" type="model" name="MediumPresent-2" visible="1"/>
+    <Element collapsed="0" type="model" name="MediumPresent-3" visible="1"/>
+    <Element collapsed="0" type="model" name="MediumPresent-4" visible="1"/>
+    <Element collapsed="0" type="model" name="Nellis Gnome" visible="1"/>
+    <Element collapsed="0" type="model" name="Nelly Gnome" visible="1"/>
+    <Element collapsed="0" type="model" name="PixTree-1" visible="1"/>
+    <Element collapsed="0" type="model" name="PixTree-1-Star" visible="1"/>
+    <Element collapsed="0" type="model" name="PixTree-2" visible="1"/>
+    <Element collapsed="0" type="model" name="PixTree-2-Star" visible="1"/>
+    <Element collapsed="0" type="model" name="PixTree-3" visible="1"/>
+    <Element collapsed="0" type="model" name="PixTree-3-Star" visible="1"/>
+    <Element collapsed="0" type="model" name="Pixie Pole 1" visible="1"/>
+    <Element collapsed="0" type="model" name="Pixie Pole 2" visible="1"/>
+    <Element collapsed="0" type="model" name="Pixie Pole 3" visible="1"/>
+    <Element collapsed="0" type="model" name="Pixie Pole 4" visible="1"/>
+    <Element collapsed="0" type="model" name="Pixie Pole 5" visible="1"/>
+    <Element collapsed="0" type="model" name="Pixie Pole 6" visible="1"/>
+    <Element collapsed="0" type="model" name="Pole 1" visible="1"/>
+    <Element collapsed="0" type="model" name="Pole 2" visible="1"/>
+    <Element collapsed="0" type="model" name="Pole 3" visible="1"/>
+    <Element collapsed="0" type="model" name="Pole 4" visible="1"/>
+    <Element collapsed="0" type="model" name="Pole 5" visible="1"/>
+    <Element collapsed="0" type="model" name="Radio_EFL" visible="1"/>
+    <Element collapsed="0" type="model" name="Singing Face" visible="1"/>
+    <Element collapsed="0" type="model" name="Sphere 1" visible="1"/>
+    <Element collapsed="0" type="model" name="Sphere 2" visible="1"/>
+    <Element collapsed="0" type="model" name="Sphere 3" visible="1"/>
+    <Element collapsed="0" type="model" name="Sphere 4" visible="1"/>
+    <Element collapsed="0" type="model" name="Sphere 5" visible="1"/>
+    <Element collapsed="0" type="model" name="Sphere 6" visible="1"/>
+    <Element collapsed="0" type="model" name="SpinnerStarFlake" visible="1"/>
+    <Element collapsed="0" type="model" name="SpinnerStarFlake - Spokes" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral Tree-1BL" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral Tree-1L" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral Tree-2R" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral Tree-3R" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral Tree-4R" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral Tree-5R" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral X NSR (Tree) 1" visible="1"/>
+    <Element collapsed="0" type="model" name="Spiral X NSR (Tree) 2" visible="1"/>
+    <Element collapsed="0" type="model" name="Tree Branches" visible="1"/>
+    <Element collapsed="0" type="model" name="Tree Trunk" visible="1"/>
+    <Element collapsed="0" type="model" name="Triple Arches-1" visible="1"/>
+    <Element collapsed="0" type="model" name="Triple Arches-2" visible="1"/>
+    <Element collapsed="0" type="model" name="Triple Arches-3" visible="1"/>
+    <Element collapsed="0" type="model" name="Triple Arches-4" visible="1"/>
+    <Element collapsed="0" type="model" name="Window Frame-Lower-1" visible="1"/>
+    <Element collapsed="0" type="model" name="Window Frame-Upper-1" visible="1"/>
+    <Element collapsed="0" type="model" name="Window Frame-Upper-1 Matrix" visible="1"/>
+    <Element collapsed="0" type="model" name="Window Frame-Upper-2" visible="1"/>
+    <Element collapsed="0" type="model" name="Window Frame-Upper-3" visible="1"/>
+    <Element collapsed="0" type="model" name="Window Frame-Upper-3 Matrix" visible="1"/>
+    <Element collapsed="0" type="model" name="Wreath-Inner" visible="1"/>
+    <Element collapsed="0" type="model" name="Wreath-Outer" visible="1"/>
+    <Element collapsed="0" type="model" name="TV-Right" visible="1"/>
+    <Element collapsed="0" type="model" name="96 All (no stakes)" visible="1"/>
+    <Element collapsed="0" type="model" name="97 All House NO YARD" visible="1"/>
+    <Element collapsed="0" type="model" name="98 All Override (last group)" visible="1"/>
+    <Element collapsed="0" type="model" name="99 Whole House w Matrix (last group)" visible="1"/>
+    <Element collapsed="0" type="model" name="Poop_Emoji" visible="1"/>
+  </DisplayElements>
+  <ElementEffects>
+    <Element type="timing" name="New Timing">
+      <EffectLayer/>
+    </Element>
+    <Element type="timing" name="Beats">
+      <EffectLayer>
+        <Effect label="3" startTime="450" endTime="1300"></Effect>
+        <Effect label="4" startTime="1300" endTime="2025"></Effect>
+        <Effect label="1" startTime="2025" endTime="2875"></Effect>
+        <Effect label="2" startTime="2875" endTime="3700"></Effect>
+        <Effect label="3" startTime="3700" endTime="4525"></Effect>
+        <Effect label="4" startTime="4525" endTime="5375"></Effect>
+        <Effect label="1" startTime="5375" endTime="6200"></Effect>
+        <Effect label="2" startTime="6200" endTime="7075"></Effect>
+        <Effect label="3" startTime="7075" endTime="7875"></Effect>
+        <Effect label="4" startTime="7875" endTime="8725"></Effect>
+        <Effect label="1" startTime="8725" endTime="9550"></Effect>
+        <Effect label="2" startTime="9550" endTime="10375"></Effect>
+        <Effect label="3" startTime="10375" endTime="11200"></Effect>
+        <Effect label="4" startTime="11200" endTime="12025"></Effect>
+        <Effect label="1" startTime="12025" endTime="12875"></Effect>
+        <Effect label="2" startTime="12875" endTime="13725"></Effect>
+        <Effect label="3" startTime="13725" endTime="14525"></Effect>
+        <Effect label="4" startTime="14525" endTime="15375"></Effect>
+        <Effect label="1" startTime="15375" endTime="16200"></Effect>
+        <Effect label="2" startTime="16200" endTime="17050"></Effect>
+        <Effect label="3" startTime="17050" endTime="17875"></Effect>
+        <Effect label="4" startTime="17875" endTime="18700"></Effect>
+        <Effect label="1" startTime="18700" endTime="19550"></Effect>
+        <Effect label="2" startTime="19550" endTime="20375"></Effect>
+        <Effect label="3" startTime="20375" endTime="21200"></Effect>
+        <Effect label="4" startTime="21200" endTime="22025"></Effect>
+        <Effect label="1" startTime="22025" endTime="22875"></Effect>
+        <Effect label="2" startTime="22875" endTime="23700"></Effect>
+        <Effect label="3" startTime="23700" endTime="24525"></Effect>
+        <Effect label="4" startTime="24525" endTime="25375"></Effect>
+        <Effect label="1" startTime="25375" endTime="26200"></Effect>
+        <Effect label="2" startTime="26200" endTime="27050"></Effect>
+        <Effect label="3" startTime="27050" endTime="27875"></Effect>
+        <Effect label="4" startTime="27875" endTime="28700"></Effect>
+        <Effect label="1" startTime="28700" endTime="29525"></Effect>
+        <Effect label="2" startTime="29525" endTime="30350"></Effect>
+        <Effect label="3" startTime="30350" endTime="31200"></Effect>
+        <Effect label="4" startTime="31200" endTime="32050"></Effect>
+        <Effect label="1" startTime="32050" endTime="32875"></Effect>
+        <Effect label="2" startTime="32875" endTime="33725"></Effect>
+        <Effect label="3" startTime="33725" endTime="34550"></Effect>
+        <Effect label="4" startTime="34550" endTime="35375"></Effect>
+        <Effect label="1" startTime="35375" endTime="36200"></Effect>
+        <Effect label="2" startTime="36200" endTime="37000"></Effect>
+        <Effect label="3" startTime="37000" endTime="37850"></Effect>
+        <Effect label="4" startTime="37850" endTime="38700"></Effect>
+        <Effect label="1" startTime="38700" endTime="39525"></Effect>
+        <Effect label="2" startTime="39525" endTime="40375"></Effect>
+        <Effect label="3" startTime="40375" endTime="41200"></Effect>
+        <Effect label="4" startTime="41200" endTime="42025"></Effect>
+        <Effect label="1" startTime="42025" endTime="42875"></Effect>
+        <Effect label="2" startTime="42875" endTime="43700"></Effect>
+        <Effect label="3" startTime="43700" endTime="44525"></Effect>
+        <Effect label="4" startTime="44525" endTime="45350"></Effect>
+        <Effect label="1" startTime="45350" endTime="46200"></Effect>
+        <Effect label="2" startTime="46200" endTime="47025"></Effect>
+        <Effect label="3" startTime="47025" endTime="47875"></Effect>
+        <Effect label="4" startTime="47875" endTime="48700"></Effect>
+        <Effect label="1" startTime="48700" endTime="49550"></Effect>
+        <Effect label="2" startTime="49550" endTime="50375"></Effect>
+        <Effect label="3" startTime="50375" endTime="51200"></Effect>
+        <Effect label="4" startTime="51200" endTime="52025"></Effect>
+        <Effect label="1" startTime="52025" endTime="52850"></Effect>
+        <Effect label="2" startTime="52850" endTime="53700"></Effect>
+        <Effect label="3" startTime="53700" endTime="54525"></Effect>
+        <Effect label="4" startTime="54525" endTime="55375"></Effect>
+        <Effect label="1" startTime="55375" endTime="56200"></Effect>
+        <Effect label="2" startTime="56200" endTime="57025"></Effect>
+        <Effect label="3" startTime="57025" endTime="57875"></Effect>
+        <Effect label="4" startTime="57875" endTime="58700"></Effect>
+        <Effect label="1" startTime="58700" endTime="59525"></Effect>
+        <Effect label="2" startTime="59525" endTime="60350"></Effect>
+        <Effect label="3" startTime="60350" endTime="61175"></Effect>
+        <Effect label="4" startTime="61175" endTime="62025"></Effect>
+        <Effect label="1" startTime="62025" endTime="62875"></Effect>
+        <Effect label="2" startTime="62875" endTime="63700"></Effect>
+        <Effect label="3" startTime="63700" endTime="64525"></Effect>
+        <Effect label="4" startTime="64525" endTime="65375"></Effect>
+        <Effect label="1" startTime="65375" endTime="66200"></Effect>
+        <Effect label="2" startTime="66200" endTime="67025"></Effect>
+        <Effect label="3" startTime="67025" endTime="67850"></Effect>
+        <Effect label="4" startTime="67850" endTime="68700"></Effect>
+        <Effect label="1" startTime="68700" endTime="69525"></Effect>
+        <Effect label="2" startTime="69525" endTime="70375"></Effect>
+        <Effect label="3" startTime="70375" endTime="71200"></Effect>
+        <Effect label="4" startTime="71200" endTime="72050"></Effect>
+        <Effect label="1" startTime="72050" endTime="72875"></Effect>
+        <Effect label="2" startTime="72875" endTime="73700"></Effect>
+        <Effect label="3" startTime="73700" endTime="74525"></Effect>
+        <Effect label="4" startTime="74525" endTime="75375"></Effect>
+        <Effect label="1" startTime="75375" endTime="76200"></Effect>
+        <Effect label="2" startTime="76200" endTime="77050"></Effect>
+        <Effect label="3" startTime="77050" endTime="77850"></Effect>
+        <Effect label="4" startTime="77850" endTime="78700"></Effect>
+        <Effect label="1" startTime="78700" endTime="79525"></Effect>
+        <Effect label="2" startTime="79525" endTime="80375"></Effect>
+        <Effect label="3" startTime="80375" endTime="81200"></Effect>
+        <Effect label="4" startTime="81200" endTime="82050"></Effect>
+        <Effect label="1" startTime="82050" endTime="82875"></Effect>
+        <Effect label="2" startTime="82875" endTime="83725"></Effect>
+        <Effect label="3" startTime="83725" endTime="84525"></Effect>
+        <Effect label="4" startTime="84525" endTime="85400"></Effect>
+        <Effect label="1" startTime="85400" endTime="86225"></Effect>
+        <Effect label="2" startTime="86225" endTime="87050"></Effect>
+        <Effect label="3" startTime="87050" endTime="87875"></Effect>
+        <Effect label="4" startTime="87875" endTime="88700"></Effect>
+        <Effect label="1" startTime="88700" endTime="89525"></Effect>
+        <Effect label="2" startTime="89525" endTime="90350"></Effect>
+        <Effect label="3" startTime="90350" endTime="91200"></Effect>
+        <Effect label="4" startTime="91200" endTime="92050"></Effect>
+        <Effect label="1" startTime="92050" endTime="92900"></Effect>
+        <Effect label="2" startTime="92900" endTime="93725"></Effect>
+        <Effect label="3" startTime="93725" endTime="94525"></Effect>
+        <Effect label="4" startTime="94525" endTime="95375"></Effect>
+        <Effect label="1" startTime="95375" endTime="96200"></Effect>
+        <Effect label="2" startTime="96200" endTime="97025"></Effect>
+        <Effect label="3" startTime="97025" endTime="97850"></Effect>
+        <Effect label="4" startTime="97850" endTime="98675"></Effect>
+        <Effect label="1" startTime="98675" endTime="99525"></Effect>
+        <Effect label="2" startTime="99525" endTime="100350"></Effect>
+        <Effect label="3" startTime="100350" endTime="101200"></Effect>
+        <Effect label="4" startTime="101200" endTime="102025"></Effect>
+        <Effect label="1" startTime="102025" endTime="102875"></Effect>
+        <Effect label="2" startTime="102875" endTime="103700"></Effect>
+        <Effect label="3" startTime="103700" endTime="104525"></Effect>
+        <Effect label="4" startTime="104525" endTime="105350"></Effect>
+        <Effect label="1" startTime="105350" endTime="106200"></Effect>
+        <Effect label="2" startTime="106200" endTime="107025"></Effect>
+        <Effect label="3" startTime="107025" endTime="107850"></Effect>
+        <Effect label="4" startTime="107850" endTime="108700"></Effect>
+        <Effect label="1" startTime="108700" endTime="109525"></Effect>
+        <Effect label="2" startTime="109525" endTime="110375"></Effect>
+        <Effect label="3" startTime="110375" endTime="111200"></Effect>
+        <Effect label="4" startTime="111200" endTime="112025"></Effect>
+        <Effect label="1" startTime="112025" endTime="112850"></Effect>
+        <Effect label="2" startTime="112850" endTime="113700"></Effect>
+        <Effect label="3" startTime="113700" endTime="114550"></Effect>
+        <Effect label="4" startTime="114550" endTime="115375"></Effect>
+        <Effect label="1" startTime="115375" endTime="116200"></Effect>
+        <Effect label="2" startTime="116200" endTime="117025"></Effect>
+        <Effect label="3" startTime="117025" endTime="117875"></Effect>
+        <Effect label="4" startTime="117875" endTime="118700"></Effect>
+        <Effect label="1" startTime="118700" endTime="119525"></Effect>
+        <Effect label="2" startTime="119525" endTime="120350"></Effect>
+        <Effect label="3" startTime="120350" endTime="121200"></Effect>
+        <Effect label="4" startTime="121200" endTime="122025"></Effect>
+        <Effect label="1" startTime="122025" endTime="122850"></Effect>
+        <Effect label="2" startTime="122850" endTime="123700"></Effect>
+        <Effect label="3" startTime="123700" endTime="124525"></Effect>
+        <Effect label="4" startTime="124525" endTime="125375"></Effect>
+        <Effect label="1" startTime="125375" endTime="126200"></Effect>
+        <Effect label="2" startTime="126200" endTime="127025"></Effect>
+        <Effect label="3" startTime="127025" endTime="127850"></Effect>
+        <Effect label="4" startTime="127850" endTime="128700"></Effect>
+        <Effect label="1" startTime="128700" endTime="129525"></Effect>
+        <Effect label="2" startTime="129525" endTime="130375"></Effect>
+        <Effect label="3" startTime="130375" endTime="131200"></Effect>
+        <Effect label="4" startTime="131200" endTime="132050"></Effect>
+        <Effect label="1" startTime="132050" endTime="132875"></Effect>
+        <Effect label="2" startTime="132875" endTime="133700"></Effect>
+        <Effect label="3" startTime="133700" endTime="134525"></Effect>
+        <Effect label="4" startTime="134525" endTime="135350"></Effect>
+        <Effect label="1" startTime="135350" endTime="136175"></Effect>
+        <Effect label="2" startTime="136175" endTime="137025"></Effect>
+        <Effect label="3" startTime="137025" endTime="137850"></Effect>
+        <Effect label="4" startTime="137850" endTime="138700"></Effect>
+        <Effect label="1" startTime="138700" endTime="139525"></Effect>
+        <Effect label="2" startTime="139525" endTime="140350"></Effect>
+        <Effect label="3" startTime="140350" endTime="141200"></Effect>
+        <Effect label="4" startTime="141200" endTime="142025"></Effect>
+        <Effect label="1" startTime="142025" endTime="142850"></Effect>
+        <Effect label="2" startTime="142850" endTime="143700"></Effect>
+        <Effect label="3" startTime="143700" endTime="144525"></Effect>
+        <Effect label="4" startTime="144525" endTime="145375"></Effect>
+        <Effect label="1" startTime="145375" endTime="146200"></Effect>
+        <Effect label="2" startTime="146200" endTime="147050"></Effect>
+        <Effect label="3" startTime="147050" endTime="147875"></Effect>
+        <Effect label="4" startTime="147875" endTime="148700"></Effect>
+        <Effect label="1" startTime="148700" endTime="149525"></Effect>
+        <Effect label="2" startTime="149525" endTime="150350"></Effect>
+        <Effect label="3" startTime="150350" endTime="151200"></Effect>
+        <Effect label="4" startTime="151200" endTime="152025"></Effect>
+        <Effect label="1" startTime="152025" endTime="152850"></Effect>
+        <Effect label="2" startTime="152850" endTime="153700"></Effect>
+        <Effect label="3" startTime="153700" endTime="154525"></Effect>
+        <Effect label="4" startTime="154525" endTime="155375"></Effect>
+        <Effect label="1" startTime="155375" endTime="156200"></Effect>
+        <Effect label="2" startTime="156200" endTime="157025"></Effect>
+        <Effect label="3" startTime="157025" endTime="157850"></Effect>
+        <Effect label="4" startTime="157850" endTime="158700"></Effect>
+        <Effect label="1" startTime="158700" endTime="159525"></Effect>
+        <Effect label="2" startTime="159525" endTime="160350"></Effect>
+        <Effect label="3" startTime="160350" endTime="161200"></Effect>
+        <Effect label="4" startTime="161200" endTime="162025"></Effect>
+        <Effect label="1" startTime="162025" endTime="162875"></Effect>
+        <Effect label="2" startTime="162875" endTime="163700"></Effect>
+        <Effect label="3" startTime="163700" endTime="164525"></Effect>
+        <Effect label="4" startTime="164525" endTime="165350"></Effect>
+        <Effect label="1" startTime="165350" endTime="166200"></Effect>
+        <Effect label="2" startTime="166200" endTime="167025"></Effect>
+        <Effect label="3" startTime="167025" endTime="167850"></Effect>
+        <Effect label="4" startTime="167850" endTime="168700"></Effect>
+        <Effect label="1" startTime="168700" endTime="169525"></Effect>
+        <Effect label="2" startTime="169525" endTime="170375"></Effect>
+        <Effect label="3" startTime="170375" endTime="171200"></Effect>
+        <Effect label="4" startTime="171200" endTime="172025"></Effect>
+        <Effect label="1" startTime="172025" endTime="172850"></Effect>
+        <Effect label="2" startTime="172850" endTime="173700"></Effect>
+        <Effect label="3" startTime="173700" endTime="174525"></Effect>
+        <Effect label="4" startTime="174525" endTime="175375"></Effect>
+        <Effect label="1" startTime="175375" endTime="176200"></Effect>
+        <Effect label="2" startTime="176200" endTime="177025"></Effect>
+        <Effect label="3" startTime="177025" endTime="177875"></Effect>
+        <Effect label="4" startTime="177875" endTime="178700"></Effect>
+        <Effect label="1" startTime="178700" endTime="179525"></Effect>
+        <Effect label="2" startTime="179525" endTime="180350"></Effect>
+        <Effect label="3" startTime="180350" endTime="181200"></Effect>
+        <Effect label="4" startTime="181200" endTime="182025"></Effect>
+        <Effect label="1" startTime="182025" endTime="182875"></Effect>
+        <Effect label="2" startTime="182875" endTime="183700"></Effect>
+        <Effect label="3" startTime="183700" endTime="184525"></Effect>
+        <Effect label="4" startTime="184525" endTime="185375"></Effect>
+        <Effect label="1" startTime="185375" endTime="186200"></Effect>
+        <Effect label="2" startTime="186200" endTime="187025"></Effect>
+        <Effect label="3" startTime="187025" endTime="187850"></Effect>
+        <Effect label="4" startTime="187850" endTime="188700"></Effect>
+        <Effect label="1" startTime="188700" endTime="189550"></Effect>
+        <Effect label="2" startTime="189550" endTime="190375"></Effect>
+        <Effect label="3" startTime="190375" endTime="191200"></Effect>
+        <Effect label="4" startTime="191200" endTime="192025"></Effect>
+        <Effect label="1" startTime="192025" endTime="192850"></Effect>
+        <Effect label="2" startTime="192850" endTime="193700"></Effect>
+        <Effect label="3" startTime="193700" endTime="194525"></Effect>
+        <Effect label="4" startTime="194525" endTime="195350"></Effect>
+        <Effect label="1" startTime="195350" endTime="196200"></Effect>
+        <Effect label="2" startTime="196200" endTime="197025"></Effect>
+        <Effect label="3" startTime="197025" endTime="197850"></Effect>
+        <Effect label="4" startTime="197850" endTime="198700"></Effect>
+        <Effect label="1" startTime="198700" endTime="199525"></Effect>
+        <Effect label="2" startTime="199525" endTime="200350"></Effect>
+        <Effect label="3" startTime="200350" endTime="201200"></Effect>
+        <Effect label="4" startTime="201200" endTime="202025"></Effect>
+        <Effect label="1" startTime="202025" endTime="202850"></Effect>
+        <Effect label="2" startTime="202850" endTime="203675"></Effect>
+        <Effect label="3" startTime="203675" endTime="204500"></Effect>
+        <Effect label="4" startTime="204500" endTime="205325"></Effect>
+        <Effect label="1" startTime="205325" endTime="206000"></Effect>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="01 Everything">
+      <EffectLayer>
+        <Effect ref="0" name="Spirals" startTime="5950" endTime="33750" palette="0"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="02 Whole House No Matrix">
+      <EffectLayer>
+        <Effect ref="1" name="Spirals" startTime="108300" endTime="115550" palette="1"/>
+        <Effect ref="2" name="Spirals" id="1" startTime="144300" endTime="151550" palette="2"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="02 All No Forest No MT">
+      <EffectLayer>
+        <Effect ref="3" name="Spirals" startTime="25500" endTime="32750" palette="3"/>
+        <Effect ref="4" name="Spirals" selected="1" id="1" startTime="60300" endTime="78600" palette="4"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="02b All No Forest No MT No Matrix">
+      <EffectLayer>
+        <Effect ref="5" name="Spirals" startTime="112950" endTime="120200" palette="5"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="03 Whole House No Matrix No Tree">
+      <EffectLayer>
+        <Effect ref="6" name="Spirals" startTime="144150" endTime="151400" palette="6"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="04 Whole House Minus Mega and Matrix">
+      <EffectLayer>
+        <Effect ref="1" name="Spirals" startTime="101550" endTime="108800" palette="1"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="05 Whole House Minus MegaMiniMatrix">
+      <EffectLayer>
+        <Effect ref="7" name="Spirals" startTime="11850" endTime="48650" palette="7"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="06 Whole House NO YARD">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="07 All House">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - House Outline">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - House Verticals">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - House Horizontals">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Whole Yard">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Yard Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Yard Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Floods">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Mini Trees Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Mini Trees Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Mega Tree and Topper">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Mega Trees">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Mega Stars">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral Trees">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Arches">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Triple Arches">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixie Spheres">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixie Poles">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixie Poles - Center Lines">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - MickeyStakes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Eaves">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - PixStakes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Presents">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Presents 3D">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflakes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Big Bulbs">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Candy Canes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Candy Canes (Striped)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Column Matrices">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Driveway Lights">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Every Other Star 1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Every Other Star 2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Flat Trees And Stars">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Flat Tree Stars">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Flat Trees">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - HFlakes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - HSpinners">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - HSpinners Outer Rings">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - HSpinners All Spokes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - House Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - House Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Icicles Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Icicles Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Live Tree">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Matrix Virtual">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Garage Matrix">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Matrixes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Mini Matrices">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Moving Heads">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - PixStakes - Back Half">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - PixStakes - Front Half">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixel Stakes Front Layers">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixel Stakes Rows">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixel Tree">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixel Tree Stars">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Pixel Tree and Stars">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Poles and Stars">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Railings">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Roof">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - SnowBursts">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflake Arms">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflake Tips">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflakes (Small)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflake Tips (Small)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflake Arms (Small)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflake Lefts Arms (Small)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflake Right Arms (Small)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Snowflake Rings">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinners">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinner Arms">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinner Small Arms">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinner Big Arms">
+      <EffectLayer>
+        <Effect ref="8" name="Spirals" startTime="70500" endTime="114750" palette="8"/>
+      </EffectLayer>
+    </Element>
+    <Element type="model" name="Group - Spinners (Inner Band)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinners (Inner Ring)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinners (Mid Band)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinners (Outer Band)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinners (Outer Ring)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinners (Pedals Even)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinners (Pedals Odd)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spinner Rings">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - ALL">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - Balls">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - Spiral Big">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - Green Tree">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - Outline">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - Spiral and Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Spiral X NSR (Tree) - Front Spiral">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Stars">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Stars on Trees">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Trees">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Trees - Large">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Trees - Medium">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Virtual Spinners">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Window Frames and Doors">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Windows">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Windows - Bottom">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Windows - Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Windows - Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Windows - Top">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Wreath">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Group - Yard Boarders">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Center Piece">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Center Rings">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Outer Diamonds">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Petals">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Rings">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Spiral All">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Spiral CClockwise">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Spiral Clockwise">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Mega Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="AA Mega Tree">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Mega Super Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="AA Mega Super Tree">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Garage Vert - Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Garage Vert - Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Garage Outline - 01L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Garage Outline - 02R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PC Spinner Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Ornament Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Ornament Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="3D Cube-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="3D Cube-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="3D Cube-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="3D Cube-4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="3D Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Arches-1-Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Arches-2-Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Arches-3-LL">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Arches-4-L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Arches-5-M">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Arches-6-R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Arches-7-RR">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="BigBulb - 1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="BigBulb - 2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="BigBulb - 3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="BigBulb - 4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="BigBulb - 5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Bulb Blue">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Bulb Green">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Bulb Red">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Bulb Yellow">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Cane-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Cane-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Cane-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Cane-4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="ChromaFlake 36 3 Prong - 01L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="ChromaFlake 36 3 Prong - 02R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Driveway - 01L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Driveway - 02R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="EFlake46">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Eaves - Icicles">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Eaves - Lower - C9 Lights">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Eaves - Upper - C9 Lights">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTree-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTree-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTree-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTree-4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTree-5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTree-6">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTreeStar-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTreeStar-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTreeStar-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTreeStar-4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTreeStar-5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FlatTreeStar-6">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Flood1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Flood2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Flood3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FrontYard - Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="FrontYard - Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HFlake1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HFlake2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HFlake3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HFlake4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HFlake5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HSpinner1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HSpinner2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HSpinner3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HSpinner4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="HSpinner5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Icicles Single String">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Lg 360 Mini Tree Coro - 01L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Lg 360 Mini Tree Coro - 02R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Lg Star - 01">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Lg Star - 02">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-6">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-7">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH-8">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH - Dimmers">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH - Pan">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH - Shutter">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MH - Tilt">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix - 1L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix - 2R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix - 1L-Virtual">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix - 2R-Virtual">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix - ColL">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix - ColR">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix Garage Left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix Garage Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix-mini-left">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix-mini-right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Matrix Seeds">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Md 360 Mini Tree Coro - 01L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Md 360 Mini Tree Coro - 02R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Md Star - 01">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Md Star - 02">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MediumPresent-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MediumPresent-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MediumPresent-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="MediumPresent-4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Nellis Gnome">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Nelly Gnome">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PixTree-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PixTree-1-Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PixTree-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PixTree-2-Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PixTree-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="PixTree-3-Star">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pixie Pole 1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pixie Pole 2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pixie Pole 3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pixie Pole 4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pixie Pole 5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pixie Pole 6">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pole 1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pole 2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pole 3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pole 4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Pole 5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Radio_EFL">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Singing Face">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Sphere 1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Sphere 2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Sphere 3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Sphere 4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Sphere 5">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Sphere 6">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="SpinnerStarFlake">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="SpinnerStarFlake - Spokes">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral Tree-1BL">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral Tree-1L">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral Tree-2R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral Tree-3R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral Tree-4R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral Tree-5R">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral X NSR (Tree) 1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Spiral X NSR (Tree) 2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Tree Branches">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Tree Trunk">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Triple Arches-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Triple Arches-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Triple Arches-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Triple Arches-4">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Window Frame-Lower-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Window Frame-Upper-1">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Window Frame-Upper-1 Matrix">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Window Frame-Upper-2">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Window Frame-Upper-3">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Window Frame-Upper-3 Matrix">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Wreath-Inner">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Wreath-Outer">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="TV-Right">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="96 All (no stakes)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="97 All House NO YARD">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="98 All Override (last group)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="99 Whole House w Matrix (last group)">
+      <EffectLayer/>
+    </Element>
+    <Element type="model" name="Poop_Emoji">
+      <EffectLayer/>
+    </Element>
+  </ElementEffects>
+  <lastView>7</lastView>
+  <TimingTags>
+    <Tag number="0" position="-1"/>
+    <Tag number="1" position="-1"/>
+    <Tag number="2" position="-1"/>
+    <Tag number="3" position="-1"/>
+    <Tag number="4" position="-1"/>
+    <Tag number="5" position="-1"/>
+    <Tag number="6" position="-1"/>
+    <Tag number="7" position="-1"/>
+    <Tag number="8" position="-1"/>
+    <Tag number="9" position="-1"/>
+  </TimingTags>
+</xsequence>

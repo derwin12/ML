@@ -3,7 +3,7 @@
 import xml.etree.ElementTree as ET
 import random
 
-def add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors):
+def add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None):
     directions = ["Up", "Down", "Expand", "Compress", "Left/Right", "H Expand", "H Compress", "Alternate"]
     num_bars_added = 0
     for _ in range(10):
@@ -17,9 +17,16 @@ def add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms
         if effect_layer is None:
             effect_layer = ET.SubElement(elem, "EffectLayer")
 
-        start_time = random.randint(0, seq_duration_ms - 10000)
-        effect_dur = random.randint(5000, 10000)  # 5-10 seconds
-        end_time = start_time + effect_dur
+        if beats is not None and len(beats) > 1:
+            start_idx = random.randint(0, len(beats) - 6)
+            num_beats_span = random.randint(5, 10)  # for 5-10s duration
+            end_idx = min(start_idx + num_beats_span, len(beats) - 1)
+            start_time = int(beats[start_idx] * 1000)
+            end_time = int(beats[end_idx] * 1000)
+        else:
+            start_time = random.randint(0, seq_duration_ms - 10000)
+            effect_dur = random.randint(5000, 10000)  # 5-10 seconds
+            end_time = start_time + effect_dur
 
         # Random parameters for Bars
         bar_count = random.randint(3, 8)

@@ -1,10 +1,12 @@
 # main.py
 
-from utils import indent, load_structure_map, get_audio_duration, get_eligible_models, sort_models, update_metadata
+from utils import indent, load_structure_map, get_audio_duration, get_eligible_models, sort_models, update_metadata, generate_beats_track
 from on_effect import add_on_effects
 from bars_effect import add_bars_effects
 from color_wash_effect import add_color_wash_effects
 from shockwave_effect import add_shockwave_effects
+from spirals_effect import add_spirals_effects
+from pinwheel_effect import add_pinwheel_effects
 import os
 import xml.etree.ElementTree as ET
 import random
@@ -36,6 +38,8 @@ def create_xsq_from_template(template_xsq,
     Adds 10 random 'Bars' effects of 5-10 seconds to random models/groups.
     Adds 5-15 random 'Color Wash' effects of 5-10 seconds to random models/groups.
     Adds 5-10 random 'Shockwave' effects of 5-10 seconds to random models/groups.
+    Adds 10-30 random 'Spirals' effects of 5-10 seconds to random models/groups.
+    Adds 10-30 random 'Pinwheel' effects of 5-10 seconds to random models/groups.
     Sorts models alphabetically with groups before individual models.
     Groups containing "last" sorted to the very end, sub-sorted alphabetically.
     Does not place effects on image, DMX, or MH models.
@@ -43,6 +47,7 @@ def create_xsq_from_template(template_xsq,
     Pretty-prints the output XML.
     Uses a coordinated palette of 8 colors for effects, with custom palettes for multi-color effects.
     Supports Animation or Media sequence type; for Media, uses audio_path for duration and sets media metadata.
+    For Media, generates a beats timing track from audio analysis.
     """
 
     if not os.path.isfile(template_xsq):
@@ -143,10 +148,17 @@ def create_xsq_from_template(template_xsq,
 
     seq_duration_ms = int(duration * 1000)
 
-    num_ons_added = add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors)
-    num_bars_added = add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors)
-    num_color_wash_added = add_color_wash_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors)
-    num_shockwave_added = add_shockwave_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors)
+    beats = None
+    if seq_type == "Media" and audio_path:
+        # Add beats timing track and get beats list
+        beats = generate_beats_track(audio_path, display_elem, element_effects, seq_duration_ms)
+
+    num_ons_added = add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
+    num_bars_added = add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
+    num_color_wash_added = add_color_wash_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
+    num_shockwave_added = add_shockwave_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
+    num_spirals_added = add_spirals_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
+    num_pinwheel_added = add_pinwheel_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
 
     # --- Set visibility for models with no effects ---
     num_visible = 0
@@ -186,11 +198,13 @@ def create_xsq_from_template(template_xsq,
     print(f"Using structure definition: {structure_json}")
     print(f"Sequence duration: {duration} seconds")
     print(f"Using coordinated palette: {fixed_colors}")
-    print(f"Generated {num_ons_added + num_bars_added + num_color_wash_added + num_shockwave_added} custom palettes for effects")
+    print(f"Generated {num_ons_added + num_bars_added + num_color_wash_added + num_shockwave_added + num_spirals_added + num_pinwheel_added} custom palettes for effects")
     print(f"Added {num_ons_added} random 'On' effects (1 color each) to models/groups.")
     print(f"Added {num_bars_added} random 'Bars' effects (3 colors each, 5-10s) to models/groups.")
     print(f"Added {num_color_wash_added} random 'Color Wash' effects (2 colors each, 5-10s) to models/groups.")
     print(f"Added {num_shockwave_added} random 'Shockwave' effects (2 colors each, 5-10s) to models/groups.")
+    print(f"Added {num_spirals_added} random 'Spirals' effects (2-4 colors each, 5-10s) to models/groups.")
+    print(f"Added {num_pinwheel_added} random 'Pinwheel' effects (2-4 colors each, 5-10s) to models/groups.")
 
 
 # Example usage

@@ -3,7 +3,7 @@
 import xml.etree.ElementTree as ET
 import random
 
-def add_shockwave_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors):
+def add_shockwave_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None):
     num_shockwave = random.randint(5, 10)
     num_shockwave_added = 0
     for _ in range(num_shockwave):
@@ -13,15 +13,22 @@ def add_shockwave_effects(eligible_elements, eligible_group_elements, seq_durati
             is_group = True
         else:
             elem = random.choice(eligible_elements)  # fallback to all eligible
-            is_group = elem.attrib["name"] in [g.attrib["name"] for g in eligible_group_elements]
+            is_group = elem in eligible_group_elements
 
         effect_layer = elem.find("EffectLayer")
         if effect_layer is None:
             effect_layer = ET.SubElement(elem, "EffectLayer")
 
-        start_time = random.randint(0, seq_duration_ms - 10000)
-        effect_dur = random.randint(5000, 10000)  # 5-10 seconds
-        end_time = start_time + effect_dur
+        if beats is not None and len(beats) > 1:
+            start_idx = random.randint(0, len(beats) - 6)
+            num_beats_span = random.randint(5, 10)  # for 5-10s duration
+            end_idx = min(start_idx + num_beats_span, len(beats) - 1)
+            start_time = int(beats[start_idx] * 1000)
+            end_time = int(beats[end_idx] * 1000)
+        else:
+            start_time = random.randint(0, seq_duration_ms - 10000)
+            effect_dur = random.randint(5000, 10000)  # 5-10 seconds
+            end_time = start_time + effect_dur
 
         # Random parameters for Shockwave
         center_x = random.randint(0, 100)

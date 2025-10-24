@@ -3,7 +3,7 @@
 import xml.etree.ElementTree as ET
 import random
 
-def add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors):
+def add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None):
     num_ons_added = 0
     for _ in range(10):
         # 30% chance to pick group if available
@@ -16,9 +16,16 @@ def add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, 
         if effect_layer is None:
             effect_layer = ET.SubElement(elem, "EffectLayer")
 
-        start_time = random.randint(0, seq_duration_ms - 2000)
-        effect_dur = random.randint(1000, 3000)  # 1-3 seconds
-        end_time = start_time + effect_dur
+        if beats is not None and len(beats) > 1:
+            start_idx = random.randint(0, len(beats) - 2)
+            num_beats_span = random.randint(1, 3)  # for 1-3s duration
+            end_idx = min(start_idx + num_beats_span, len(beats) - 1)
+            start_time = int(beats[start_idx] * 1000)
+            end_time = int(beats[end_idx] * 1000)
+        else:
+            start_time = random.randint(0, seq_duration_ms - 2000)
+            effect_dur = random.randint(1000, 3000)  # 1-3 seconds
+            end_time = start_time + effect_dur
 
         # Select 1 random color index (1-8)
         selected_indices = [random.randint(1, 8)]

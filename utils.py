@@ -1,4 +1,4 @@
-# utils.py
+# utils.py (updated with beats generation)
 
 import os
 import json
@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 import random
 from mutagen.mp3 import MP3  # For MP3 duration; install if needed, or use pydub for other formats
+import librosa  # For beat detection
 
 def indent(elem, level=0):
     i = "\n" + level * "  "
@@ -130,3 +131,39 @@ def update_metadata(head, seq_type, seq_timing, media_file, song, artist, durati
         artist_elem = head.find("artist")
         if artist_elem is not None:
             artist_elem.text = artist
+
+def generate_beats_track(audio_path, display_elem, element_effects, seq_duration_ms):
+    # Load audio with librosa
+    y, sr = librosa.load(audio_path, sr=None)
+    tempo, beats = librosa.beat.beat_track(y=y, sr=sr, units='time')
+
+    # Add to DisplayElements
+    ET.SubElement(display_elem, "Element", {
+        "collapsed": "0",
+        "type": "timing",
+        "name": "Beats",
+        "visible": "1",
+        "active": "1"
+    })
+
+    # Add to ElementEffects
+    beats_effect_elem = ET.SubElement(element_effects, "Element", {
+        "type": "timing",
+        "name": "Beats"
+    })
+
+    effect_layer = ET.SubElement(beats_effect_elem, "EffectLayer")
+
+    for i in range(len(beats)):
+        label = str((i % 4) + 1)  # Cycle 1-2-3-4
+        start_ms = int(beats[i] * 1000)
+        if i + 1 < len(beats):
+            end_ms = int(beats[i + 1] * 1000)
+        else:
+            end_ms = seq_duration_ms
+        ET.SubElement(effect_layer, "Effect", {
+            "label": label,
+            "startTime": f"{start_ms}",
+            "endTime": f"{end_ms}"
+        })
+    return beats
