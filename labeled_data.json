@@ -1,0 +1,1346 @@
+{
+    "lollipop  custom rgb nodes": {
+        "category": "spinner",
+        "size": "mini"
+    },
+    "spiral mini-1  custom rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "spiral mini-3  custom rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "spiral mini-4  custom rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "poop_emoji  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "ss spinner r  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "ss spinner l  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "mh-1  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "matrix seeds  custom rgb nodes": {
+        "category": "matrix",
+        "size": "default"
+    },
+    "matrix garage right  custom rgb nodes": {
+        "category": "matrix",
+        "size": "default"
+    },
+    "yardstick  single line rgb nodes": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "triple arches-3  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "triple arches-4  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "triple arches-2  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "triple arches-1  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "3d cube-1  custom rgb nodes  10": {
+        "category": "cube",
+        "size": "default"
+    },
+    "spiral x nsr (tree) 1  custom rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "spiral x nsr (tree) 2  custom rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "radio_efl  custom rgb nodes": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "singing face  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "hspinner5  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "hspinner2  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "hspinner3  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "hspinner1  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "bigbulb - 3  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "bigbulb - 4  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "bigbulb - 5  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "bigbulb - 1  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "hflake2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "hflake3  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "hflake4  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "hflake5  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "hflake1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "3d cube-2  custom rgb nodes  10": {
+        "category": "cube",
+        "size": "default"
+    },
+    "eflake46  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "flattree-6  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "flattreestar-6  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "ornament left  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "ornament right  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "3d cube-4  custom rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "3d cube-3  custom rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "mickeystake-10  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-02  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-01  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "pc spinner right  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "flattreestar-5  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "flattree-5  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "cane-2  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "matrix - colr  vert matrix rgb nodes": {
+        "category": "matrix_column",
+        "size": "default"
+    },
+    "matrix - coll  vert matrix rgb nodes": {
+        "category": "matrix_column",
+        "size": "default"
+    },
+    "cane-3  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "cane-4  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "cane-1  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "pc spinner left  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "pixstake-r7  cube rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "pixstake-r6  cube rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "flattreestar-4  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "flattreestar-3  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "flattree-1  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "flattree-3  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "flood3  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood1  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood2  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flattreestar-2  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "flattree-2  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "flattreestar-1  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "flattree-4  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "eaves - lower - c9 lights  custom rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "sphere 6  sphere rgb nodes": {
+        "category": "sphere",
+        "size": "default"
+    },
+    "pixie pole 6  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "sphere 5  sphere rgb nodes": {
+        "category": "sphere",
+        "size": "default"
+    },
+    "pixie pole 5  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "sphere 4  sphere rgb nodes": {
+        "category": "sphere",
+        "size": "default"
+    },
+    "sphere 3  sphere rgb nodes": {
+        "category": "sphere",
+        "size": "default"
+    },
+    "pixie pole 4  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "pixie pole 3  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "sphere 2  sphere rgb nodes": {
+        "category": "sphere",
+        "size": "default"
+    },
+    "sphere 1  sphere rgb nodes": {
+        "category": "sphere",
+        "size": "default"
+    },
+    "pixie pole 2  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "pixie pole 1  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "pole 2 sflake 1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "icicles single string  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "garage vert - left  custom rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "nellis gnome  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "nelly gnome  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "matrix-mini-right  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "matrix-mini-left  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "bulb yellow  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "bulb blue  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "bulb green  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "tv-right  horiz matrix rgb nodes  100x150 and 432x768 and 216x384": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "bulb red  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "pole 1 sflake 3  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 2 sflake 2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 5 sflake 1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 5 sflake 2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 5 sflake 3  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 2 sflake 3  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 1 sflake 2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 1 sflake 1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "spinnerstarflake  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "arches-5-m  arches brg nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "eaves - icicles  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "garage vert - right  custom rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "mediumpresent-4  custom rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "mega super star  star rgb nodes": {
+        "category": "star",
+        "size": "mega"
+    },
+    "pixtree-3-star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pixtree-2-star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pixtree-3  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "pixtree-2  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "pixtree-1-star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pixtree-1  tree 120 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "pixstake-r1  cube rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "pixstake-r2  cube rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "pixstake-r5  cube rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "pixstake-r4  cube rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "pixstake-r3  cube rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "mediumpresent-3  custom rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "mediumpresent-2  custom rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "mediumpresent-1  custom rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "pole 4 sflake 3  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 4 sflake 1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 3 sflake 3  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 3 sflake 1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 5 star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pole 4 star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pole 3 star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pole 2 star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pole 1 star  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "frontyard - left  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "frontyard - right  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "arches-7-rr  arches brg nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arches-1-left  arches brg nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "aa mega super tree  tree 210 rgb nodes": {
+        "category": "tree",
+        "size": "mega"
+    },
+    "eaves - upper - c9 lights  single line rgb nodes  c9 lights": {
+        "category": "line",
+        "size": "default"
+    },
+    "spiral tree-1bl  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "arches-2-left  arches brg nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "wreath-inner  wreath rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "wreath-outer  wreath rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "3d star  custom rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "matrix - 2r-virtual  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "matrix - 1l-virtual  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "tuneto  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "spiral tree-5r  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "spiral tree-2r  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "spiral tree-3r  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "tree trunk  custom rgb nodes": {
+        "category": "matrix_column",
+        "size": "default"
+    },
+    "tree branches  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "window frame-upper-3  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window frame-upper-2  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window frame-upper-1  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window frame-lower-1  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "driveway - 01l  single line rgb nodes  xxx": {
+        "category": "other",
+        "size": "default"
+    },
+    "driveway - 02r  single line rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "spiral tree-4r  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "spiral tree-1l  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "rail - 5  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "rail - 4  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "rail - 3  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "rail - 2  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "mega star  star rgb nodes": {
+        "category": "star",
+        "size": "mega"
+    },
+    "vertical - 6  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "vertical - 3  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "vertical - 2  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "lg star - 02  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "lg star - 01  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "md star - 02  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "md star - 01  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "garage outline - 02r  poly line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "garage outline - 01l  poly line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "md 360 mini tree coro - 02r  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "md 360 mini tree coro - 01l  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "lg 360 mini tree coro - 02r  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "lg 360 mini tree coro - 01l  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "chromaflake 36 3 prong - 02r  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "chromaflake 36 3 prong - 01l  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "arches-6-r  arches brg nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arches-4-l  arches brg nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "matrix - 2r  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "aa mega tree  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "mega"
+    },
+    "matrix - 1l  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "arches-3-ll  arches brg nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "rail - 1  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "vertical - 1  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "vertical - 4  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "vertical - 5  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "pole 3 sflake 2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pole 4 sflake 2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "mickeystake-03  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-04  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-05  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-06  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-07  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-08  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "mickeystake-09  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "bigbulb - 2  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "hspinner4  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "mh - dimmers  single line single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh - pan  single line single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh - tilt  single line single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh - shutter  single line single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "matrix garage left  custom rgb nodes": {
+        "category": "matrix",
+        "size": "default"
+    },
+    "window frame-upper-1 matrix  custom rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window frame-upper-3 matrix  custom rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "mh-2  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh-3  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh-4  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh-5  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh-6  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh-7  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "mh-8  dmxmovingheadadv single color white": {
+        "category": "ignore",
+        "size": "default"
+    },
+    "spiral mini-2  custom rgb nodes": {
+        "category": "tree",
+        "size": "mini"
+    },
+    "02.15.0 showstopper mini tree-1  custom rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "matrix seeds-2  custom rgb nodes": {
+        "category": "matrix",
+        "size": "default"
+    },
+    "boscoyo singing tree-v2 4 lip-2  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "boscoyo singing tree-v2 4 lip  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "boscoyo singing tree-v2 4 lip-4  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "boscoyo singing tree-v2 4 lip-5  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    },
+    "boscoyo ice queen snowflake  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "pixel forest  cube rgb nodes": {
+        "category": "cube",
+        "size": "default"
+    },
+    "boscoyo ice queen snowflake-2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "spinner 3  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "spinner 4  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "spinner 1  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "46 megaspinner-2  custom rgb nodes": {
+        "category": "other",
+        "size": "mega"
+    },
+    "46 megaspinner-1  custom rgb nodes": {
+        "category": "spinner",
+        "size": "mega"
+    },
+    "ppd wreath-2  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "roof snowflake-6  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "roof snowflake-8  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "roof snowflake-1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "arch-7  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arch-8  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arch-9  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "column snowflake-2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "column snowflake-1  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "roof snowflake-7  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "roof snowflake-4  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "roof snowflake-3  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "roof snowflake-5  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "roof snowflake-2  custom rgb nodes": {
+        "category": "snowflake",
+        "size": "default"
+    },
+    "ppd wreath  custom rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "megatree star  star rgb nodes": {
+        "category": "star",
+        "size": "mega"
+    },
+    "gutter top  poly line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "gutter bottom  poly line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "porch entrance  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "roof peak  poly line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "pole star 2  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pole star 3  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pole star 4  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pole star 1  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "pixel pole 4  vert matrix rgb nodes": {
+        "category": "matrix_column",
+        "size": "default"
+    },
+    "pixel pole 1  vert matrix rgb nodes": {
+        "category": "other",
+        "size": "default"
+    },
+    "flood 12  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 11  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 10  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 8  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 9  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 1  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "door star wreath  custom rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "candy cane 1  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "candy cane 2  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "candy cane 4  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "mini tree star-8  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "mini tree star-1  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "matrix at garage  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "ribbon tree 16-50  tree flat rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "arch-2  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arch-3  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arch-4  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arch-5  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arch-6  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "arch-1  arches rgb nodes": {
+        "category": "arch",
+        "size": "default"
+    },
+    "spiral tree 2  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "spiral tree 1  tree 360 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "column matrix 2  vert matrix rgb nodes": {
+        "category": "matrix_column",
+        "size": "default"
+    },
+    "column matrix 1  vert matrix rgb nodes": {
+        "category": "matrix_column",
+        "size": "default"
+    },
+    "yard line left  poly line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "tree 8  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "tree 1  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "mega tree  tree 190 rgb nodes": {
+        "category": "tree",
+        "size": "mega"
+    },
+    "matrix  horiz matrix rgb nodes": {
+        "category": "matrix_horizontal",
+        "size": "default"
+    },
+    "roof lower 1  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "house vert 10  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "house vert 9  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "house vert 1  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "house vert 6  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "window 2  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "house vert 3  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "house vert 4  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "house vert 5  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "house vert 2  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "roof lower 2  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "window upstairs 2  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window upstairs 3  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "garage door  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window upstairs 5  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window upstairs 6  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window upstairs 4  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "door  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window 3  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "window 1  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "icicles 4  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 3  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 2  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 1  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 9  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 8  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 7  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 6  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "icicles 5  icicles rgb nodes": {
+        "category": "icicles",
+        "size": "default"
+    },
+    "window upstairs 1  window frame rgb nodes": {
+        "category": "windowframe",
+        "size": "default"
+    },
+    "roof lower 3  single line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "tree 2  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "tree 3  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "tree 4  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "tree 5  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "tree 6  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "tree 7  tree 180 rgb nodes": {
+        "category": "tree",
+        "size": "default"
+    },
+    "yard line right  poly line rgb nodes": {
+        "category": "line",
+        "size": "default"
+    },
+    "mini tree star-2  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "mini tree star-3  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "mini tree star-4  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "mini tree star-5  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "mini tree star-6  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "mini tree star-7  star rgb nodes": {
+        "category": "star",
+        "size": "default"
+    },
+    "candy cane 3  custom rgb nodes": {
+        "category": "candycane",
+        "size": "default"
+    },
+    "flood 2  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 3  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 4  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 5  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 6  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "flood 7  single line rgb nodes": {
+        "category": "flood",
+        "size": "default"
+    },
+    "pixel pole 2  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "pixel pole 3  vert matrix rgb nodes": {
+        "category": "matrix_pole",
+        "size": "default"
+    },
+    "spinner 2  custom rgb nodes": {
+        "category": "spinner",
+        "size": "default"
+    },
+    "boscoyo singing tree-v2 4 lip-3  custom rgb nodes": {
+        "category": "singing",
+        "size": "default"
+    }
+}

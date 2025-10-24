@@ -1,0 +1,1347 @@
+[
+  {
+    "file": "1999 - Prince.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {
+                  "Effect": {
+                    "attributes": [
+                      "endTime",
+                      "label",
+                      "startTime"
+                    ],
+                    "children": {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "Empty Sequence.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {}
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {}
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {}
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "Pretty Baby - Alex Sampson.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {
+                  "Effect": {
+                    "attributes": [
+                      "endTime",
+                      "label",
+                      "startTime"
+                    ],
+                    "children": {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "Sample 10 BARS Effects.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {}
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "Sample 10 COLOR WASH Effects.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {}
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "Sample 10 ON COLORS Effects.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {}
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "Sample 10 ON Effects.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "active",
+              "collapsed",
+              "name",
+              "type",
+              "views",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {}
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  },
+  {
+    "file": "The Imperial March - Darth Vader 2024.xsq",
+    "root_tag": "xsequence",
+    "attributes": [
+      "BaseChannel",
+      "ChanCtrlBasic",
+      "ChanCtrlColor",
+      "FixedPointTiming",
+      "ModelBlending"
+    ],
+    "structure": {
+      "head": {
+        "attributes": [],
+        "children": {
+          "version": {
+            "attributes": [],
+            "children": {}
+          },
+          "author": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-email": {
+            "attributes": [],
+            "children": {}
+          },
+          "author-website": {
+            "attributes": [],
+            "children": {}
+          },
+          "song": {
+            "attributes": [],
+            "children": {}
+          },
+          "artist": {
+            "attributes": [],
+            "children": {}
+          },
+          "album": {
+            "attributes": [],
+            "children": {}
+          },
+          "MusicURL": {
+            "attributes": [],
+            "children": {}
+          },
+          "comment": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceTiming": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceType": {
+            "attributes": [],
+            "children": {}
+          },
+          "mediaFile": {
+            "attributes": [],
+            "children": {}
+          },
+          "sequenceDuration": {
+            "attributes": [],
+            "children": {}
+          },
+          "imageDir": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "nextid": {
+        "attributes": [],
+        "children": {}
+      },
+      "Jukebox": {
+        "attributes": [],
+        "children": {}
+      },
+      "ColorPalettes": {
+        "attributes": [],
+        "children": {
+          "ColorPalette": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "EffectDB": {
+        "attributes": [],
+        "children": {
+          "Effect": {
+            "attributes": [],
+            "children": {}
+          }
+        }
+      },
+      "DataLayers": {
+        "attributes": [],
+        "children": {
+          "DataLayer": {
+            "attributes": [
+              "channel_offset",
+              "data",
+              "lor_params",
+              "name",
+              "num_channels",
+              "num_frames",
+              "source"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "DisplayElements": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "collapsed",
+              "name",
+              "type",
+              "visible"
+            ],
+            "children": {}
+          }
+        }
+      },
+      "ElementEffects": {
+        "attributes": [],
+        "children": {
+          "Element": {
+            "attributes": [
+              "name",
+              "type"
+            ],
+            "children": {
+              "EffectLayer": {
+                "attributes": [],
+                "children": {
+                  "Effect": {
+                    "attributes": [
+                      "endTime",
+                      "name",
+                      "palette",
+                      "ref",
+                      "startTime"
+                    ],
+                    "children": {}
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "lastView": {
+        "attributes": [],
+        "children": {}
+      },
+      "TimingTags": {
+        "attributes": [],
+        "children": {
+          "Tag": {
+            "attributes": [
+              "number",
+              "position"
+            ],
+            "children": {}
+          }
+        }
+      }
+    }
+  }
+]
