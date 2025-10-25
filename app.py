@@ -37,22 +37,18 @@ def get_defaults():
 def generate_sequence():
     try:
         # Get form data
-        template_xsq = request.files.get('template_xsq')
         xlights_xml = request.files.get('xlights_xml')
-        structure_json = request.files.get('structure_json')
         audio_file = request.files.get('audio_path')
 
         # Get text inputs
         sequence_type = request.form.get('sequence_type', DEFAULT_VALUES['sequence_type'])
         use_default_paths = request.form.get('use_default_paths') == 'true'
 
-        # Handle file paths - use uploaded files or default paths
-        template_xsq_path = None
-        xlights_xml_path = None
-        structure_json_path = None
-        audio_path = None
+        # Handle file paths - ALWAYS use hardcoded template_xsq and structure_json
+        template_xsq_path = DEFAULT_VALUES['template_xsq']
+        structure_json_path = DEFAULT_VALUES['structure_json']
 
-        # Save uploaded files if provided
+        # Save uploaded files if provided (only for xlights_xml and audio)
         def save_uploaded_file(file):
             if file and file.filename:
                 filename = secure_filename(file.filename)
@@ -61,19 +57,13 @@ def generate_sequence():
                 return temp_path
             return None
 
-        template_xsq_path = save_uploaded_file(template_xsq)
         xlights_xml_path = save_uploaded_file(xlights_xml)
-        structure_json_path = save_uploaded_file(structure_json)
         audio_path = save_uploaded_file(audio_file)
 
-        # If using default paths and no file was uploaded, use the default paths
+        # If using default paths and no file was uploaded, use the default paths for xlights_xml and audio
         if use_default_paths:
-            if not template_xsq_path and os.path.exists(DEFAULT_VALUES['template_xsq']):
-                template_xsq_path = DEFAULT_VALUES['template_xsq']
             if not xlights_xml_path and os.path.exists(DEFAULT_VALUES['xlights_xml']):
                 xlights_xml_path = DEFAULT_VALUES['xlights_xml']
-            if not structure_json_path and os.path.exists(DEFAULT_VALUES['structure_json']):
-                structure_json_path = DEFAULT_VALUES['structure_json']
             if not audio_path and os.path.exists(DEFAULT_VALUES['audio_path']):
                 audio_path = DEFAULT_VALUES['audio_path']
 
@@ -82,7 +72,7 @@ def generate_sequence():
         output_xsq = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(output_filename))
 
         # Validate required files
-        if not template_xsq_path:
+        if not template_xsq_path or not os.path.exists(template_xsq_path):
             return jsonify({'error': 'Template XSQ file is required and could not be found at default path'}), 400
 
         if not xlights_xml_path:
