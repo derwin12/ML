@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSequence Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="file"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        input[type="file"] {
+            background-color: #f9f9f9;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .file-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .default-path {
+            font-size: 11px;
+            color: #888;
+            background-color: #fff3cd;
+            padding: 5px;
+            border-radius: 3px;
+            margin-top: 5px;
+            border-left: 3px solid #ffc107;
+        }
+
+        .download-link {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .download-link:hover {
+            background-color: #218838;
+        }
+
+        .checkbox-group {
+            margin: 15px 0;
+        }
+
+        .checkbox-group label {
+            display: inline-flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .section-header {
+            background-color: #e9ecef;
+            padding: 10px 15px;
+            margin: -15px -15px 15px -15px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>XSequence Generator</h1>
+
+        <form id="sequenceForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="section-header">File Inputs</div>
+
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="use_default_paths" name="use_default_paths" value="true">
+                        Use default file paths (will use uploaded files if provided, otherwise fall back to defaults)
+                    </label>
+                </div>
+
+                <label for="template_xsq" class="required">Template XSQ File</label>
+                <input type="file" id="template_xsq" name="template_xsq" accept=".xsq">
+                <div class="default-path" id="default_template_xsq">Default: {{ defaults.template_xsq }}</div>
+                <div class="file-info">Upload a file or use the default path above</div>
+            </div>
+
+            <div class="form-group">
+                <label for="xlights_xml" class="required">Xlights XML File</label>
+                <input type="file" id="xlights_xml" name="xlights_xml" accept=".xml">
+                <div class="default-path" id="default_xlights_xml">Default: {{ defaults.xlights_xml }}</div>
+                <div class="file-info">Upload a file or use the default path above</div>
+            </div>
+
+            <div class="form-group">
+                <label for="structure_json">Structure JSON File</label>
+                <input type="file" id="structure_json" name="structure_json" accept=".json">
+                <div class="default-path" id="default_structure_json">Default: {{ defaults.structure_json }}</div>
+                <div class="file-info">Optional: Upload a file or use the default path above</div>
+            </div>
+
+            <div class="form-group">
+                <label for="audio_path">Audio File</label>
+                <input type="file" id="audio_path" name="audio_path" accept=".mp3,.wav">
+                <div class="default-path" id="default_audio_path">Default: {{ defaults.audio_path }}</div>
+                <div class="file-info">Optional: Upload a file or use the default path above</div>
+            </div>
+
+            <div class="form-group">
+                <div class="section-header">Output Settings</div>
+
+                <label for="output_filename">Output Filename</label>
+                <input type="text" id="output_filename" name="output_filename" value="{{ defaults.output_filename }}">
+                <div class="file-info">Name for the generated sequence file</div>
+
+                <label for="sequence_type">Sequence Type</label>
+                <select id="sequence_type" name="sequence_type">
+                    <option value="Media" selected>Media</option>
+                    <option value="Animation">Animation</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button type="button" id="useDefaultsBtn" class="btn-secondary">Use Defaults Only</button>
+                <button type="submit" id="generateBtn" class="btn-primary">Generate Sequence</button>
+            </div>
+        </form>
+
+        <div id="message" class="message"></div>
+        <a id="downloadLink" class="download-link" style="display: none;">Download Generated Sequence</a>
+    </div>
+
+    <script>
+        // Default values from server
+        const defaults = {
+            template_xsq: "{{ defaults.template_xsq }}",
+            xlights_xml: "{{ defaults.xlights_xml }}",
+            output_filename: "{{ defaults.output_filename }}",
+            structure_json: "{{ defaults.structure_json }}",
+            audio_path: "{{ defaults.audio_path }}",
+            sequence_type: "{{ defaults.sequence_type }}"
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const useDefaultsBtn = document.getElementById('useDefaultsBtn');
+            const useDefaultPathsCheckbox = document.getElementById('use_default_paths');
+            const generateBtn = document.getElementById('generateBtn');
+
+            // Set sequence type to default
+            document.getElementById('sequence_type').value = defaults.sequence_type;
+
+            // Use Defaults Only button
+            useDefaultsBtn.addEventListener('click', function() {
+                // Clear all file inputs
+                document.getElementById('template_xsq').value = '';
+                document.getElementById('xlights_xml').value = '';
+                document.getElementById('structure_json').value = '';
+                document.getElementById('audio_path').value = '';
+
+                // Check the use defaults checkbox
+                useDefaultPathsCheckbox.checked = true;
+
+                // Set output filename to default
+                document.getElementById('output_filename').value = defaults.output_filename;
+
+                // Set sequence type to default
+                document.getElementById('sequence_type').value = defaults.sequence_type;
+
+                showMessage('Using default file paths. Click "Generate Sequence" to proceed.', 'success');
+            });
+
+            // Form submission
+            document.getElementById('sequenceForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const messageDiv = document.getElementById('message');
+                const downloadLink = document.getElementById('downloadLink');
+
+                // Reset UI
+                messageDiv.style.display = 'none';
+                downloadLink.style.display = 'none';
+                generateBtn.disabled = true;
+                generateBtn.textContent = 'Generating...';
+
+                try {
+                    const formData = new FormData(this);
+
+                    const response = await fetch('/generate', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        messageDiv.className = 'message success';
+                        let message = result.message;
+                        if (result.used_defaults) {
+                            message += ' (Used default file paths)';
+                        }
+                        messageDiv.textContent = message;
+                        messageDiv.style.display = 'block';
+
+                        if (result.download_url) {
+                            downloadLink.href = result.download_url;
+                            downloadLink.style.display = 'block';
+                        }
+                    } else {
+                        throw new Error(result.error || 'Unknown error occurred');
+                    }
+
+                } catch (error) {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = 'Error: ' + error.message;
+                    messageDiv.style.display = 'block';
+                    console.error('Error:', error);
+                } finally {
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = 'Generate Sequence';
+                }
+            });
+        });
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
