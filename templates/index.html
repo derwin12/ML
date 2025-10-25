@@ -56,12 +56,6 @@
             background-color: #f9f9f9;
         }
 
-        input[type="file"]:disabled {
-            background-color: #e9ecef;
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
         .required::after {
             content: " *";
             color: red;
@@ -140,16 +134,6 @@
             border-left: 3px solid #ffc107;
         }
 
-        .hardcoded-path {
-            font-size: 11px;
-            color: #fff;
-            background-color: #6c757d;
-            padding: 5px;
-            border-radius: 3px;
-            margin-top: 5px;
-            border-left: 3px solid #495057;
-        }
-
         .download-link {
             display: block;
             text-align: center;
@@ -193,7 +177,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>XSequence Generator</h1>
+        <h1>xLights Sequence Generator</h1>
 
         <form id="sequenceForm" enctype="multipart/form-data">
             <div class="form-group">
@@ -202,28 +186,14 @@
                 <div class="checkbox-group">
                     <label>
                         <input type="checkbox" id="use_default_paths" name="use_default_paths" value="true">
-                        Use default file paths for Xlights XML and Audio (will use uploaded files if provided, otherwise fall back to defaults)
+                        Use default file paths (will use uploaded files if provided, otherwise fall back to defaults)
                     </label>
                 </div>
 
-                <label for="template_xsq" class="required">Template XSQ File</label>
-                <input type="file" id="template_xsq" name="template_xsq" accept=".xsq" disabled>
-                <div class="hardcoded-path" id="default_template_xsq">Hardcoded: {{ defaults.template_xsq }}</div>
-                <div class="file-info">This file is hardcoded and cannot be changed</div>
-            </div>
-
-            <div class="form-group">
-                <label for="xlights_xml" class="required">Xlights XML File</label>
+                <label for="xlights_xml" class="required">xLights RGBEffects File</label>
                 <input type="file" id="xlights_xml" name="xlights_xml" accept=".xml">
                 <div class="default-path" id="default_xlights_xml">Default: {{ defaults.xlights_xml }}</div>
                 <div class="file-info">Upload a file or use the default path above</div>
-            </div>
-
-            <div class="form-group">
-                <label for="structure_json">Structure JSON File</label>
-                <input type="file" id="structure_json" name="structure_json" accept=".json" disabled>
-                <div class="hardcoded-path" id="default_structure_json">Hardcoded: {{ defaults.structure_json }}</div>
-                <div class="file-info">This file is hardcoded and cannot be changed</div>
             </div>
 
             <div class="form-group">
@@ -260,10 +230,8 @@
     <script>
         // Default values from server
         const defaults = {
-            template_xsq: "{{ defaults.template_xsq }}",
             xlights_xml: "{{ defaults.xlights_xml }}",
             output_filename: "{{ defaults.output_filename }}",
-            structure_json: "{{ defaults.structure_json }}",
             audio_path: "{{ defaults.audio_path }}",
             sequence_type: "{{ defaults.sequence_type }}"
         };
@@ -278,7 +246,7 @@
 
             // Use Defaults Only button
             useDefaultsBtn.addEventListener('click', function() {
-                // Clear all file inputs (except the disabled ones)
+                // Clear all file inputs
                 document.getElementById('xlights_xml').value = '';
                 document.getElementById('audio_path').value = '';
 
@@ -291,7 +259,7 @@
                 // Set sequence type to default
                 document.getElementById('sequence_type').value = defaults.sequence_type;
 
-                showMessage('Using default file paths for Xlights XML and Audio. Template XSQ and Structure JSON are hardcoded. Click "Generate Sequence" to proceed.', 'success');
+                showMessage('Using default file paths. Click "Generate Sequence" to proceed.', 'success');
             });
 
             // Form submission
@@ -321,7 +289,7 @@
                         messageDiv.className = 'message success';
                         let message = result.message;
                         if (result.used_defaults) {
-                            message += ' (Used default file paths for Xlights XML and Audio)';
+                            message += ' (Used default file paths)';
                         }
                         messageDiv.textContent = message;
                         messageDiv.style.display = 'block';

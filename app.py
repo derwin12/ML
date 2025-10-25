@@ -15,7 +15,7 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max file size
 DEFAULT_VALUES = {
     'template_xsq': r"C:\Users\daryl\PycharmProjects\ML\training data\folder 1\Empty Sequence.xsq",
     'xlights_xml': r"C:\\Users\\daryl\\PycharmProjects\\ML\\training data\\folder 1\\xlights_rgbeffects.xml",
-    'output_filename': "Empty_AI_Sequence.xsq",
+    'output_filename': "Generated_Sequence.xsq",
     'structure_json': r"C:\\Users\\daryl\\PycharmProjects\\ML\\training data\\templates\\xlights_template_structures.json",
     'audio_path': r"E:\2023\ShowFolder3D\Audio\Pretty Baby - Alex Sampson.mp3",
     'sequence_type': "Media"

@@ -41,7 +41,7 @@ def create_xsq_from_template(template_xsq,
     Adds 10-30 random 'Spirals' effects of 5-10 seconds to random models/groups.
     Adds 10-30 random 'Pinwheel' effects of 5-10 seconds to random models/groups.
     Sorts models alphabetically with groups before individual models.
-    Groups containing "last" sorted to the very end, sub-sorted alphabetically.
+    Groups containing "last" or "override" sorted to the very end, sub-sorted alphabetically.
     Does not place effects on image, DMX, or MH models.
     Sets visible="0" for models/groups with no effects.
     Pretty-prints the output XML.

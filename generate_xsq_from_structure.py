@@ -157,6 +157,8 @@ def create_xsq_from_template(template_xsq,
         if is_group:
             if "last" in name.lower():
                 return (1, name)  # "last" groups second
+            elif "override" in name.lower():
+                return (1, name)  # "override" groups second
             else:
                 return (0, name)  # normal groups first
         else:
