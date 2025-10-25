@@ -1,6 +1,7 @@
 # main.py
 
-from utils import indent, load_structure_map, get_audio_duration, get_eligible_models, sort_models, update_metadata, generate_beats_track
+from utils import indent, load_structure_map, get_audio_duration, get_eligible_models, sort_models, update_metadata, \
+    generate_beats_track
 from on_effect import add_on_effects
 from bars_effect import add_bars_effects
 from color_wash_effect import add_color_wash_effects
@@ -11,6 +12,9 @@ import os
 import xml.etree.ElementTree as ET
 import random
 from datetime import datetime
+import json
+import re
+import ollama
 
 fixed_colors = [
     "#FF0000",  # Palette1: Red
@@ -20,17 +24,101 @@ fixed_colors = [
     "#FF00FF",  # Palette5: Magenta
     "#00FFFF",  # Palette6: Cyan
     "#FFA500",  # Palette7: Orange
-    "#800080"   # Palette8: Purple
+    "#800080"  # Palette8: Purple
 ]
 
-def create_xsq_from_template(template_xsq,
-                             xlights_xml,
-                             output_xsq,
-                             structure_json,
-                             sequence_name="AI_Sequence",
-                             duration=60,
-                             audio_path=None,
-                             sequence_type="Animation"):
+
+def get_color_palette(song_name, artist_name):
+    """
+    Generate a color palette using Ollama Python API based on song name and artist.
+    Returns a list of 8 hex color codes or None if the call fails.
+    """
+    prompt = f"""
+You are a creative assistant tasked with generating a color palette inspired by a specific song and artist. The palette should reflect the mood, theme, or imagery evoked by the song's title and the artist's style. Generate a palette of exactly 8 hex color codes (#RRGGBB format) that are distinct, vibrant, and suitable for a dynamic lighting sequence in a visual display. Provide a brief explanation of how the colors relate to the song and artist, describing colors by their qualities (e.g., 'golden yellow', 'deep purple') without including hex codes in the explanation to ensure valid JSON.
+
+Song: {song_name}
+Artist: {artist_name}
+
+Output the response in strict JSON format, ensuring:
+- The 'palette' array contains exactly 8 hex color codes as quoted strings (e.g., "#RRGGBB").
+- No trailing commas in the 'palette' array.
+- The 'explanation' field does not contain hex codes, only descriptive color names.
+- No inline comments or extra text outside the JSON structure.
+
+Example:
+```json
+{{
+  "palette": ["#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB", "#RRGGBB"],
+  "explanation": "The palette includes vibrant reds and blues to reflect the song's energy, with soft pinks for its romantic tone."
+}}
+"""
+    print(f"Sending prompt to Ollama:\n{prompt}")
+
+    try:
+        # Call Ollama API
+        response = ollama.generate(model='llama3', prompt=prompt)
+        stdout = response['response']
+        print(f"Ollama response: {stdout}")
+
+        # Check if response is empty
+        if not stdout.strip():
+            print("Ollama returned empty response. Falling back to default colors.")
+            return None
+
+        # Extract JSON portion (between first { and last })
+        start_idx = stdout.find('{')
+        end_idx = stdout.rfind('}') + 1
+        if start_idx == -1 or end_idx == 0:
+            print(f"No valid JSON found in Ollama output: {stdout}. Falling back to default colors.")
+            return None
+        json_str = stdout[start_idx:end_idx]
+
+        # Remove inline comments and fix trailing comma in palette
+        json_str = re.sub(r'//.*?(?=\n|$)', '', json_str)  # Remove // comments
+        json_str = re.sub(r',\s*\]', r']', json_str)  # Remove trailing comma in palette
+        print(f"Fixed JSON: {json_str}")
+
+        # Parse JSON
+        data = json.loads(json_str)
+        palette = data.get('palette', [])
+
+        # Validate palette: must be exactly 8 valid hex colors
+        hex_pattern = re.compile(r'^#[0-9A-Fa-f]{6}$')
+        if (
+                isinstance(palette, list) and
+                len(palette) == 8 and
+                all(isinstance(c, str) and hex_pattern.match(c) for c in palette)
+        ):
+            return palette
+        else:
+            print(f"Invalid palette from Ollama: {palette}. Falling back to default colors.")
+            return None
+    except ollama.ResponseError as e:
+        print(f"Ollama API error: {e}")
+        print(f"Ollama response: {stdout if 'stdout' in locals() else 'N/A'}")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"JSON parsing error: {e}")
+        print(f"Raw Ollama output: {stdout if 'stdout' in locals() else 'N/A'}")
+        return None
+    except Exception as e:
+        print(f"Unexpected error while calling Ollama: {e}")
+        print(f"Raw Ollama output: {stdout if 'stdout' in locals() else 'N/A'}")
+        return None
+
+
+def create_xsq_from_template(
+        template_xsq,
+        xlights_xml,
+        output_xsq,
+        structure_json,
+        sequence_name="AI_Sequence",
+        duration=60,
+        audio_path=None,
+        sequence_type="Animation",
+        artist_name=None,
+        song_name=None
+):
     """
     Safely create a valid xLights .xsq using a known-good template and a structure map.
     Reads xlights_template_structures.json to verify that required tags exist and are ordered correctly.
@@ -46,8 +134,11 @@ def create_xsq_from_template(template_xsq,
     Sets visible="0" for models/groups with no effects.
     Pretty-prints the output XML.
     Uses a coordinated palette of 8 colors for effects, with custom palettes for multi-color effects.
+    For Media sequences, uses a palette generated by Ollama based on song_name and artist_name if available; otherwise, uses fixed_colors.
+    For Animation sequences, uses fixed_colors.
     Supports Animation or Media sequence type; for Media, uses audio_path for duration and sets media metadata.
     For Media, generates a beats timing track from audio analysis.
+    Uses provided artist_name and song_name for metadata if available; otherwise, falls back to filename parsing or defaults.
     """
 
     if not os.path.isfile(template_xsq):
@@ -63,21 +154,33 @@ def create_xsq_from_template(template_xsq,
         seq_type = "Media"
         seq_timing = "25 ms"
         media_file = audio_path
-        # Extract song/artist from filename for metadata (simple heuristic)
-        filename = os.path.basename(audio_path).replace('.mp3', '')
-        parts = filename.split(' - ')
-        song = parts[0] if len(parts) > 0 else ""
-        artist = parts[1] if len(parts) > 1 else ""
+        # Use provided artist_name and song_name if available, else fall back to filename parsing
+        if artist_name and song_name:
+            song = song_name
+            artist = artist_name
+        else:
+            # Extract song/artist from filename for metadata (simple heuristic)
+            filename = os.path.basename(audio_path).replace('.mp3', '')
+            parts = filename.split(' - ')
+            song = parts[0] if len(parts) > 0 else "Unknown Song"
+            artist = parts[1] if len(parts) > 1 else "Unknown Artist"
+        # Generate color palette using Ollama for Media sequences
+        colors = get_color_palette(song, artist) if song and artist else None
+        if colors is None:
+            colors = fixed_colors
     else:
         seq_type = "Animation"
         seq_timing = "50 ms"
         media_file = ""
-        song = ""
-        artist = ""
+        song = song_name or "Unknown Song"
+        artist = artist_name or "Unknown Artist"
+        colors = fixed_colors  # Use fixed_colors for Animation sequences
         if sequence_type.lower() == "animation":
             duration = random.choice([30, 60, 90, 120])
 
     print(f"Generating {seq_type} sequence with duration: {duration} seconds")
+    print(f"Using artist: {artist}, song: {song}")
+    print(f"Using colors: {colors}")
 
     # Load structure definition
     structure_entry = load_structure_map(structure_json)
@@ -153,12 +256,18 @@ def create_xsq_from_template(template_xsq,
         # Add beats timing track and get beats list
         beats = generate_beats_track(audio_path, display_elem, element_effects, seq_duration_ms)
 
-    num_ons_added = add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
-    num_bars_added = add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
-    num_color_wash_added = add_color_wash_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
-    num_shockwave_added = add_shockwave_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
-    num_spirals_added = add_spirals_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
-    num_pinwheel_added = add_pinwheel_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats)
+    num_ons_added = add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, colors,
+                                   beats)
+    num_bars_added = add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes,
+                                      colors, beats)
+    num_color_wash_added = add_color_wash_effects(eligible_elements, eligible_group_elements, seq_duration_ms,
+                                                  color_palettes, colors, beats)
+    num_shockwave_added = add_shockwave_effects(eligible_elements, eligible_group_elements, seq_duration_ms,
+                                                color_palettes, colors, beats)
+    num_spirals_added = add_spirals_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes,
+                                            colors, beats)
+    num_pinwheel_added = add_pinwheel_effects(eligible_elements, eligible_group_elements, seq_duration_ms,
+                                              color_palettes, colors, beats)
 
     # --- Set visibility for models with no effects ---
     num_visible = 0
@@ -192,13 +301,16 @@ def create_xsq_from_template(template_xsq,
     template_tree.write(output_xsq, encoding="utf-8", xml_declaration=True)
 
     print(f"\n✅ Created structured {seq_type.lower()} sequence: {output_xsq}")
-    print(f"Included {len(sorted_all_model_names)} models/groups from {xlights_xml} (sorted: groups first, then alphabetical)")
+    print(
+        f"Included {len(sorted_all_model_names)} models/groups from {xlights_xml} (sorted: groups first, then alphabetical)")
     print(f"{num_visible} models/groups visible (those with effects)")
-    print(f"Eligible groups: {len(eligible_groups)}, Eligible individuals: {len(eligible_individuals)} (excluding images, DMX, and MH)")
+    print(
+        f"Eligible groups: {len(eligible_groups)}, Eligible individuals: {len(eligible_individuals)} (excluding images, DMX, and MH)")
     print(f"Using structure definition: {structure_json}")
     print(f"Sequence duration: {duration} seconds")
-    print(f"Using coordinated palette: {fixed_colors}")
-    print(f"Generated {num_ons_added + num_bars_added + num_color_wash_added + num_shockwave_added + num_spirals_added + num_pinwheel_added} custom palettes for effects")
+    print(f"Using coordinated palette: {colors}")
+    print(
+        f"Generated {num_ons_added + num_bars_added + num_color_wash_added + num_shockwave_added + num_spirals_added + num_pinwheel_added} custom palettes for effects")
     print(f"Added {num_ons_added} random 'On' effects (1 color each) to models/groups.")
     print(f"Added {num_bars_added} random 'Bars' effects (3 colors each, 5-10s) to models/groups.")
     print(f"Added {num_color_wash_added} random 'Color Wash' effects (2 colors each, 5-10s) to models/groups.")
@@ -209,7 +321,7 @@ def create_xsq_from_template(template_xsq,
 
 # Example usage
 if __name__ == "__main__":
-    # For testing: Media sequence with default audio
+    # For testing: Media sequence with default audio and new parameters
     audio_path = r"E:\2023\ShowFolder3D\Audio\Pretty Baby - Alex Sampson.mp3"
     create_xsq_from_template(
         template_xsq=r"C:\Users\daryl\PycharmProjects\ML\training data\folder 1\Empty Sequence.xsq",
@@ -217,5 +329,7 @@ if __name__ == "__main__":
         output_xsq=r"C:\Users\daryl\PycharmProjects\ML\training data\test outputs\Empty_AI_Sequence.xsq",
         structure_json=r"C:\Users\daryl\PycharmProjects\ML\training data\templates\xlights_template_structures.json",
         audio_path=audio_path,
-        sequence_type="Media"
+        sequence_type="Media",
+        artist_name="Alex Sampson",
+        song_name="Pretty Baby"
     )

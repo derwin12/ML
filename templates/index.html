@@ -186,7 +186,7 @@
                 <div class="checkbox-group">
                     <label>
                         <input type="checkbox" id="use_default_paths" name="use_default_paths" value="true">
-                        Use default file paths (will use uploaded files if provided, otherwise fall back to defaults)
+                        Use default file paths and values (will use uploaded files or entered values if provided, otherwise fall back to defaults)
                     </label>
                 </div>
 
@@ -194,13 +194,19 @@
                 <input type="file" id="xlights_xml" name="xlights_xml" accept=".xml">
                 <div class="default-path" id="default_xlights_xml">Default: {{ defaults.xlights_xml }}</div>
                 <div class="file-info">Upload a file or use the default path above</div>
-            </div>
 
-            <div class="form-group">
                 <label for="audio_path">Audio File</label>
                 <input type="file" id="audio_path" name="audio_path" accept=".mp3,.wav">
                 <div class="default-path" id="default_audio_path">Default: {{ defaults.audio_path }}</div>
                 <div class="file-info">Optional: Upload a file or use the default path above</div>
+
+                <label for="artist_name">Artist Name</label>
+                <input type="text" id="artist_name" name="artist_name" value="{{ defaults.artist_name }}">
+                <div class="file-info">Artist name for the sequence (used in generation)</div>
+
+                <label for="song_name">Song Name</label>
+                <input type="text" id="song_name" name="song_name" value="{{ defaults.song_name }}">
+                <div class="file-info">Song name for the sequence (used in generation)</div>
             </div>
 
             <div class="form-group">
@@ -233,7 +239,9 @@
             xlights_xml: "{{ defaults.xlights_xml }}",
             output_filename: "{{ defaults.output_filename }}",
             audio_path: "{{ defaults.audio_path }}",
-            sequence_type: "{{ defaults.sequence_type }}"
+            sequence_type: "{{ defaults.sequence_type }}",
+            artist_name: "{{ defaults.artist_name }}",
+            song_name: "{{ defaults.song_name }}"
         };
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -241,8 +249,10 @@
             const useDefaultPathsCheckbox = document.getElementById('use_default_paths');
             const generateBtn = document.getElementById('generateBtn');
 
-            // Set sequence type to default
+            // Set default values
             document.getElementById('sequence_type').value = defaults.sequence_type;
+            document.getElementById('artist_name').value = defaults.artist_name;
+            document.getElementById('song_name').value = defaults.song_name;
 
             // Use Defaults Only button
             useDefaultsBtn.addEventListener('click', function() {
@@ -256,10 +266,14 @@
                 // Set output filename to default
                 document.getElementById('output_filename').value = defaults.output_filename;
 
+                // Set artist name and song name to defaults
+                document.getElementById('artist_name').value = defaults.artist_name;
+                document.getElementById('song_name').value = defaults.song_name;
+
                 // Set sequence type to default
                 document.getElementById('sequence_type').value = defaults.sequence_type;
 
-                showMessage('Using default file paths. Click "Generate Sequence" to proceed.', 'success');
+                showMessage('Using default file paths and values. Click "Generate Sequence" to proceed.', 'success');
             });
 
             // Form submission
