@@ -1,0 +1,8 @@
+you are an xlights sequencer. You want to analyze a directory of xsq sequences.
+we want a python program that will build a summary of the effects and parameters used on arch models and arch groups.
+the program should also take the xlights_rgbeffects.xml file as input. This can be used to identify arches.
+a model might have a description of  "t:arch" to designate it as an arch or the DisplayAs may contain "arches" as well.
+a group is considered an arches group if all the models in the group are arch models.
+this should also note the frequency and placement in regards to any beat timing tracks found.
+this should be of future use to a machine learning program that can take this
+knowledge and build new sequences and place effects on arch models and groups.

@@ -2,38 +2,30 @@
 
 import xml.etree.ElementTree as ET
 import random
+from utils import section_effect_placements, get_or_create_layer, place_effect
+from param_sampler import sample_params
 
-def add_color_wash_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None):
-    num_color_wash = random.randint(5, 15)
+def add_color_wash_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None, structure=None, registry=None):
     num_color_wash_added = 0
-    for _ in range(num_color_wash):
-        # 30% chance to pick group if available
+    placements = section_effect_placements(10, structure or [], beats or [], min_beats=5, max_beats=16)
+    for start_time, end_time in placements:
+        if start_time is None:
+            start_time = random.randint(0, seq_duration_ms - 10000)
+            end_time = start_time + random.randint(5000, 10000)
         if random.random() < 0.3 and eligible_group_elements:
             elem = random.choice(eligible_group_elements)
         else:
-            elem = random.choice(eligible_elements)  # fallback to all eligible
-
-        effect_layer = elem.find("EffectLayer")
+            elem = random.choice(eligible_elements)
+        effect_layer = get_or_create_layer(elem, start_time, end_time)
         if effect_layer is None:
-            effect_layer = ET.SubElement(elem, "EffectLayer")
+            continue
 
-        if beats is not None and len(beats) > 1:
-            start_idx = random.randint(0, len(beats) - 6)
-            num_beats_span = random.randint(5, 10)  # for 5-10s duration
-            end_idx = min(start_idx + num_beats_span, len(beats) - 1)
-            start_time = int(beats[start_idx] * 1000)
-            end_time = int(beats[end_idx] * 1000)
-        else:
-            start_time = random.randint(0, seq_duration_ms - 10000)
-            effect_dur = random.randint(5000, 10000)  # 5-10 seconds
-            end_time = start_time + effect_dur
-
-        # Random parameters for Color Wash
-        count = random.randint(1, 5)
-        vfade = random.choice([0, 1])
-        hfade = random.choice([0, 1])
-        shimmer = random.choice([0, 1])
-        circ = random.choice([0, 1])
+        p = sample_params("Color Wash")
+        count = p.get("Count", random.randint(1, 5))
+        vfade = p.get("CHECKBOX_VerticalFade", random.choice([0, 1]))
+        hfade = p.get("CHECKBOX_HorizontalFade", random.choice([0, 1]))
+        shimmer = p.get("CHECKBOX_Shimmer", random.choice([0, 1]))
+        circ = p.get("CHECKBOX_CircularPalette", random.choice([0, 1]))
 
         # Select 2 random distinct color indices (1-8)
         selected_indices = random.sample(range(1, 9), 2)
@@ -49,20 +41,12 @@ def add_color_wash_effects(eligible_elements, eligible_group_elements, seq_durat
         # Palette ID
         palette_id = len(color_palettes.findall("ColorPalette")) - 1
 
-        effect = ET.SubElement(effect_layer, "Effect", {
-            "name": "Color Wash",
-            "startTime": f"{start_time}",
-            "endTime": f"{end_time}",
-            "selected": "0",
-            "palette": str(palette_id)
-        })
-        settings = ET.SubElement(effect, "Settings")
-        # Settings without C1 C2, using palette
-        settings.text = (f"Count={count};"
-                         f"CHECKBOX_VerticalFade={vfade};"
-                         f"CHECKBOX_HorizontalFade={hfade};"
-                         f"CHECKBOX_Shimmer={shimmer};"
-                         f"CHECKBOX_CircularPalette={circ};"
-                         f"E1=100;E2=100")
+        settings_str = (f"Count={count},"
+                        f"CHECKBOX_VerticalFade={vfade},"
+                        f"CHECKBOX_HorizontalFade={hfade},"
+                        f"CHECKBOX_Shimmer={shimmer},"
+                        f"CHECKBOX_CircularPalette={circ},"
+                        f"E1=100,E2=100")
+        place_effect(effect_layer, "Color Wash", start_time, end_time, palette_id, settings_str, registry)
         num_color_wash_added += 1
     return num_color_wash_added

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <xsequence BaseChannel="0" ChanCtrlBasic="0" ChanCtrlColor="0" FixedPointTiming="1" ModelBlending="true">
   <head>
-    <version>2025.11</version>
+    <version>2026.06</version>
     <author></author>
     <author-email></author-email>
     <author-website></author-website>
@@ -16,1180 +16,1275 @@
     <sequenceDuration>30.000</sequenceDuration>
     <imageDir></imageDir>
   </head>
-  <nextid>1</nextid>
-  <Jukebox/>
   <ColorPalettes>
     <ColorPalette>C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,C_CHECKBOX_Palette1=1,C_CHECKBOX_Palette2=1</ColorPalette>
   </ColorPalettes>
   <EffectDB>
     <Effect></Effect>
   </EffectDB>
+  <SequenceMedia />
   <DataLayers>
-    <DataLayer lor_params="6226021" channel_offset="0" num_channels="0" num_frames="0" data="&lt;rendered: erase-mode&gt;" source="&lt;auto-generated&gt;" name="Nutcracker"/>
+    <DataLayer lor_params="6226021" channel_offset="0" num_channels="0" num_frames="0" data="&lt;rendered: erase-mode>" source="&lt;auto-generated>" name="Nutcracker" />
   </DataLayers>
   <DisplayElements>
-    <Element collapsed="0" type="timing" name="New Timing" visible="1" views="Master View,Sequencing,Trees,Stars,MH,Flakes,Singing,All Models Sorted,Matrix,EZ Map,2024 New,Radio" active="1"/>
-    <Element collapsed="0" type="model" name="01 Everything" visible="1"/>
-    <Element collapsed="0" type="model" name="02 Whole House No Matrix" visible="1"/>
-    <Element collapsed="0" type="model" name="02 All No Forest No MT" visible="1"/>
-    <Element collapsed="0" type="model" name="02b All No Forest No MT No Matrix" visible="1"/>
-    <Element collapsed="0" type="model" name="03 Whole House No Matrix No Tree" visible="1"/>
-    <Element collapsed="0" type="model" name="04 Whole House Minus Mega and Matrix" visible="1"/>
-    <Element collapsed="0" type="model" name="05 Whole House Minus MegaMiniMatrix" visible="1"/>
-    <Element collapsed="0" type="model" name="06 Whole House NO YARD" visible="1"/>
-    <Element collapsed="0" type="model" name="07 All House" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - House Outline" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - House Verticals" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - House Horizontals" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Whole Yard" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Yard Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Yard Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Floods" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Mini Trees Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Mini Trees Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Mega Tree and Topper" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Mega Trees" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Mega Stars" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral Trees" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Arches" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Triple Arches" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixie Spheres" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixie Poles" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixie Poles - Center Lines" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - MickeyStakes" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Eaves" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - PixStakes" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Presents" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Presents 3D" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflakes" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Big Bulbs" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Candy Canes" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Candy Canes (Striped)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Column Matrices" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Driveway Lights" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Every Other Star 1" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Every Other Star 2" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Flat Trees And Stars" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Flat Tree Stars" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Flat Trees" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - HFlakes" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - HSpinners" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - HSpinners Outer Rings" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - HSpinners All Spokes" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - House Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - House Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Icicles Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Icicles Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Live Tree" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Matrix Virtual" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Garage Matrix" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Matrixes" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Mini Matrices" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Moving Heads" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - PixStakes - Back Half" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - PixStakes - Front Half" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixel Stakes Front Layers" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixel Stakes Rows" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixel Tree" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixel Tree Stars" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Pixel Tree and Stars" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Poles and Stars" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Railings" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Roof" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - SnowBursts" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflake Arms" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflake Tips" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflakes (Small)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflake Tips (Small)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflake Arms (Small)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflake Lefts Arms (Small)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflake Right Arms (Small)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Snowflake Rings" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinner Arms" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinner Small Arms" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinner Big Arms" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners (Inner Band)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners (Inner Ring)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners (Mid Band)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners (Outer Band)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners (Outer Ring)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners (Pedals Even)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinners (Pedals Odd)" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spinner Rings" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - ALL" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Balls" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Spiral Big" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Green Tree" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Outline" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Spiral and Star" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Star" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Spiral X NSR (Tree) - Front Spiral" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Stars" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Stars on Trees" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Trees" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Trees - Large" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Trees - Medium" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Virtual Spinners" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Window Frames and Doors" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Windows" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Windows - Bottom" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Windows - Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Windows - Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Windows - Top" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Wreath" visible="1"/>
-    <Element collapsed="0" type="model" name="Group - Yard Boarders" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Center Piece" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Center Rings" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Outer Diamonds" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Petals" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Rings" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Spiral All" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Spiral CClockwise" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Spiral Clockwise" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Star" visible="1"/>
-    <Element collapsed="0" type="model" name="Mega Star" visible="1"/>
-    <Element collapsed="0" type="model" name="AA Mega Tree" visible="1"/>
-    <Element collapsed="0" type="model" name="Mega Super Star" visible="1"/>
-    <Element collapsed="0" type="model" name="AA Mega Super Tree" visible="1"/>
-    <Element collapsed="0" type="model" name="Garage Vert - Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Garage Vert - Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Garage Outline - 01L" visible="1"/>
-    <Element collapsed="0" type="model" name="Garage Outline - 02R" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Left" visible="1"/>
-    <Element collapsed="0" type="model" name="PC Spinner Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Ornament Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Ornament Right" visible="1"/>
-    <Element collapsed="0" type="model" name="3D Cube-1" visible="1"/>
-    <Element collapsed="0" type="model" name="3D Cube-2" visible="1"/>
-    <Element collapsed="0" type="model" name="3D Cube-3" visible="1"/>
-    <Element collapsed="0" type="model" name="3D Cube-4" visible="1"/>
-    <Element collapsed="0" type="model" name="3D Star" visible="1"/>
-    <Element collapsed="0" type="model" name="Arches-1-Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Arches-2-Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Arches-3-LL" visible="1"/>
-    <Element collapsed="0" type="model" name="Arches-4-L" visible="1"/>
-    <Element collapsed="0" type="model" name="Arches-5-M" visible="1"/>
-    <Element collapsed="0" type="model" name="Arches-6-R" visible="1"/>
-    <Element collapsed="0" type="model" name="Arches-7-RR" visible="1"/>
-    <Element collapsed="0" type="model" name="BigBulb - 1" visible="1"/>
-    <Element collapsed="0" type="model" name="BigBulb - 2" visible="1"/>
-    <Element collapsed="0" type="model" name="BigBulb - 3" visible="1"/>
-    <Element collapsed="0" type="model" name="BigBulb - 4" visible="1"/>
-    <Element collapsed="0" type="model" name="BigBulb - 5" visible="1"/>
-    <Element collapsed="0" type="model" name="Bulb Blue" visible="1"/>
-    <Element collapsed="0" type="model" name="Bulb Green" visible="1"/>
-    <Element collapsed="0" type="model" name="Bulb Red" visible="1"/>
-    <Element collapsed="0" type="model" name="Bulb Yellow" visible="1"/>
-    <Element collapsed="0" type="model" name="Cane-1" visible="1"/>
-    <Element collapsed="0" type="model" name="Cane-2" visible="1"/>
-    <Element collapsed="0" type="model" name="Cane-3" visible="1"/>
-    <Element collapsed="0" type="model" name="Cane-4" visible="1"/>
-    <Element collapsed="0" type="model" name="ChromaFlake 36 3 Prong - 01L" visible="1"/>
-    <Element collapsed="0" type="model" name="ChromaFlake 36 3 Prong - 02R" visible="1"/>
-    <Element collapsed="0" type="model" name="Driveway - 01L" visible="1"/>
-    <Element collapsed="0" type="model" name="Driveway - 02R" visible="1"/>
-    <Element collapsed="0" type="model" name="EFlake46" visible="1"/>
-    <Element collapsed="0" type="model" name="Eaves - Icicles" visible="1"/>
-    <Element collapsed="0" type="model" name="Eaves - Lower - C9 Lights" visible="1"/>
-    <Element collapsed="0" type="model" name="Eaves - Upper - C9 Lights" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTree-1" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTree-2" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTree-3" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTree-4" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTree-5" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTree-6" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTreeStar-1" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTreeStar-2" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTreeStar-3" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTreeStar-4" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTreeStar-5" visible="1"/>
-    <Element collapsed="0" type="model" name="FlatTreeStar-6" visible="1"/>
-    <Element collapsed="0" type="model" name="Flood1" visible="1"/>
-    <Element collapsed="0" type="model" name="Flood2" visible="1"/>
-    <Element collapsed="0" type="model" name="Flood3" visible="1"/>
-    <Element collapsed="0" type="model" name="FrontYard - Left" visible="1"/>
-    <Element collapsed="0" type="model" name="FrontYard - Right" visible="1"/>
-    <Element collapsed="0" type="model" name="HFlake1" visible="1"/>
-    <Element collapsed="0" type="model" name="HFlake2" visible="1"/>
-    <Element collapsed="0" type="model" name="HFlake3" visible="1"/>
-    <Element collapsed="0" type="model" name="HFlake4" visible="1"/>
-    <Element collapsed="0" type="model" name="HFlake5" visible="1"/>
-    <Element collapsed="0" type="model" name="HSpinner1" visible="1"/>
-    <Element collapsed="0" type="model" name="HSpinner2" visible="1"/>
-    <Element collapsed="0" type="model" name="HSpinner3" visible="1"/>
-    <Element collapsed="0" type="model" name="HSpinner4" visible="1"/>
-    <Element collapsed="0" type="model" name="HSpinner5" visible="1"/>
-    <Element collapsed="0" type="model" name="Icicles Single String" visible="1"/>
-    <Element collapsed="0" type="model" name="Lg 360 Mini Tree Coro - 01L" visible="1"/>
-    <Element collapsed="0" type="model" name="Lg 360 Mini Tree Coro - 02R" visible="1"/>
-    <Element collapsed="0" type="model" name="Lg Star - 01" visible="1"/>
-    <Element collapsed="0" type="model" name="Lg Star - 02" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-1" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-2" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-3" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-4" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-5" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-6" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-7" visible="1"/>
-    <Element collapsed="0" type="model" name="MH-8" visible="1"/>
-    <Element collapsed="0" type="model" name="MH - Dimmers" visible="1"/>
-    <Element collapsed="0" type="model" name="MH - Pan" visible="1"/>
-    <Element collapsed="0" type="model" name="MH - Shutter" visible="1"/>
-    <Element collapsed="0" type="model" name="MH - Tilt" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix - 1L" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix - 2R" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix - 1L-Virtual" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix - 2R-Virtual" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix - ColL" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix - ColR" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix Garage Left" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix Garage Right" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix-mini-left" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix-mini-right" visible="1"/>
-    <Element collapsed="0" type="model" name="Matrix Seeds" visible="1"/>
-    <Element collapsed="0" type="model" name="Md 360 Mini Tree Coro - 01L" visible="1"/>
-    <Element collapsed="0" type="model" name="Md 360 Mini Tree Coro - 02R" visible="1"/>
-    <Element collapsed="0" type="model" name="Md Star - 01" visible="1"/>
-    <Element collapsed="0" type="model" name="Md Star - 02" visible="1"/>
-    <Element collapsed="0" type="model" name="MediumPresent-1" visible="1"/>
-    <Element collapsed="0" type="model" name="MediumPresent-2" visible="1"/>
-    <Element collapsed="0" type="model" name="MediumPresent-3" visible="1"/>
-    <Element collapsed="0" type="model" name="MediumPresent-4" visible="1"/>
-    <Element collapsed="0" type="model" name="Nellis Gnome" visible="1"/>
-    <Element collapsed="0" type="model" name="Nelly Gnome" visible="1"/>
-    <Element collapsed="0" type="model" name="PixTree-1" visible="1"/>
-    <Element collapsed="0" type="model" name="PixTree-1-Star" visible="1"/>
-    <Element collapsed="0" type="model" name="PixTree-2" visible="1"/>
-    <Element collapsed="0" type="model" name="PixTree-2-Star" visible="1"/>
-    <Element collapsed="0" type="model" name="PixTree-3" visible="1"/>
-    <Element collapsed="0" type="model" name="PixTree-3-Star" visible="1"/>
-    <Element collapsed="0" type="model" name="Pixie Pole 1" visible="1"/>
-    <Element collapsed="0" type="model" name="Pixie Pole 2" visible="1"/>
-    <Element collapsed="0" type="model" name="Pixie Pole 3" visible="1"/>
-    <Element collapsed="0" type="model" name="Pixie Pole 4" visible="1"/>
-    <Element collapsed="0" type="model" name="Pixie Pole 5" visible="1"/>
-    <Element collapsed="0" type="model" name="Pixie Pole 6" visible="1"/>
-    <Element collapsed="0" type="model" name="Pole 1" visible="1"/>
-    <Element collapsed="0" type="model" name="Pole 2" visible="1"/>
-    <Element collapsed="0" type="model" name="Pole 3" visible="1"/>
-    <Element collapsed="0" type="model" name="Pole 4" visible="1"/>
-    <Element collapsed="0" type="model" name="Pole 5" visible="1"/>
-    <Element collapsed="0" type="model" name="Radio_EFL" visible="1"/>
-    <Element collapsed="0" type="model" name="Singing Face" visible="1"/>
-    <Element collapsed="0" type="model" name="Sphere 1" visible="1"/>
-    <Element collapsed="0" type="model" name="Sphere 2" visible="1"/>
-    <Element collapsed="0" type="model" name="Sphere 3" visible="1"/>
-    <Element collapsed="0" type="model" name="Sphere 4" visible="1"/>
-    <Element collapsed="0" type="model" name="Sphere 5" visible="1"/>
-    <Element collapsed="0" type="model" name="Sphere 6" visible="1"/>
-    <Element collapsed="0" type="model" name="SpinnerStarFlake" visible="1"/>
-    <Element collapsed="0" type="model" name="SpinnerStarFlake - Spokes" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral Tree-1BL" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral Tree-1L" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral Tree-2R" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral Tree-3R" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral Tree-4R" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral Tree-5R" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral X NSR (Tree) 1" visible="1"/>
-    <Element collapsed="0" type="model" name="Spiral X NSR (Tree) 2" visible="1"/>
-    <Element collapsed="0" type="model" name="Tree Branches" visible="1"/>
-    <Element collapsed="0" type="model" name="Tree Trunk" visible="1"/>
-    <Element collapsed="0" type="model" name="Triple Arches-1" visible="1"/>
-    <Element collapsed="0" type="model" name="Triple Arches-2" visible="1"/>
-    <Element collapsed="0" type="model" name="Triple Arches-3" visible="1"/>
-    <Element collapsed="0" type="model" name="Triple Arches-4" visible="1"/>
-    <Element collapsed="0" type="model" name="Window Frame-Lower-1" visible="1"/>
-    <Element collapsed="0" type="model" name="Window Frame-Upper-1" visible="1"/>
-    <Element collapsed="0" type="model" name="Window Frame-Upper-1 Matrix" visible="1"/>
-    <Element collapsed="0" type="model" name="Window Frame-Upper-2" visible="1"/>
-    <Element collapsed="0" type="model" name="Window Frame-Upper-3" visible="1"/>
-    <Element collapsed="0" type="model" name="Window Frame-Upper-3 Matrix" visible="1"/>
-    <Element collapsed="0" type="model" name="Wreath-Inner" visible="1"/>
-    <Element collapsed="0" type="model" name="Wreath-Outer" visible="1"/>
-    <Element collapsed="0" type="model" name="TV-Right" visible="1"/>
-    <Element collapsed="0" type="model" name="96 All (no stakes)" visible="1"/>
-    <Element collapsed="0" type="model" name="97 All House NO YARD" visible="1"/>
-    <Element collapsed="0" type="model" name="98 All Override (last group)" visible="1"/>
-    <Element collapsed="0" type="model" name="99 Whole House w Matrix (last group)" visible="1"/>
+    <Element collapsed="false" type="timing" name="New Timing" visible="true" views="Master View,Sequencing,Trees,Stars,MH,Flakes,Singing,All Models Sorted,Matrix,EZ Map,2024 New,Radio" active="true" />
+    <Element collapsed="false" type="model" name="01 Everything" visible="true" />
+    <Element collapsed="false" type="model" name="02 Whole House No Matrix" visible="true" />
+    <Element collapsed="false" type="model" name="02 All No Forest No MT" visible="true" />
+    <Element collapsed="false" type="model" name="02b All No Forest No MT No Matrix" visible="true" />
+    <Element collapsed="false" type="model" name="03 Whole House No Matrix No Tree" visible="true" />
+    <Element collapsed="false" type="model" name="04 Whole House Minus Mega and Matrix" visible="true" />
+    <Element collapsed="false" type="model" name="05 Whole House Minus MegaMiniMatrix" visible="true" />
+    <Element collapsed="false" type="model" name="06 Whole House NO YARD" visible="true" />
+    <Element collapsed="false" type="model" name="07 All House" visible="true" />
+    <Element collapsed="false" type="model" name="Group - House Outline" visible="true" />
+    <Element collapsed="false" type="model" name="Group - House Verticals" visible="true" />
+    <Element collapsed="false" type="model" name="Group - House Horizontals" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Whole Yard" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Yard Left" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Yard Right" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Floods" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Mini Trees Left" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Mini Trees Right" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Mega Tree and Topper" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Mega Trees" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Mega Stars" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral Trees" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Arches" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Triple Arches" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixie Spheres" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixie Poles" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixie Poles - Center Lines" visible="true" />
+    <Element collapsed="false" type="model" name="Group - MickeyStakes" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Eaves" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Presents" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Presents 3D" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflakes" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Big Bulbs" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Candy Canes" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Candy Canes (Striped)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Column Matrices" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Driveway Lights" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Every Other Star 1" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Every Other Star 2" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Flat Trees And Stars" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Flat Tree Stars" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Flat Trees" visible="true" />
+    <Element collapsed="false" type="model" name="Group - HFlakes" visible="true" />
+    <Element collapsed="false" type="model" name="Group - HSpinners" visible="true" />
+    <Element collapsed="false" type="model" name="Group - HSpinners Outer Rings" visible="true" />
+    <Element collapsed="false" type="model" name="Group - HSpinners All Spokes" visible="true" />
+    <Element collapsed="false" type="model" name="Group - House Left" visible="true" />
+    <Element collapsed="false" type="model" name="Group - House Right" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Icicles Left" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Icicles Right" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Live Tree" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Matrix Virtual" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Garage Matrix" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Matrixes" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Mini Matrices" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Moving Heads" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes - Back Half" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes - Front Half" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stakes Front Layers" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stakes Rows" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Tree" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Tree Stars" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Tree and Stars" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Poles and Stars" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Railings" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Roof" visible="true" />
+    <Element collapsed="false" type="model" name="Group - SnowBursts" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflake Arms" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflake Tips" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflakes (Small)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflake Tips (Small)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflake Arms (Small)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflake Lefts Arms (Small)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflake Right Arms (Small)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Snowflake Rings" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinner Arms" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinner Small Arms" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinner Big Arms" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners (Inner Band)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners (Inner Ring)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners (Mid Band)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners (Outer Band)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners (Outer Ring)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners (Pedals Even)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinners (Pedals Odd)" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spinner Rings" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - ALL" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - Balls" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - Spiral Big" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - Green Tree" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - Outline" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - Spiral and Star" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - Star" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Spiral X NSR (Tree) - Front Spiral" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Stars" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Stars on Trees" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Trees" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Trees - Large" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Trees - Medium" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Virtual Spinners" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Window Frames and Doors" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Windows" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Windows - Bottom" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Windows - Left" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Windows - Right" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Windows - Top" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Wreath" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Yard Boarders" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Center Piece" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Center Rings" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Outer Diamonds" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Petals" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Rings" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Spiral All" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Spiral CClockwise" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Spiral Clockwise" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Star" visible="true" />
+    <Element collapsed="false" type="model" name="Mega Star" visible="true" />
+    <Element collapsed="false" type="model" name="AA Mega Tree" visible="true" />
+    <Element collapsed="false" type="model" name="Mega Super Star" visible="true" />
+    <Element collapsed="false" type="model" name="AA Mega Super Tree" visible="true" />
+    <Element collapsed="false" type="model" name="Garage Vert - Left" visible="true" />
+    <Element collapsed="false" type="model" name="Garage Vert - Right" visible="true" />
+    <Element collapsed="false" type="model" name="Garage Outline - 01L" visible="true" />
+    <Element collapsed="false" type="model" name="Garage Outline - 02R" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Left" visible="true" />
+    <Element collapsed="false" type="model" name="PC Spinner Right" visible="true" />
+    <Element collapsed="false" type="model" name="Ornament Left" visible="true" />
+    <Element collapsed="false" type="model" name="Ornament Right" visible="true" />
+    <Element collapsed="false" type="model" name="3D Cube-1" visible="true" />
+    <Element collapsed="false" type="model" name="3D Cube-2" visible="true" />
+    <Element collapsed="false" type="model" name="3D Cube-3" visible="true" />
+    <Element collapsed="false" type="model" name="3D Cube-4" visible="true" />
+    <Element collapsed="false" type="model" name="3D Star" visible="true" />
+    <Element collapsed="false" type="model" name="Arches-1-Left" visible="true" />
+    <Element collapsed="false" type="model" name="Arches-2-Left" visible="true" />
+    <Element collapsed="false" type="model" name="Arches-3-LL" visible="true" />
+    <Element collapsed="false" type="model" name="Arches-4-L" visible="true" />
+    <Element collapsed="false" type="model" name="Arches-5-M" visible="true" />
+    <Element collapsed="false" type="model" name="Arches-6-R" visible="true" />
+    <Element collapsed="false" type="model" name="Arches-7-RR" visible="true" />
+    <Element collapsed="false" type="model" name="BigBulb - 1" visible="true" />
+    <Element collapsed="false" type="model" name="BigBulb - 2" visible="true" />
+    <Element collapsed="false" type="model" name="BigBulb - 3" visible="true" />
+    <Element collapsed="false" type="model" name="BigBulb - 4" visible="true" />
+    <Element collapsed="false" type="model" name="BigBulb - 5" visible="true" />
+    <Element collapsed="false" type="model" name="Bulb Blue" visible="true" />
+    <Element collapsed="false" type="model" name="Bulb Green" visible="true" />
+    <Element collapsed="false" type="model" name="Bulb Red" visible="true" />
+    <Element collapsed="false" type="model" name="Bulb Yellow" visible="true" />
+    <Element collapsed="false" type="model" name="Cane-1" visible="true" />
+    <Element collapsed="false" type="model" name="Cane-2" visible="true" />
+    <Element collapsed="false" type="model" name="Cane-3" visible="true" />
+    <Element collapsed="false" type="model" name="Cane-4" visible="true" />
+    <Element collapsed="false" type="model" name="ChromaFlake 36 3 Prong - 01L" visible="true" />
+    <Element collapsed="false" type="model" name="ChromaFlake 36 3 Prong - 02R" visible="true" />
+    <Element collapsed="false" type="model" name="Driveway - 01L" visible="true" />
+    <Element collapsed="false" type="model" name="Driveway - 02R" visible="true" />
+    <Element collapsed="false" type="model" name="EFlake46" visible="true" />
+    <Element collapsed="false" type="model" name="Eaves - Icicles" visible="true" />
+    <Element collapsed="false" type="model" name="Eaves - Lower - C9 Lights" visible="true" />
+    <Element collapsed="false" type="model" name="Eaves - Upper - C9 Lights" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTree-1" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTree-2" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTree-3" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTree-4" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTree-5" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTree-6" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTreeStar-1" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTreeStar-2" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTreeStar-3" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTreeStar-4" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTreeStar-5" visible="true" />
+    <Element collapsed="false" type="model" name="FlatTreeStar-6" visible="true" />
+    <Element collapsed="false" type="model" name="Flood1" visible="true" />
+    <Element collapsed="false" type="model" name="Flood2" visible="true" />
+    <Element collapsed="false" type="model" name="Flood3" visible="true" />
+    <Element collapsed="false" type="model" name="FrontYard - Left" visible="true" />
+    <Element collapsed="false" type="model" name="FrontYard - Right" visible="true" />
+    <Element collapsed="false" type="model" name="HFlake1" visible="true" />
+    <Element collapsed="false" type="model" name="HFlake2" visible="true" />
+    <Element collapsed="false" type="model" name="HFlake3" visible="true" />
+    <Element collapsed="false" type="model" name="HFlake4" visible="true" />
+    <Element collapsed="false" type="model" name="HFlake5" visible="true" />
+    <Element collapsed="false" type="model" name="HSpinner1" visible="true" />
+    <Element collapsed="false" type="model" name="HSpinner2" visible="true" />
+    <Element collapsed="false" type="model" name="HSpinner3" visible="true" />
+    <Element collapsed="false" type="model" name="HSpinner4" visible="true" />
+    <Element collapsed="false" type="model" name="HSpinner5" visible="true" />
+    <Element collapsed="false" type="model" name="Icicles Single String" visible="true" />
+    <Element collapsed="false" type="model" name="Lg 360 Mini Tree Coro - 01L" visible="true" />
+    <Element collapsed="false" type="model" name="Lg 360 Mini Tree Coro - 02R" visible="true" />
+    <Element collapsed="false" type="model" name="Lg Star - 01" visible="true" />
+    <Element collapsed="false" type="model" name="Lg Star - 02" visible="true" />
+    <Element collapsed="false" type="model" name="MH-1" visible="true" />
+    <Element collapsed="false" type="model" name="MH-2" visible="true" />
+    <Element collapsed="false" type="model" name="MH-3" visible="true" />
+    <Element collapsed="false" type="model" name="MH-4" visible="true" />
+    <Element collapsed="false" type="model" name="MH-5" visible="true" />
+    <Element collapsed="false" type="model" name="MH-6" visible="true" />
+    <Element collapsed="false" type="model" name="MH-7" visible="true" />
+    <Element collapsed="false" type="model" name="MH-8" visible="true" />
+    <Element collapsed="false" type="model" name="MH - Dimmers" visible="true" />
+    <Element collapsed="false" type="model" name="MH - Pan" visible="true" />
+    <Element collapsed="false" type="model" name="MH - Shutter" visible="true" />
+    <Element collapsed="false" type="model" name="MH - Tilt" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix - 1L" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix - 2R" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix - 1L-Virtual" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix - 2R-Virtual" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix - ColL" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix - ColR" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix Garage Left" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix Garage Right" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix-mini-left" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix-mini-right" visible="true" />
+    <Element collapsed="false" type="model" name="Matrix Seeds" visible="true" />
+    <Element collapsed="false" type="model" name="Md 360 Mini Tree Coro - 01L" visible="true" />
+    <Element collapsed="false" type="model" name="Md 360 Mini Tree Coro - 02R" visible="true" />
+    <Element collapsed="false" type="model" name="Md Star - 01" visible="true" />
+    <Element collapsed="false" type="model" name="Md Star - 02" visible="true" />
+    <Element collapsed="false" type="model" name="MediumPresent-1" visible="true" />
+    <Element collapsed="false" type="model" name="MediumPresent-2" visible="true" />
+    <Element collapsed="false" type="model" name="MediumPresent-3" visible="true" />
+    <Element collapsed="false" type="model" name="MediumPresent-4" visible="true" />
+    <Element collapsed="false" type="model" name="Nellis Gnome" visible="true" />
+    <Element collapsed="false" type="model" name="Nelly Gnome" visible="true" />
+    <Element collapsed="false" type="model" name="PixTree-1" visible="true" />
+    <Element collapsed="false" type="model" name="PixTree-1-Star" visible="true" />
+    <Element collapsed="false" type="model" name="PixTree-2" visible="true" />
+    <Element collapsed="false" type="model" name="PixTree-2-Star" visible="true" />
+    <Element collapsed="false" type="model" name="PixTree-3" visible="true" />
+    <Element collapsed="false" type="model" name="PixTree-3-Star" visible="true" />
+    <Element collapsed="false" type="model" name="Pixie Pole 1" visible="true" />
+    <Element collapsed="false" type="model" name="Pixie Pole 2" visible="true" />
+    <Element collapsed="false" type="model" name="Pixie Pole 3" visible="true" />
+    <Element collapsed="false" type="model" name="Pixie Pole 4" visible="true" />
+    <Element collapsed="false" type="model" name="Pixie Pole 5" visible="true" />
+    <Element collapsed="false" type="model" name="Pixie Pole 6" visible="true" />
+    <Element collapsed="false" type="model" name="Pole 1" visible="true" />
+    <Element collapsed="false" type="model" name="Pole 2" visible="true" />
+    <Element collapsed="false" type="model" name="Pole 3" visible="true" />
+    <Element collapsed="false" type="model" name="Pole 4" visible="true" />
+    <Element collapsed="false" type="model" name="Pole 5" visible="true" />
+    <Element collapsed="false" type="model" name="Radio_EFL" visible="true" />
+    <Element collapsed="false" type="model" name="Singing Face" visible="true" />
+    <Element collapsed="false" type="model" name="Sphere 1" visible="true" />
+    <Element collapsed="false" type="model" name="Sphere 2" visible="true" />
+    <Element collapsed="false" type="model" name="Sphere 3" visible="true" />
+    <Element collapsed="false" type="model" name="Sphere 4" visible="true" />
+    <Element collapsed="false" type="model" name="Sphere 5" visible="true" />
+    <Element collapsed="false" type="model" name="Sphere 6" visible="true" />
+    <Element collapsed="false" type="model" name="SpinnerStarFlake" visible="true" />
+    <Element collapsed="false" type="model" name="SpinnerStarFlake - Spokes" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral Tree-1BL" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral Tree-1L" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral Tree-2R" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral Tree-3R" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral Tree-4R" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral Tree-5R" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral X NSR (Tree) 1" visible="true" />
+    <Element collapsed="false" type="model" name="Spiral X NSR (Tree) 2" visible="true" />
+    <Element collapsed="false" type="model" name="Tree Branches" visible="true" />
+    <Element collapsed="false" type="model" name="Tree Trunk" visible="true" />
+    <Element collapsed="false" type="model" name="Triple Arches-1" visible="true" />
+    <Element collapsed="false" type="model" name="Triple Arches-2" visible="true" />
+    <Element collapsed="false" type="model" name="Triple Arches-3" visible="true" />
+    <Element collapsed="false" type="model" name="Triple Arches-4" visible="true" />
+    <Element collapsed="false" type="model" name="Window Frame-Lower-1" visible="true" />
+    <Element collapsed="false" type="model" name="Window Frame-Upper-1" visible="true" />
+    <Element collapsed="false" type="model" name="Window Frame-Upper-1 Matrix" visible="true" />
+    <Element collapsed="false" type="model" name="Window Frame-Upper-2" visible="true" />
+    <Element collapsed="false" type="model" name="Window Frame-Upper-3" visible="true" />
+    <Element collapsed="false" type="model" name="Window Frame-Upper-3 Matrix" visible="true" />
+    <Element collapsed="false" type="model" name="Wreath-Inner" visible="true" />
+    <Element collapsed="false" type="model" name="Wreath-Outer" visible="true" />
+    <Element collapsed="false" type="model" name="TV-Right" visible="true" />
+    <Element collapsed="false" type="model" name="96 All (no stakes)" visible="true" />
+    <Element collapsed="false" type="model" name="97 All House NO YARD" visible="true" />
+    <Element collapsed="false" type="model" name="98 All Override (last group)" visible="true" />
+    <Element collapsed="false" type="model" name="99 Whole House w Matrix (last group)" visible="true" />
+    <Element collapsed="false" type="model" name="Poop_Emoji" visible="true" />
+    <Element collapsed="false" type="model" name="Gingerbread Man" visible="true" />
+    <Element collapsed="false" type="model" name="Group - FT1" visible="true" />
+    <Element collapsed="false" type="model" name="Group - FT2" visible="true" />
+    <Element collapsed="false" type="model" name="Group - FT3" visible="true" />
+    <Element collapsed="false" type="model" name="Group - FT4" visible="true" />
+    <Element collapsed="false" type="model" name="Group - FT5" visible="true" />
+    <Element collapsed="false" type="model" name="Group - FT6" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes - Row1 - Bot" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes - Row2" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes - Row3" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes - Row4" visible="true" />
+    <Element collapsed="false" type="model" name="Group - PixStakes - Row5" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stake R1" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stake R2" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stake R3" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stake R4" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stake R5" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stake R6" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stake R7" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stakes C1" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stakes C5" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Pixel Stakes C10" visible="true" />
+    <Element collapsed="false" type="model" name="Group - Presents 3D Sides" visible="true" />
   </DisplayElements>
   <ElementEffects>
     <Element type="timing" name="New Timing">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="01 Everything">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="02 Whole House No Matrix">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="02 All No Forest No MT">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="02b All No Forest No MT No Matrix">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="03 Whole House No Matrix No Tree">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="04 Whole House Minus Mega and Matrix">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="05 Whole House Minus MegaMiniMatrix">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="06 Whole House NO YARD">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="07 All House">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - House Outline">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - House Verticals">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - House Horizontals">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Whole Yard">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Yard Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Yard Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Floods">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Mini Trees Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Mini Trees Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Mega Tree and Topper">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Mega Trees">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Mega Stars">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral Trees">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Arches">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Triple Arches">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixie Spheres">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixie Poles">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixie Poles - Center Lines">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - MickeyStakes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Eaves">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - PixStakes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Presents">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Presents 3D">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflakes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Big Bulbs">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Candy Canes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Candy Canes (Striped)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Column Matrices">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Driveway Lights">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Every Other Star 1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Every Other Star 2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Flat Trees And Stars">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Flat Tree Stars">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Flat Trees">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - HFlakes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - HSpinners">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - HSpinners Outer Rings">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - HSpinners All Spokes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - House Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - House Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Icicles Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Icicles Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Live Tree">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Matrix Virtual">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Garage Matrix">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Matrixes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Mini Matrices">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Moving Heads">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - PixStakes - Back Half">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - PixStakes - Front Half">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixel Stakes Front Layers">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixel Stakes Rows">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixel Tree">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixel Tree Stars">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Pixel Tree and Stars">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Poles and Stars">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Railings">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Roof">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - SnowBursts">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflake Arms">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflake Tips">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflakes (Small)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflake Tips (Small)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflake Arms (Small)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflake Lefts Arms (Small)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflake Right Arms (Small)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Snowflake Rings">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinner Arms">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinner Small Arms">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinner Big Arms">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners (Inner Band)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners (Inner Ring)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners (Mid Band)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners (Outer Band)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners (Outer Ring)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners (Pedals Even)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinners (Pedals Odd)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spinner Rings">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - ALL">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - Balls">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - Spiral Big">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - Green Tree">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - Outline">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - Spiral and Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Spiral X NSR (Tree) - Front Spiral">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Stars">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Stars on Trees">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Trees">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Trees - Large">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Trees - Medium">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Virtual Spinners">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Window Frames and Doors">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Windows">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Windows - Bottom">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Windows - Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Windows - Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Windows - Top">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Wreath">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Group - Yard Boarders">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Center Piece">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Center Rings">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Outer Diamonds">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Petals">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Rings">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Spiral All">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Spiral CClockwise">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Spiral Clockwise">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Mega Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="AA Mega Tree">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Mega Super Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="AA Mega Super Tree">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Garage Vert - Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Garage Vert - Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Garage Outline - 01L">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Garage Outline - 02R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PC Spinner Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Ornament Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Ornament Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="3D Cube-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="3D Cube-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="3D Cube-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="3D Cube-4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="3D Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Arches-1-Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Arches-2-Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Arches-3-LL">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Arches-4-L">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Arches-5-M">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Arches-6-R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Arches-7-RR">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="BigBulb - 1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="BigBulb - 2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="BigBulb - 3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="BigBulb - 4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="BigBulb - 5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Bulb Blue">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Bulb Green">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Bulb Red">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Bulb Yellow">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Cane-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Cane-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Cane-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Cane-4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="ChromaFlake 36 3 Prong - 01L">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="ChromaFlake 36 3 Prong - 02R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Driveway - 01L">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Driveway - 02R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="EFlake46">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Eaves - Icicles">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Eaves - Lower - C9 Lights">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Eaves - Upper - C9 Lights">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTree-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTree-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTree-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTree-4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTree-5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTree-6">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTreeStar-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTreeStar-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTreeStar-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTreeStar-4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTreeStar-5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FlatTreeStar-6">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Flood1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Flood2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Flood3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FrontYard - Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="FrontYard - Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HFlake1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HFlake2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HFlake3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HFlake4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HFlake5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HSpinner1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HSpinner2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HSpinner3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HSpinner4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="HSpinner5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Icicles Single String">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Lg 360 Mini Tree Coro - 01L">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Lg 360 Mini Tree Coro - 02R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Lg Star - 01">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Lg Star - 02">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-6">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-7">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH-8">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH - Dimmers">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH - Pan">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH - Shutter">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MH - Tilt">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix - 1L">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix - 2R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix - 1L-Virtual">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix - 2R-Virtual">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix - ColL">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix - ColR">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix Garage Left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix Garage Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix-mini-left">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix-mini-right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Matrix Seeds">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Md 360 Mini Tree Coro - 01L">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Md 360 Mini Tree Coro - 02R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Md Star - 01">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Md Star - 02">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MediumPresent-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MediumPresent-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MediumPresent-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="MediumPresent-4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Nellis Gnome">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Nelly Gnome">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PixTree-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PixTree-1-Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PixTree-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PixTree-2-Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PixTree-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="PixTree-3-Star">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pixie Pole 1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pixie Pole 2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pixie Pole 3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pixie Pole 4">
       <EffectLayer>
-        <Effect ref="0" name="On" selected="1" startTime="700" endTime="1700" palette="0"/>
+        <Effect ref="0" name="On" startTime="700" endTime="1700" palette="0" />
       </EffectLayer>
     </Element>
     <Element type="model" name="Pixie Pole 5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pixie Pole 6">
       <EffectLayer>
-        <Effect ref="0" name="On" startTime="5600" endTime="6600" palette="0"/>
+        <Effect ref="0" name="On" startTime="5600" endTime="6600" palette="0" />
       </EffectLayer>
     </Element>
     <Element type="model" name="Pole 1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pole 2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pole 3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pole 4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Pole 5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Radio_EFL">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Singing Face">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Sphere 1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Sphere 2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Sphere 3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Sphere 4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Sphere 5">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Sphere 6">
       <EffectLayer>
-        <Effect ref="0" name="On" startTime="1600" endTime="2600" palette="0"/>
+        <Effect ref="0" name="On" startTime="1600" endTime="2600" palette="0" />
       </EffectLayer>
     </Element>
     <Element type="model" name="SpinnerStarFlake">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="SpinnerStarFlake - Spokes">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Spiral Tree-1BL">
       <EffectLayer>
-        <Effect ref="0" name="On" startTime="3100" endTime="4100" palette="0"/>
+        <Effect ref="0" name="On" startTime="3100" endTime="4100" palette="0" />
       </EffectLayer>
     </Element>
     <Element type="model" name="Spiral Tree-1L">
       <EffectLayer>
-        <Effect ref="0" name="On" startTime="5800" endTime="6800" palette="0"/>
+        <Effect ref="0" name="On" startTime="5800" endTime="6800" palette="0" />
       </EffectLayer>
     </Element>
     <Element type="model" name="Spiral Tree-2R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Spiral Tree-3R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Spiral Tree-4R">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Spiral Tree-5R">
       <EffectLayer>
-        <Effect ref="0" name="On" startTime="7900" endTime="8900" palette="0"/>
+        <Effect ref="0" name="On" startTime="7900" endTime="8900" palette="0" />
       </EffectLayer>
     </Element>
     <Element type="model" name="Spiral X NSR (Tree) 1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Spiral X NSR (Tree) 2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Tree Branches">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Tree Trunk">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Triple Arches-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Triple Arches-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Triple Arches-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Triple Arches-4">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Window Frame-Lower-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Window Frame-Upper-1">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Window Frame-Upper-1 Matrix">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Window Frame-Upper-2">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Window Frame-Upper-3">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Window Frame-Upper-3 Matrix">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Wreath-Inner">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="Wreath-Outer">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="TV-Right">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="96 All (no stakes)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="97 All House NO YARD">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="98 All Override (last group)">
-      <EffectLayer/>
+      <EffectLayer />
     </Element>
     <Element type="model" name="99 Whole House w Matrix (last group)">
-      <EffectLayer/>
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Poop_Emoji">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Gingerbread Man">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - FT1">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - FT2">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - FT3">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - FT4">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - FT5">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - FT6">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - PixStakes - Row1 - Bot">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - PixStakes - Row2">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - PixStakes - Row3">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - PixStakes - Row4">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - PixStakes - Row5">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stake R1">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stake R2">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stake R3">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stake R4">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stake R5">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stake R6">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stake R7">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stakes C1">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stakes C5">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Pixel Stakes C10">
+      <EffectLayer />
+    </Element>
+    <Element type="model" name="Group - Presents 3D Sides">
+      <EffectLayer />
     </Element>
   </ElementEffects>
-  <lastView>7</lastView>
+  <lastView>0</lastView>
   <TimingTags>
-    <Tag number="0" position="-1"/>
-    <Tag number="1" position="-1"/>
-    <Tag number="2" position="-1"/>
-    <Tag number="3" position="-1"/>
-    <Tag number="4" position="-1"/>
-    <Tag number="5" position="-1"/>
-    <Tag number="6" position="-1"/>
-    <Tag number="7" position="-1"/>
-    <Tag number="8" position="-1"/>
-    <Tag number="9" position="-1"/>
+    <Tag number="0" position="-1" />
+    <Tag number="1" position="-1" />
+    <Tag number="2" position="-1" />
+    <Tag number="3" position="-1" />
+    <Tag number="4" position="-1" />
+    <Tag number="5" position="-1" />
+    <Tag number="6" position="-1" />
+    <Tag number="7" position="-1" />
+    <Tag number="8" position="-1" />
+    <Tag number="9" position="-1" />
   </TimingTags>
 </xsequence>

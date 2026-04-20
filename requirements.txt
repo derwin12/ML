@@ -1,3 +1,7 @@
 Flask==2.3.3
 Werkzeug==2.3.7
-ollama==0.6.0
+openai>=1.0.0
+grok3api==0.1.0rc2
+setuptools==80.9.0
+mutagen>=1.45.0
+librosa>=0.10.0

@@ -2,41 +2,34 @@
 
 import xml.etree.ElementTree as ET
 import random
+from utils import section_effect_placements, get_or_create_layer, place_effect
+from param_sampler import sample_params
 
-def add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None):
+def add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None, structure=None, registry=None):
     directions = ["Up", "Down", "Expand", "Compress", "Left/Right", "H Expand", "H Compress", "Alternate"]
     num_bars_added = 0
-    for _ in range(10):
-        # 30% chance to pick group if available
+    placements = section_effect_placements(10, structure or [], beats or [], min_beats=5, max_beats=16)
+    for start_time, end_time in placements:
+        if start_time is None:
+            start_time = random.randint(0, seq_duration_ms - 10000)
+            end_time = start_time + random.randint(5000, 10000)
         if random.random() < 0.3 and eligible_group_elements:
             elem = random.choice(eligible_group_elements)
         else:
-            elem = random.choice(eligible_elements)  # fallback to all eligible
-
-        effect_layer = elem.find("EffectLayer")
+            elem = random.choice(eligible_elements)
+        effect_layer = get_or_create_layer(elem, start_time, end_time)
         if effect_layer is None:
-            effect_layer = ET.SubElement(elem, "EffectLayer")
+            continue
 
-        if beats is not None and len(beats) > 1:
-            start_idx = random.randint(0, len(beats) - 6)
-            num_beats_span = random.randint(5, 10)  # for 5-10s duration
-            end_idx = min(start_idx + num_beats_span, len(beats) - 1)
-            start_time = int(beats[start_idx] * 1000)
-            end_time = int(beats[end_idx] * 1000)
-        else:
-            start_time = random.randint(0, seq_duration_ms - 10000)
-            effect_dur = random.randint(5000, 10000)  # 5-10 seconds
-            end_time = start_time + effect_dur
-
-        # Random parameters for Bars
-        bar_count = random.randint(3, 8)
-        direction = random.choice(directions)
-        cycles = random.uniform(1, 3)
-        palette_rep = random.randint(1, 4)
-        highlight = random.choice([0, 1])
-        threed = random.choice([0, 1])
-        gradient = random.choice([0, 1])
-        use_first_for_highlight = 0  # default
+        p = sample_params("Bars")
+        bar_count = p.get("BarCount", random.randint(3, 8))
+        direction = p.get("Direction", random.choice(directions))
+        cycles = p.get("Cycles", round(random.uniform(1, 3), 1))
+        palette_rep = p.get("PaletteRep", random.randint(1, 4))
+        highlight = p.get("CHECKBOX_Highlight", random.choice([0, 1]))
+        threed = p.get("CHECKBOX_3D", random.choice([0, 1]))
+        gradient = p.get("CHECKBOX_Gradient", random.choice([0, 1]))
+        use_first_for_highlight = p.get("CHECKBOX_UseFirstColorForHighlight", 0)
 
         # Select 3 random distinct color indices (1-8)
         selected_indices = random.sample(range(1, 9), 3)
@@ -52,23 +45,15 @@ def add_bars_effects(eligible_elements, eligible_group_elements, seq_duration_ms
         # Palette ID
         palette_id = len(color_palettes.findall("ColorPalette")) - 1
 
-        effect = ET.SubElement(effect_layer, "Effect", {
-            "name": "Bars",
-            "startTime": f"{start_time}",
-            "endTime": f"{end_time}",
-            "selected": "0",
-            "palette": str(palette_id)
-        })
-        settings = ET.SubElement(effect, "Settings")
-        # Settings without C1 C2, using palette
-        settings.text = (f"BarCount={bar_count};"
-                         f"Direction={direction};"
-                         f"Cycles={cycles:.1f};"
-                         f"PaletteRep={palette_rep};"
-                         f"CHECKBOX_Highlight={highlight};"
-                         f"CHECKBOX_3D={threed};"
-                         f"CHECKBOX_Gradient={gradient};"
-                         f"CHECKBOX_UseFirstColorForHighlight={use_first_for_highlight};"
-                         f"E1=100;E2=100")
+        settings_str = (f"BarCount={bar_count},"
+                        f"Direction={direction},"
+                        f"Cycles={cycles:.1f},"
+                        f"PaletteRep={palette_rep},"
+                        f"CHECKBOX_Highlight={highlight},"
+                        f"CHECKBOX_3D={threed},"
+                        f"CHECKBOX_Gradient={gradient},"
+                        f"CHECKBOX_UseFirstColorForHighlight={use_first_for_highlight},"
+                        f"E1=100,E2=100")
+        place_effect(effect_layer, "Bars", start_time, end_time, palette_id, settings_str, registry)
         num_bars_added += 1
     return num_bars_added
