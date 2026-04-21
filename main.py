@@ -6,7 +6,8 @@ from utils import indent, load_structure_map, get_audio_duration, get_eligible_m
     generate_lyrics_track, generate_structure_track, _lemonade_complete, _load_audio, get_or_create_layer, \
     categorize_models, add_everything_group_effect, EffectDBRegistry, place_effect, find_singing_props, \
     filter_by_effect, EffectBudget, set_effect_budget, filter_beats_vocals_only, \
-    get_model_positions, sort_elements_by_position, generate_phrase_boundaries, get_foreground_elements
+    get_model_positions, sort_elements_by_position, generate_phrase_boundaries, get_foreground_elements, \
+    filter_by_probability
 from spatial_sweep import add_spatial_sweep_effects
 from singing_face_effect import add_singing_face_effects
 from on_effect import add_on_effects
@@ -417,11 +418,13 @@ def create_xsq_from_template(
         )
         print(f"Spatial sweeps: {num_sweep} On effects placed across {len(x_sorted_elements)} models.")
 
-    # Helpers: filter eligible elements by effect category rules
+    # Helpers: filter eligible elements by exclusion rules + learned probability threshold
     def fe(effect_name):
-        return filter_by_effect(eligible_elements, effect_name, model_categories)
+        base = filter_by_effect(eligible_elements, effect_name, model_categories)
+        return filter_by_probability(base, effect_name, model_categories)
     def fg(effect_name):
-        return filter_by_effect(eligible_group_elements, effect_name, model_categories)
+        base = filter_by_effect(eligible_group_elements, effect_name, model_categories)
+        return filter_by_probability(base, effect_name, model_categories)
 
     # Foreground elements for high-impact effects (chorus/drop category leaders)
     chorus_fg = get_foreground_elements(eligible_elements, model_categories, "chorus")

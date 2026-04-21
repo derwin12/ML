@@ -107,6 +107,71 @@ def has_data(effect_name: str) -> bool:
     return effect_name in _data and _data[effect_name]["count"] > 0
 
 
+# ---------------------------------------------------------------------------
+# Choreography probability table
+# ---------------------------------------------------------------------------
+
+CHOREOGRAPHY_PATH = os.path.join(os.path.dirname(__file__), "choreography_probs.json")
+
+_choreo: dict = {}
+_choreo_loaded: bool = False
+
+
+def _load_choreo():
+    global _choreo, _choreo_loaded
+    if _choreo_loaded:
+        return
+    if os.path.isfile(CHOREOGRAPHY_PATH):
+        try:
+            with open(CHOREOGRAPHY_PATH, encoding="utf-8") as f:
+                _choreo = json.load(f)
+            print(f"[param_sampler] Loaded choreography probs: {len(_choreo)} categories.")
+        except Exception as e:
+            print(f"[param_sampler] choreography_probs.json error ({e}) — skipping.")
+    _choreo_loaded = True
+
+
+def get_effect_probability(effect_name: str, category: str) -> float:
+    """Return the learned probability (0–1) of effect_name for a given prop category."""
+    _load_choreo()
+    cat_data = _choreo.get(category)
+    if cat_data is None:
+        return 0.0
+    return cat_data["probs"].get(effect_name, 0.0)
+
+
+def get_choreography_probs(category: str) -> dict:
+    """Return {effect_name: probability} dict for a category, or {} if unknown."""
+    _load_choreo()
+    cat_data = _choreo.get(category)
+    return dict(cat_data["probs"]) if cat_data else {}
+
+
+def sample_effect_for_category(category: str, allowed_effects: set = None) -> str | None:
+    """
+    Weighted-random sample an effect name for a prop category.
+    Optionally restrict to only effects in allowed_effects.
+    Returns None if no data is available.
+    """
+    _load_choreo()
+    cat_data = _choreo.get(category)
+    if not cat_data:
+        return None
+    probs = cat_data["probs"]
+    if allowed_effects:
+        probs = {k: v for k, v in probs.items() if k in allowed_effects}
+    if not probs:
+        return None
+    total = sum(probs.values())
+    r = random.uniform(0, total)
+    cumulative = 0.0
+    for name, p in probs.items():
+        cumulative += p
+        if r <= cumulative:
+            return name
+    return list(probs.keys())[-1]
+
+
 def available_effects() -> list:
     """Return list of effect names that have training data."""
     _load()

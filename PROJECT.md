@@ -411,7 +411,7 @@ Still unknown (1): Weird Thing 1
 - [x] **Phrase boundary detection** — `generate_phrase_boundaries()` returns one timestamp per 4 downbeats.
 - [x] **Spatial sweep effect** — `spatial_sweep.py`; staggered On effect fires left→right (alternating) at phrase boundaries in sections with intensity ≥ 0.5; capped at 3 sweeps per section.
 - [x] **Section foreground assignment** — `FOREGROUND_CATS_BY_SECTION` + `get_foreground_elements()`; Strobe/Lightning/Fireworks now only fire on chorus-foreground prop categories (matrix/mega_tree/cube/tree_360).
-- [ ] **Learn from example XSQ files** — parse user's real hand-sequenced XSQs to extract: which effects appear per prop category per section, co-occurrence patterns, timing distributions. Replace random selection with learned probability tables.
+- [x] **Learn from example XSQ files** — `analyze_choreography.py` reads `training_data.json` (1.6M obs from 379 real XSQs); builds `choreography_probs.json` mapping each prop category to effect probability distribution. `filter_by_probability()` in `utils.py` gates every effect call against learned thresholds. `sample_effect_for_category()` in `param_sampler.py` for weighted random sampling.
 - [ ] **Smarter palette application** — cool/desaturated in intro/verse, warm/saturated in chorus/drop (section intensity already available).
 - [ ] **Cross-prop coordination (call & response)** — designate one prop category per section as "lead" and others as "support"; support props hold a sustained color while lead fires reactive effects.
 

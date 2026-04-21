@@ -1040,6 +1040,25 @@ FOREGROUND_CATS_BY_SECTION = {
 }
 
 
+def filter_by_probability(elements: list, effect_name: str, model_categories: dict,
+                          threshold: float = 0.02) -> list:
+    """
+    Filter elements to those where effect_name has at least `threshold` learned probability
+    for that model's category (from choreography_probs.json via param_sampler).
+    Falls back to returning all elements if param_sampler has no data for that category.
+    Always returns at least one element to avoid empty lists breaking callers.
+    """
+    from param_sampler import get_effect_probability
+    result = []
+    for elem in elements:
+        name = elem.attrib.get("name", "")
+        cat = model_categories.get(name, "unknown")
+        p = get_effect_probability(effect_name, cat)
+        if p == 0.0 or p >= threshold:
+            result.append(elem)
+    return result if result else elements
+
+
 def get_foreground_elements(elements: list, model_categories: dict, section_name: str) -> list:
     """
     Return elements whose category is foreground for the given section type.
