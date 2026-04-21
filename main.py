@@ -479,48 +479,7 @@ def create_xsq_from_template(
         seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
     num_tendril_added    = add_tendril_effects(fe("Tendril"), fg("Tendril"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
 
-    set_effect_budget(None)  # release budget so DEV text labels are never blocked
-
-    # --- DEV: category label text effect on last 4 beats ---
-    if beats and len(beats) >= 4:
-        text_start = beats[-4]
-        text_end = seq_duration_ms
-    else:
-        text_start = max(0, seq_duration_ms - 4000)
-        text_end = seq_duration_ms
-
-    text_palette_str = (
-        "C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,"
-        "C_BUTTON_Palette4=#0000FF,C_BUTTON_Palette5=#FFFF00,C_BUTTON_Palette6=#000000,"
-        "C_BUTTON_Palette7=#00FFFF,C_BUTTON_Palette8=#FF00FF,"
-        "C_CHECKBOXBRIGHTNESSLEVEL=0,C_CHECKBOX_Chroma=0,C_CHECKBOX_MusicSparkles=0,"
-        "C_CHECKBOX_Palette1=1,C_CHECKBOX_Palette2=1,C_CHECKBOX_Palette3=0,"
-        "C_CHECKBOX_Palette4=0,C_CHECKBOX_Palette5=0,C_CHECKBOX_Palette6=0,"
-        "C_CHECKBOX_Palette7=0,C_CHECKBOX_Palette8=0,C_SLIDER_SparkleFrequency=0"
-    )
-
-    for elem in eligible_elements:
-        model_name = elem.attrib.get("name", "")
-        cat = model_categories.get(model_name, "unknown")
-        effect_layer = get_or_create_layer(elem, text_start, text_end, max_layers=4)
-        if effect_layer is None:
-            continue
-
-        new_palette = ET.SubElement(color_palettes, "ColorPalette")
-        new_palette.text = text_palette_str
-        palette_id = len(color_palettes.findall("ColorPalette")) - 1
-
-        text_settings = (
-            f"E_CHECKBOX_Text_Color_PerWord=0,E_CHECKBOX_Text_PixelOffsets=0,"
-            "E_CHOICE_Text_Count=none,E_CHOICE_Text_Dir=none,E_CHOICE_Text_Effect=normal,"
-            "E_CHOICE_Text_Font=Use OS Fonts,E_FONTPICKER_Text_Font='segoe ui',"
-            "E_NOTEBOOK=Start Position,"
-            "E_SLIDER_Text_XEnd=0,E_SLIDER_Text_XStart=0,E_SLIDER_Text_YEnd=0,E_SLIDER_Text_YStart=0,"
-            f"E_TEXTCTRL_Text={cat},E_TEXTCTRL_Text_Speed=10,"
-            "T_CHECKBOX_Canvas=0,T_CHECKBOX_LayerMorph=0,"
-            "T_CHOICE_LayerMethod=Normal,T_SLIDER_EffectLayerMix=0"
-        )
-        place_effect(effect_layer, "Text", text_start, text_end, palette_id, text_settings, registry)
+    set_effect_budget(None)
 
     # Write all collected EffectDB entries to XML
     registry.write_to_xml(effect_db_elem)

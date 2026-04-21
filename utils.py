@@ -1218,6 +1218,7 @@ def section_effect_placements(base_count: int, structure: list, beat_times_ms: l
             else:
                 start, end = None, None
             placements.append((start, end))
+    random.shuffle(placements)
     return placements
 
 
@@ -1326,22 +1327,23 @@ def is_overlapping(start_ms: int, end_ms: int, occupied: list) -> bool:
     return False
 
 
-def get_or_create_layer(elem, start_ms: int, end_ms: int, max_layers: int = 2):
+def get_or_create_layer(elem, start_ms: int, end_ms: int, max_layers: int = 2, skip_budget: bool = False):
     """
     Return an EffectLayer on elem that has no conflict with [start_ms, end_ms).
     Tries existing layers first; creates a new one (up to max_layers) if all conflict.
     Returns None if no layer is available or if the model has hit its effect budget.
+    skip_budget=True bypasses budget checks (used by spatial sweep so it doesn't eat the budget).
     """
     model_name = elem.attrib.get("name", "")
-    if _active_budget and _active_budget.is_full(model_name):
+    if not skip_budget and _active_budget and _active_budget.is_full(model_name):
         return None
     for layer in elem.findall("EffectLayer"):
         if not is_overlapping(start_ms, end_ms, get_occupied_slots(layer)):
-            if _active_budget:
+            if not skip_budget and _active_budget:
                 _active_budget.charge(model_name)
             return layer
     if len(elem.findall("EffectLayer")) < max_layers:
-        if _active_budget:
+        if not skip_budget and _active_budget:
             _active_budget.charge(model_name)
         return ET.SubElement(elem, "EffectLayer")
     return None

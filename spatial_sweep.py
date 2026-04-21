@@ -82,7 +82,7 @@ def add_spatial_sweep_effects(
             if end_ms > seq_duration_ms:
                 break
 
-            effect_layer = get_or_create_layer(elem, start_ms, end_ms)
+            effect_layer = get_or_create_layer(elem, start_ms, end_ms, skip_budget=True)
             if effect_layer is None:
                 continue
 

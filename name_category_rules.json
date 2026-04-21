@@ -17,7 +17,7 @@
     {"match": "mini tree",      "category": "tree"},
     {"match": "spiral tree",    "category": "tree"},
 
-    {"match": "snowflake",      "category": "snowflake"},
+    {"match": "flake",          "category": "snowflake"},
 
     {"match": "star",           "category": "star"},
     {"match": "starburst",      "category": "star"},
