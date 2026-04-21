@@ -33,7 +33,61 @@ _DISPLAY_AS_MAP = {
 _TYPE_HINT_RE = re.compile(r'\[T:([^\]]+)\]', re.IGNORECASE)
 
 _NAME_RULES_PATH = os.path.join(os.path.dirname(__file__), "name_category_rules.json")
+
+
+def _has_pixel_list(val: str) -> bool:
+    """True if val looks like a pixel number list (digits/commas/hyphens, no file path chars)."""
+    return bool(val) and not any(c in val for c in "\\/") and any(c.isdigit() for c in val)
+
+
+def _is_singing_prop(model_elem):
+    """True if model has a <faceInfo> child with both numeric Mouth-WQ and Eyes-Open pixel lists.
+    Requiring both ensures decorative props with incidental face definitions are excluded.
+    """
+    for child in model_elem:
+        if child.tag == "faceInfo":
+            mouth = child.attrib.get("Mouth-WQ", "") or ""
+            eyes  = child.attrib.get("Eyes-Open", "") or ""
+            if _has_pixel_list(mouth) and _has_pixel_list(eyes):
+                return True
+    return False
+
+
 _NAME_OVERRIDES_PATH = os.path.join(os.path.dirname(__file__), "name_exact_overrides.json")
+
+# Categories unsuitable for specific effects.
+# Key = effect name as used in place_effect(); value = set of categories that should NOT receive it.
+_FLOOD_LINE = frozenset({"flood", "line", "icicles"})
+EFFECT_EXCLUDED_CATS: dict = {
+    # Pixel-grid effects — bad on 1D strands and point fixtures
+    "Galaxy":        _FLOOD_LINE | {"candy_cane"},
+    "Kaleidoscope":  _FLOOD_LINE | {"candy_cane"},
+    "Fireworks":     _FLOOD_LINE | {"candy_cane"},
+    "Plasma":        _FLOOD_LINE,
+    "Liquid":        _FLOOD_LINE,
+    "Warp":          _FLOOD_LINE,
+    "Spirograph":    _FLOOD_LINE,
+    "Circles":       _FLOOD_LINE,
+    "Morph":         frozenset({"flood"}),
+    # SingleStrand only valid on strand-like models
+    "SingleStrand":  frozenset({"matrix", "matrix_horizontal", "matrix_column", "matrix_pole",
+                                "sphere", "cube", "flood", "star", "snowflake", "spinner",
+                                "tree", "mega_tree"}),
+    # Fire looks best on tall vertical structures — skip 2D panels and point fixtures
+    "Fire":          frozenset({"flood", "matrix", "matrix_horizontal", "matrix_column",
+                                "matrix_pole", "snowflake", "star", "spinner", "sphere", "cube"}),
+    # Strobe/Lightning should stay off floods (single-channel, no visible flash pattern)
+    "Strobe":        frozenset({"flood"}),
+    "Lightning":     frozenset({"flood"}),
+}
+
+
+def filter_by_effect(elements: list, effect_name: str, model_categories: dict) -> list:
+    """Return elements whose category is not excluded for the given effect."""
+    excluded = EFFECT_EXCLUDED_CATS.get(effect_name)
+    if not excluded:
+        return elements
+    return [e for e in elements if model_categories.get(e.attrib.get("name", "")) not in excluded]
 
 def _load_name_category_rules():
     """Load name-based category rules from JSON; fall back to a minimal hardcoded list."""
@@ -124,14 +178,16 @@ def categorize_models(layout_models, layout_groups):
         display_as = m.attrib.get("DisplayAs", "") or ""
         protocol = m.attrib.get("Protocol", "") or ""
 
-        # Auto-skip image and DMX models
-        if display_as.lower() == "image" or protocol.upper() == "DMX":
+        # Auto-skip inactive, image, and DMX models
+        if m.attrib.get("Active", "1") == "0" or display_as.lower() == "image" or protocol.upper() == "DMX":
             categories[name] = "skip"
             continue
 
         hint = _TYPE_HINT_RE.search(desc)
         if hint:
             categories[name] = hint.group(1).lower()
+        elif display_as.lower() == "custom" and _is_singing_prop(m):
+            categories[name] = "singing_prop"
         else:
             categories[name] = _DISPLAY_AS_MAP.get(display_as.lower(), "unknown")
 
@@ -334,7 +390,7 @@ def get_eligible_models(layout_models, layout_groups, model_categories=None):
         protocol = m.attrib.get("Protocol", "").upper()
         layout = m.attrib.get('Layout', '').lower()
         group_check = (layout == 'group' or display_as == 'group')
-        if model_categories.get(model_name) == "skip":
+        if model_categories.get(model_name) in ("skip", "singing_prop"):
             continue
         if (display_as != "image" and
             protocol != "DMX" and
@@ -365,6 +421,37 @@ def get_eligible_models(layout_models, layout_groups, model_categories=None):
         print(f"Inactive models/groups skipped ({len(inactive_skipped)}): {', '.join(sorted(inactive_skipped))}")
 
     return eligible_groups, eligible_individuals, everything_group_name
+
+
+def find_singing_props(layout_models):
+    """Return dict of model_name -> face_definition_name for all singing prop models.
+    Prefers the CustomColors='1' face definition (the colored one); falls back to first valid match.
+    """
+    result = {}
+    for m in layout_models:
+        if m.attrib.get("Active", "1") == "0":
+            continue
+        if m.attrib.get("DisplayAs", "").lower() != "custom":
+            continue
+        fallback_name = None
+        colored_name = None
+        for child in m:
+            if child.tag != "faceInfo":
+                continue
+            mouth = child.attrib.get("Mouth-WQ", "") or ""
+            eyes  = child.attrib.get("Eyes-Open", "") or ""
+            if not (_has_pixel_list(mouth) and _has_pixel_list(eyes)):
+                continue
+            face_def = child.attrib.get("Name", "Green")
+            if fallback_name is None:
+                fallback_name = face_def
+            if child.attrib.get("CustomColors", "0") == "1":
+                colored_name = face_def
+        chosen = colored_name or fallback_name
+        if chosen:
+            result[m.attrib.get("name", "Unnamed")] = chosen
+    return result
+
 
 def sort_models(layout_models, layout_groups):
     all_model_list = []
@@ -504,7 +591,7 @@ def generate_onsets_track(y, sr, display_elem, element_effects, seq_duration_ms)
     """Detect note/drum onsets and write the Onsets timing track. Returns onset ms list."""
     onset_times = librosa.onset.onset_detect(y=y, sr=sr, units='time')
     markers = [int(t * 1000) for t in onset_times]
-    labels  = [str(i + 1) for i in range(len(markers))]
+    labels  = [""] * len(markers)
     _add_timing_track("Onsets", markers, labels, display_elem, element_effects, seq_duration_ms)
     print(f"Onsets track: {len(markers)} onsets detected.")
     return markers
@@ -519,17 +606,61 @@ def generate_energy_peaks_track(y, sr, display_elem, element_effects, seq_durati
     rms_smooth = np.convolve(rms, kernel, mode='same')
     peak_frames = librosa.util.peak_pick(
         rms_smooth,
-        pre_max=5, post_max=5,
-        pre_avg=10, post_avg=10,
-        delta=float(rms_smooth.mean() * 0.5),
-        wait=int(sr / 512 * 0.5),   # ~0.5 s minimum gap between peaks
+        pre_max=3, post_max=3,
+        pre_avg=5,  post_avg=5,
+        delta=float(rms_smooth.mean() * 0.2),
+        wait=int(sr / 512 * 0.25),  # ~0.25 s minimum gap between peaks
     )
     peak_times = librosa.frames_to_time(peak_frames, sr=sr)
     markers = [int(t * 1000) for t in peak_times]
-    labels  = [str(i + 1) for i in range(len(markers))]
+    labels  = [""] * len(markers)
     _add_timing_track("Energy Peaks", markers, labels, display_elem, element_effects, seq_duration_ms)
     print(f"Energy Peaks track: {len(markers)} peaks detected.")
     return markers
+
+
+def generate_stem_tracks(audio_path, display_elem, element_effects, seq_duration_ms,
+                         output_dir=None, model="htdemucs_6s"):
+    """
+    Separate audio into stems with Demucs then build timing tracks for each instrument.
+    Drum stem → kick, snare, hihat, toms, cymbal tracks (frequency-filtered onsets).
+    Bass, guitar, piano stems → onset tracks.
+    Returns dict of track_name -> list[int] ms.
+    """
+    from stem_separator import separate_stems, extract_drum_onsets, get_stem_onsets
+
+    print("=== Stem separation starting ===")
+    stems = separate_stems(audio_path, output_dir=output_dir, model=model)
+
+    all_tracks = {}
+
+    # Drum sub-tracks
+    if "drums" in stems and os.path.isfile(stems["drums"]):
+        print("Extracting drum sub-tracks...")
+        drum_hits = extract_drum_onsets(stems["drums"])
+        for drum_name, ms_list in drum_hits.items():
+            if ms_list:
+                labels = [""] * len(ms_list)
+                track_name = drum_name.capitalize()
+                _add_timing_track(track_name, ms_list, labels, display_elem, element_effects, seq_duration_ms)
+                all_tracks[track_name] = ms_list
+                print(f"  {track_name} track: {len(ms_list)} markers")
+
+    # Melodic stems
+    for stem in ("bass", "guitar", "piano"):
+        if stem in stems and os.path.isfile(stems[stem]):
+            print(f"Extracting {stem} onsets...")
+            ms_list = get_stem_onsets(stems[stem], stem)
+            if ms_list:
+                labels = [""] * len(ms_list)
+                track_name = stem.capitalize()
+                _add_timing_track(track_name, ms_list, labels, display_elem, element_effects, seq_duration_ms)
+                all_tracks[track_name] = ms_list
+                print(f"  {track_name} track: {len(ms_list)} markers")
+
+    print(f"=== Stem tracks done: {list(all_tracks.keys())} ===")
+    return all_tracks
+
 
 def _fetch_lyrics(song_name: str, artist_name: str, duration_s: float) -> dict:
     """
@@ -851,7 +982,12 @@ def beat_aligned_window(beat_times_ms, min_beats=1, max_beats=8):
     """Pick a random start/end aligned to beat boundaries; return (start_ms, end_ms)."""
     if len(beat_times_ms) < 2:
         return None, None
-    span = random.randint(min_beats, max_beats)
+    available = len(beat_times_ms) - 1
+    lo = min(min_beats, available)
+    hi = min(max_beats, available)
+    if lo > hi:
+        lo = hi
+    span = random.randint(lo, hi)
     start_idx = random.randint(0, max(0, len(beat_times_ms) - span - 1))
     end_idx = min(start_idx + span, len(beat_times_ms) - 1)
     return beat_times_ms[start_idx], beat_times_ms[end_idx]

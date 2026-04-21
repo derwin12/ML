@@ -1,0 +1,16 @@
+# Large data files
+training_data.json
+arch_effects_summary.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# IDE
+.idea/
+
+# Chat histories
+chat_histories.json

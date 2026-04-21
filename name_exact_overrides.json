@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "description": "Exact-name overrides for model/group category. Applied last — highest user-controlled precedence. Keys are case-insensitive exact model or group names. Use this for models that resist all automatic classification.",
+  "overrides": {
+    "Roof":              "line",
+    "Fascia":            "line",
+    "Driveway Outline":  "line",
+    "Garage Outline":    "line",
+    "Window 1":          "window_frame",
+    "Window 2":          "window_frame",
+    "Window 3":          "window_frame",
+    "Flood Left":        "flood",
+    "Flood Right":       "flood",
+    "Flood Center":      "flood",
+    "Mega Tree":         "tree",
+    "Mini Tree 1":       "tree",
+    "Mini Tree 2":       "tree",
+    "Mini Tree 3":       "tree",
+    "Pixel Tree":        "tree",
+    "Spiral Tree":       "tree",
+    "Pixel Panel":       "matrix",
+    "Matrix":            "matrix",
+    "Singing Face":      "skip",
+    "DMX Spot":          "skip"
+  }
+}

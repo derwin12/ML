@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "description": "Substring rules for resolving unknown xLights model/group categories. Checked in order — first match wins. All matches are case-insensitive. Set 'exact': true for a whole-name match instead of substring.",
+  "rules": [
+    {"match": "arch",           "category": "arch"},
+    {"match": "candy cane",     "category": "arch"},
+    {"match": "cane",           "category": "arch"},
+    {"match": "rainbow",        "category": "arch"},
+
+    {"match": "matrix",         "category": "matrix"},
+    {"match": "pixel panel",    "category": "matrix"},
+    {"match": "led panel",      "category": "matrix"},
+    {"match": "mega tree face", "category": "matrix"},
+
+    {"match": "tree",           "category": "tree"},
+    {"match": "mega tree",      "category": "tree"},
+    {"match": "mini tree",      "category": "tree"},
+    {"match": "spiral tree",    "category": "tree"},
+
+    {"match": "star",           "category": "star"},
+    {"match": "starburst",      "category": "star"},
+
+    {"match": "spinner",        "category": "spinner"},
+    {"match": "pinwheel",       "category": "spinner"},
+
+    {"match": "sphere",         "category": "sphere"},
+    {"match": "globe",          "category": "sphere"},
+    {"match": "ball",           "category": "sphere"},
+
+    {"match": "icicle",         "category": "icicles"},
+    {"match": "drip",           "category": "icicles"},
+
+    {"match": "window frame",   "category": "window_frame"},
+    {"match": "window",         "category": "window_frame"},
+    {"match": "frame",          "category": "window_frame"},
+
+    {"match": "snowflake",      "category": "snowflake"},
+    {"match": "cube",           "category": "cube"},
+
+    {"match": "flood",          "category": "flood"},
+    {"match": "wash",           "category": "flood"},
+    {"match": "par can",        "category": "flood"},
+    {"match": "spot",           "category": "flood"},
+
+    {"match": "wreath",         "category": "wreath"},
+    {"match": "garland",        "category": "wreath"},
+
+    {"match": "line",           "category": "line"},
+    {"match": "strand",         "category": "line"},
+    {"match": "string",         "category": "line"},
+    {"match": "strip",          "category": "line"},
+    {"match": "rail",           "category": "line"},
+    {"match": "outline",        "category": "line"}
+  ]
+}
