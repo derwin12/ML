@@ -1008,6 +1008,48 @@ SECTION_INTENSITY = {
     "drop":       1.0,
 }
 
+# Max total effects per model, keyed by category
+CATEGORY_EFFECT_BUDGET = {
+    "flood":         4,
+    "single_strand": 6,
+    "line":          8,
+    "arch":          10,
+    "star":          8,
+    "snowflake":     8,
+    "cane":          6,
+    "cube":          12,
+    "matrix":        20,
+    "mega_tree":     20,
+    "tree_360":      15,
+    "spinner":       12,
+    "unknown":       8,
+}
+
+_CHORUS_INTENSITY_THRESHOLD = 0.9  # chorus=1.0, drop=1.0 qualify; bridge=0.8 does not
+
+
+class EffectBudget:
+    """Tracks how many effects have been placed on each model and enforces per-category caps."""
+    def __init__(self, model_categories: dict):
+        self._categories = model_categories
+        self._counts: dict = {}
+
+    def is_full(self, model_name: str) -> bool:
+        cat = self._categories.get(model_name, "unknown")
+        budget = CATEGORY_EFFECT_BUDGET.get(cat, 8)
+        return self._counts.get(model_name, 0) >= budget
+
+    def charge(self, model_name: str):
+        self._counts[model_name] = self._counts.get(model_name, 0) + 1
+
+
+_active_budget: 'EffectBudget | None' = None
+
+
+def set_effect_budget(budget):
+    global _active_budget
+    _active_budget = budget
+
 def section_intensity(section_name: str) -> float:
     key = section_name.lower()
     for k, v in SECTION_INTENSITY.items():
@@ -1090,6 +1132,55 @@ def section_effect_placements(base_count: int, structure: list, beat_times_ms: l
     return placements
 
 
+def chorus_only_placements(base_count: int, structure: list, beat_times_ms: list, min_beats: int, max_beats: int) -> list:
+    """
+    Like section_effect_placements but restricts to high-intensity sections only (chorus/drop).
+    Falls back to section_effect_placements if no qualifying sections exist.
+    """
+    if not structure or not beat_times_ms:
+        return [(None, None)] * base_count
+
+    high_sections = [s for s in structure if section_intensity(s["section"]) >= _CHORUS_INTENSITY_THRESHOLD]
+    if not high_sections:
+        return section_effect_placements(base_count, structure, beat_times_ms, min_beats, max_beats)
+
+    placements = []
+    for sec in high_sections:
+        n = max(1, round(base_count * section_intensity(sec["section"])))
+        sec_beats = beats_for_section(beat_times_ms, sec)
+        for _ in range(n):
+            if len(sec_beats) >= 2:
+                start, end = beat_aligned_window(sec_beats, min_beats, min(max_beats, len(sec_beats) - 1))
+            else:
+                start, end = None, None
+            placements.append((start, end))
+    return placements
+
+
+def filter_beats_vocals_only(beat_times_ms: list, lyrics_lines: list, gap_threshold_s: float = 8.0) -> list:
+    """
+    Return only beats that fall within gap_threshold_s of a lyric timestamp.
+    Suppresses rapid-fire effects during long instrumental gaps.
+    Returns the original list if lyrics_lines is empty.
+    """
+    if not lyrics_lines:
+        return beat_times_ms
+    import bisect
+    lyric_ms = sorted(t for t, _ in lyrics_lines)
+    threshold_ms = int(gap_threshold_s * 1000)
+    result = []
+    for b in beat_times_ms:
+        idx = bisect.bisect_left(lyric_ms, b)
+        close = False
+        for i in (idx - 1, idx):
+            if 0 <= i < len(lyric_ms) and abs(b - lyric_ms[i]) <= threshold_ms:
+                close = True
+                break
+        if close:
+            result.append(b)
+    return result
+
+
 def alternating_beat_placements(beat_times_ms: list, stride: int = 2, duration_beats: int = 1,
                                 structure: list = None) -> list:
     """
@@ -1150,11 +1241,18 @@ def get_or_create_layer(elem, start_ms: int, end_ms: int, max_layers: int = 2):
     """
     Return an EffectLayer on elem that has no conflict with [start_ms, end_ms).
     Tries existing layers first; creates a new one (up to max_layers) if all conflict.
-    Returns None if no layer is available — caller should skip this placement.
+    Returns None if no layer is available or if the model has hit its effect budget.
     """
+    model_name = elem.attrib.get("name", "")
+    if _active_budget and _active_budget.is_full(model_name):
+        return None
     for layer in elem.findall("EffectLayer"):
         if not is_overlapping(start_ms, end_ms, get_occupied_slots(layer)):
+            if _active_budget:
+                _active_budget.charge(model_name)
             return layer
     if len(elem.findall("EffectLayer")) < max_layers:
+        if _active_budget:
+            _active_budget.charge(model_name)
         return ET.SubElement(elem, "EffectLayer")
     return None

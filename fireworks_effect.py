@@ -2,12 +2,12 @@
 
 import xml.etree.ElementTree as ET
 import random
-from utils import section_effect_placements, get_or_create_layer, place_effect
+from utils import chorus_only_placements, get_or_create_layer, place_effect
 from param_sampler import sample_params
 
 def add_fireworks_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None, structure=None, registry=None):
     num_fireworks_added = 0
-    placements = section_effect_placements(5, structure or [], beats or [], min_beats=4, max_beats=14)
+    placements = chorus_only_placements(5, structure or [], beats or [], min_beats=4, max_beats=14)
     for start_time, end_time in placements:
         if start_time is None:
             start_time = random.randint(0, seq_duration_ms - 8000)

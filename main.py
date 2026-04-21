@@ -5,7 +5,7 @@ from utils import indent, load_structure_map, get_audio_duration, get_eligible_m
     generate_stem_tracks, \
     generate_lyrics_track, generate_structure_track, _lemonade_complete, _load_audio, get_or_create_layer, \
     categorize_models, add_everything_group_effect, EffectDBRegistry, place_effect, find_singing_props, \
-    filter_by_effect
+    filter_by_effect, EffectBudget, set_effect_budget, filter_beats_vocals_only
 from singing_face_effect import add_singing_face_effects
 from on_effect import add_on_effects
 from bars_effect import add_bars_effects
@@ -292,6 +292,7 @@ def create_xsq_from_template(
         layout_models, layout_groups, model_categories
     )
     eligible_model_names = eligible_groups + eligible_individuals
+    set_effect_budget(EffectBudget(model_categories))
     singing_props_map = find_singing_props(layout_models)
     if singing_props_map:
         print(f"Singing props detected ({len(singing_props_map)}): {', '.join(singing_props_map.keys())}")
@@ -363,6 +364,7 @@ def create_xsq_from_template(
     onsets = None
     energy_peaks = None
     lyrics = None
+    vocal_onsets = None
     if seq_type == "Media" and audio_path:
         y, sr = _load_audio(audio_path)
         audio_duration_s = len(y) / sr
@@ -373,6 +375,10 @@ def create_xsq_from_template(
         lyrics = generate_lyrics_track(song, artist, audio_duration_s, display_elem, element_effects, seq_duration_ms)
         structure = generate_structure_track(audio_path, song, artist, display_elem, element_effects, seq_duration_ms)
         generate_stem_tracks(audio_path, display_elem, element_effects, seq_duration_ms)
+        vocal_onsets = filter_beats_vocals_only(onsets or [], lyrics or [])
+        if lyrics and vocal_onsets is not onsets:
+            suppressed = len(onsets or []) - len(vocal_onsets)
+            print(f"Lyrics gating: suppressed {suppressed} onset beats in instrumental gaps.")
 
     # Everything group gets only a Black Cherry Cosmos shader (no normal effects)
     if everything_group_name:
@@ -401,11 +407,12 @@ def create_xsq_from_template(
         return filter_by_effect(eligible_group_elements, effect_name, model_categories)
 
     # Timing aliases — fall back to beats when the richer track is unavailable
-    _peaks  = energy_peaks or beats or []   # loud-burst effects
-    _onsets = onsets or beats or []         # rapid reactive effects
-    _down   = downbeats or beats or []      # slow sweeping effects
+    _peaks   = energy_peaks or beats or []         # loud-burst effects
+    _onsets  = onsets or beats or []               # rapid reactive effects
+    _down    = downbeats or beats or []            # slow sweeping effects
+    _vocal   = vocal_onsets if vocal_onsets is not None else _onsets  # lyrics-gated rapid effects
 
-    num_ons_added        = add_on_effects(fe("On"), fg("On"), seq_duration_ms, color_palettes, colors, _onsets, structure, registry=registry)
+    num_ons_added        = add_on_effects(fe("On"), fg("On"), seq_duration_ms, color_palettes, colors, _vocal, structure, registry=registry)
     num_bars_added       = add_bars_effects(fe("Bars"), fg("Bars"), seq_duration_ms, color_palettes, colors, _down, structure, registry=registry)
     num_color_wash_added = add_color_wash_effects(fe("Color Wash"), fg("Color Wash"), seq_duration_ms, color_palettes, colors, _down, structure, registry=registry)
     num_shockwave_added  = add_shockwave_effects(fe("Shockwave"), fg("Shockwave"), seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
@@ -416,10 +423,10 @@ def create_xsq_from_template(
     num_fill_added       = add_fill_effects(fe("Fill"), fg("Fill"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_ripple_added     = add_ripple_effects(fe("Ripple"), fg("Ripple"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_wave_added       = add_wave_effects(fe("Wave"), fg("Wave"), seq_duration_ms, color_palettes, colors, _down, structure, registry=registry)
-    num_twinkle_added    = add_twinkle_effects(fe("Twinkle"), fg("Twinkle"), seq_duration_ms, color_palettes, colors, _onsets, structure, registry=registry)
+    num_twinkle_added    = add_twinkle_effects(fe("Twinkle"), fg("Twinkle"), seq_duration_ms, color_palettes, colors, _vocal, structure, registry=registry)
     num_meteors_added    = add_meteors_effects(fe("Meteors"), fg("Meteors"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_fire_added       = add_fire_effects(fe("Fire"), fg("Fire"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
-    num_shimmer_added    = add_shimmer_effects(fe("Shimmer"), fg("Shimmer"), seq_duration_ms, color_palettes, colors, _onsets, structure, registry=registry)
+    num_shimmer_added    = add_shimmer_effects(fe("Shimmer"), fg("Shimmer"), seq_duration_ms, color_palettes, colors, _vocal, structure, registry=registry)
     num_strobe_added     = add_strobe_effects(fe("Strobe"), fg("Strobe"), seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
     num_fan_added        = add_fan_effects(fe("Fan"), fg("Fan"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_galaxy_added     = add_galaxy_effects(fe("Galaxy"), fg("Galaxy"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
@@ -479,6 +486,8 @@ def create_xsq_from_template(
             "T_CHOICE_LayerMethod=Normal,T_SLIDER_EffectLayerMix=0"
         )
         place_effect(effect_layer, "Text", text_start, text_end, palette_id, text_settings, registry)
+
+    set_effect_budget(None)  # release budget after all effects are placed
 
     # Write all collected EffectDB entries to XML
     registry.write_to_xml(effect_db_elem)

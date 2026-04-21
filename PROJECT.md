@@ -400,11 +400,11 @@ Still unknown (1): Weird Thing 1
 
 
 ### Medium priority
-- [ ] **Per-model effect budgeting** — cap total effect count per model based on its category and size (floods and single strands get fewer effects than matrices and mega trees).
-- [ ] **Effect density tuning** — pass category into each effect module to scale `base_count` (e.g. a flood gets count=1–2; a mega tree gets count=10–20).
-- [ ] **Section-aware effect gating** — hard-restrict high-impact effects (`Strobe`, `Lightning`, `Fireworks`) to chorus/drop sections only; remove them from intro/outro entirely.
-- [ ] **Lyrics-driven vocal gating** — suppress or lighten effects during instrumental gaps identified from the Lyrics timing track; intensify on chorus lines.
-- [ ] **App.py / web UI sync** — CLI args and web form are now out of sync; update `app.py` to match the new argparse parameters.
+- [x] **Per-model effect budgeting** — `CATEGORY_EFFECT_BUDGET` dict + `EffectBudget` class in `utils.py`; enforced in `get_or_create_layer` via `_active_budget` global; set per run in `main.py`.
+- [x] **Effect density tuning** — budget caps naturally limit density per category (flood=4, matrix/mega_tree=20, etc.); no effect-module changes required.
+- [x] **Section-aware effect gating** — `chorus_only_placements()` in `utils.py`; `Strobe`, `Lightning`, `Fireworks` restricted to chorus/drop (threshold ≥ 0.9).
+- [x] **Lyrics-driven vocal gating** — `filter_beats_vocals_only()` in `utils.py`; `_vocal` beat list used for On/Twinkle/Shimmer; suppresses rapid effects during 8s+ instrumental gaps.
+- [x] **App.py / web UI sync** — paths now relative to script dir (VM-compatible); `sequence_name` and `duration` added to form, handler, and `index.html`.
 
 ### Low priority / future ideas
 - [ ] **Harmonic/percussive separation** (`librosa.effects.hpss`) — cleaner kick/snare detection on percussive channel; chord-change detection on harmonic channel.

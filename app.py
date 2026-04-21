@@ -5,22 +5,26 @@ import traceback
 from werkzeug.utils import secure_filename
 
 # Import your existing function
-from main import create_xsq_from_template  # Replace with your actual import
+from main import create_xsq_from_template
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = tempfile.gettempdir()
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max file size
 
-# Default values from your Python code, updated with artist and song name
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_TD   = os.path.join(_HERE, "training data")
+
 DEFAULT_VALUES = {
-    'template_xsq': r"C:\Users\daryl\PycharmProjects\ML\training data\folder 1\Empty Sequence.xsq",
-    'xlights_xml': r"C:\\Users\\daryl\\PycharmProjects\\ML\\training data\\folder 1\\xlights_rgbeffects.xml",
+    'template_xsq':   os.path.join(_TD, "folder 1", "Empty Sequence.xsq"),
+    'xlights_xml':    os.path.join(_TD, "folder 1", "xlights_rgbeffects.xml"),
     'output_filename': "Generated_Sequence.xsq",
-    'structure_json': r"C:\\Users\\daryl\\PycharmProjects\\ML\\training data\\templates\\xlights_template_structures.json",
-    'audio_path': r"E:\2023\ShowFolder3D\Audio\Pretty Baby - Alex Sampson.mp3",
-    'sequence_type': "Media",
-    'artist_name': "Alex Sampson",
-    'song_name': "Pretty Baby"
+    'structure_json': os.path.join(_TD, "templates", "xlights_template_structures.json"),
+    'audio_path':     "",
+    'sequence_type':  "Media",
+    'artist_name':    "",
+    'song_name':      "",
+    'sequence_name':  "AI_Sequence",
+    'duration':       "",
 }
 
 @app.route('/')
@@ -40,9 +44,12 @@ def generate_sequence():
         audio_file = request.files.get('audio_path')
 
         # Get text inputs
-        sequence_type = request.form.get('sequence_type', DEFAULT_VALUES['sequence_type'])
-        artist_name = request.form.get('artist_name', DEFAULT_VALUES['artist_name'])
-        song_name = request.form.get('song_name', DEFAULT_VALUES['song_name'])
+        sequence_type  = request.form.get('sequence_type', DEFAULT_VALUES['sequence_type'])
+        artist_name    = request.form.get('artist_name', DEFAULT_VALUES['artist_name'])
+        song_name      = request.form.get('song_name', DEFAULT_VALUES['song_name'])
+        sequence_name  = request.form.get('sequence_name', DEFAULT_VALUES['sequence_name']) or "AI_Sequence"
+        duration_str   = request.form.get('duration', DEFAULT_VALUES['duration'])
+        duration       = int(duration_str) if duration_str and duration_str.isdigit() else None
         use_default_paths = request.form.get('use_default_paths') == 'true'
 
         # Handle file paths - ALWAYS use hardcoded template_xsq and structure_json
@@ -79,17 +86,21 @@ def generate_sequence():
         if not xlights_xml_path:
             return jsonify({'error': 'Xlights XML file is required and could not be found at default path'}), 400
 
-        # Call your function with new parameters
-        create_xsq_from_template(
+        kwargs = dict(
             template_xsq=template_xsq_path,
             xlights_xml=xlights_xml_path,
             output_xsq=output_xsq,
             structure_json=structure_json_path,
-            audio_path=audio_path,
             sequence_type=sequence_type,
+            sequence_name=sequence_name,
             artist_name=artist_name,
-            song_name=song_name
+            song_name=song_name,
         )
+        if audio_path:
+            kwargs["audio_path"] = audio_path
+        if duration:
+            kwargs["duration"] = duration
+        create_xsq_from_template(**kwargs)
 
         # Check if output was created
         if os.path.exists(output_xsq):

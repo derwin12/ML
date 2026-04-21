@@ -212,6 +212,10 @@
             <div class="form-group">
                 <div class="section-header">Output Settings</div>
 
+                <label for="sequence_name">Sequence Name</label>
+                <input type="text" id="sequence_name" name="sequence_name" value="{{ defaults.sequence_name }}">
+                <div class="file-info">Name embedded in the XSQ file (default: AI_Sequence)</div>
+
                 <label for="output_filename">Output Filename</label>
                 <input type="text" id="output_filename" name="output_filename" value="{{ defaults.output_filename }}">
                 <div class="file-info">Name for the generated sequence file</div>
@@ -221,6 +225,10 @@
                     <option value="Media" selected>Media</option>
                     <option value="Animation">Animation</option>
                 </select>
+
+                <label for="duration" style="margin-top:12px;">Duration (seconds, Animation only)</label>
+                <input type="text" id="duration" name="duration" value="{{ defaults.duration }}" placeholder="Leave blank for random (30–120s)">
+                <div class="file-info">Only used for Animation sequences; ignored for Media</div>
             </div>
 
             <div class="button-group">
@@ -236,12 +244,14 @@
     <script>
         // Default values from server
         const defaults = {
-            xlights_xml: "{{ defaults.xlights_xml }}",
+            xlights_xml:    "{{ defaults.xlights_xml }}",
             output_filename: "{{ defaults.output_filename }}",
-            audio_path: "{{ defaults.audio_path }}",
-            sequence_type: "{{ defaults.sequence_type }}",
-            artist_name: "{{ defaults.artist_name }}",
-            song_name: "{{ defaults.song_name }}"
+            audio_path:     "{{ defaults.audio_path }}",
+            sequence_type:  "{{ defaults.sequence_type }}",
+            artist_name:    "{{ defaults.artist_name }}",
+            song_name:      "{{ defaults.song_name }}",
+            sequence_name:  "{{ defaults.sequence_name }}",
+            duration:       "{{ defaults.duration }}"
         };
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -269,6 +279,10 @@
                 // Set artist name and song name to defaults
                 document.getElementById('artist_name').value = defaults.artist_name;
                 document.getElementById('song_name').value = defaults.song_name;
+
+                // Set sequence name and duration to defaults
+                document.getElementById('sequence_name').value = defaults.sequence_name;
+                document.getElementById('duration').value = defaults.duration;
 
                 // Set sequence type to default
                 document.getElementById('sequence_type').value = defaults.sequence_type;
