@@ -406,6 +406,15 @@ Still unknown (1): Weird Thing 1
 - [x] **Lyrics-driven vocal gating** — `filter_beats_vocals_only()` in `utils.py`; `_vocal` beat list used for On/Twinkle/Shimmer; suppresses rapid effects during 8s+ instrumental gaps.
 - [x] **App.py / web UI sync** — paths now relative to script dir (VM-compatible); `sequence_name` and `duration` added to form, handler, and `index.html`.
 
+### Choreography (new priority tier — highest impact on output quality)
+- [x] **Spatial position extraction** — `get_model_positions()` reads `WorldPosX/Z` from layout; `sort_elements_by_position()` sorts elements by axis.
+- [x] **Phrase boundary detection** — `generate_phrase_boundaries()` returns one timestamp per 4 downbeats.
+- [x] **Spatial sweep effect** — `spatial_sweep.py`; staggered On effect fires left→right (alternating) at phrase boundaries in sections with intensity ≥ 0.5; capped at 3 sweeps per section.
+- [x] **Section foreground assignment** — `FOREGROUND_CATS_BY_SECTION` + `get_foreground_elements()`; Strobe/Lightning/Fireworks now only fire on chorus-foreground prop categories (matrix/mega_tree/cube/tree_360).
+- [ ] **Learn from example XSQ files** — parse user's real hand-sequenced XSQs to extract: which effects appear per prop category per section, co-occurrence patterns, timing distributions. Replace random selection with learned probability tables.
+- [ ] **Smarter palette application** — cool/desaturated in intro/verse, warm/saturated in chorus/drop (section intensity already available).
+- [ ] **Cross-prop coordination (call & response)** — designate one prop category per section as "lead" and others as "support"; support props hold a sustained color while lead fires reactive effects.
+
 ### Low priority / future ideas
 - [ ] **Harmonic/percussive separation** (`librosa.effects.hpss`) — cleaner kick/snare detection on percussive channel; chord-change detection on harmonic channel.
 - [ ] **Spectral flux peaks** — catch section transitions that the LLM structure track misses.

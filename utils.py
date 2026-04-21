@@ -1027,6 +1027,35 @@ CATEGORY_EFFECT_BUDGET = {
 
 _CHORUS_INTENSITY_THRESHOLD = 0.9  # chorus=1.0, drop=1.0 qualify; bridge=0.8 does not
 
+# Which prop categories are "foreground" (active, featured) per section type
+FOREGROUND_CATS_BY_SECTION = {
+    "intro":      {"flood", "line", "single_strand", "cane"},
+    "verse":      {"arch", "tree_360", "spinner", "line", "star"},
+    "pre-chorus": {"arch", "tree_360", "matrix", "star"},
+    "chorus":     {"matrix", "mega_tree", "cube", "tree_360"},
+    "drop":       {"matrix", "mega_tree", "cube", "tree_360"},
+    "bridge":     {"arch", "matrix", "spinner", "star"},
+    "outro":      {"flood", "line", "single_strand", "cane"},
+    "breakdown":  {"arch", "spinner", "line"},
+}
+
+
+def get_foreground_elements(elements: list, model_categories: dict, section_name: str) -> list:
+    """
+    Return elements whose category is foreground for the given section type.
+    Falls back to all elements if no foreground categories match any element.
+    """
+    key = section_name.lower()
+    foreground_cats = None
+    for k, cats in FOREGROUND_CATS_BY_SECTION.items():
+        if k in key:
+            foreground_cats = cats
+            break
+    if not foreground_cats:
+        return elements
+    fg = [e for e in elements if model_categories.get(e.attrib.get("name", ""), "unknown") in foreground_cats]
+    return fg if fg else elements
+
 
 class EffectBudget:
     """Tracks how many effects have been placed on each model and enforces per-category caps."""
@@ -1062,6 +1091,47 @@ def get_section_for_beat(beat_ms: int, structure: list):
         if int(sec["start"] * 1000) <= beat_ms < int(sec["end"] * 1000):
             return sec
     return None
+
+def get_model_positions(layout_models) -> dict:
+    """
+    Extract WorldPosX, WorldPosZ from each model element.
+    Returns {model_name: (x, z)} for models that have position data.
+    """
+    positions = {}
+    for m in layout_models:
+        name = m.get("name", "")
+        try:
+            x = float(m.get("WorldPosX", 0))
+            z = float(m.get("WorldPosZ", 0))
+            positions[name] = (x, z)
+        except (ValueError, TypeError):
+            pass
+    return positions
+
+
+def sort_elements_by_position(elements: list, model_positions: dict, axis: str = 'x') -> list:
+    """
+    Sort elements by model position along 'x' (left/right) or 'z' (depth) axis.
+    Models without position data sort to the end.
+    """
+    def key(elem):
+        name = elem.attrib.get("name", "")
+        pos = model_positions.get(name)
+        if pos is None:
+            return float('inf')
+        return pos[0] if axis == 'x' else pos[1]
+    return sorted(elements, key=key)
+
+
+def generate_phrase_boundaries(downbeats_ms: list, phrase_size: int = 4) -> list:
+    """
+    Return one timestamp per musical phrase (every phrase_size downbeats).
+    At 120 bpm, phrase_size=4 gives one phrase boundary every ~8 seconds.
+    """
+    if not downbeats_ms:
+        return []
+    return [downbeats_ms[i] for i in range(0, len(downbeats_ms), phrase_size)]
+
 
 def beats_for_section(beat_times_ms: list, section: dict) -> list:
     s = int(section["start"] * 1000)

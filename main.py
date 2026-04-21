@@ -5,7 +5,9 @@ from utils import indent, load_structure_map, get_audio_duration, get_eligible_m
     generate_stem_tracks, \
     generate_lyrics_track, generate_structure_track, _lemonade_complete, _load_audio, get_or_create_layer, \
     categorize_models, add_everything_group_effect, EffectDBRegistry, place_effect, find_singing_props, \
-    filter_by_effect, EffectBudget, set_effect_budget, filter_beats_vocals_only
+    filter_by_effect, EffectBudget, set_effect_budget, filter_beats_vocals_only, \
+    get_model_positions, sort_elements_by_position, generate_phrase_boundaries, get_foreground_elements
+from spatial_sweep import add_spatial_sweep_effects
 from singing_face_effect import add_singing_face_effects
 from on_effect import add_on_effects
 from bars_effect import add_bars_effects
@@ -293,6 +295,7 @@ def create_xsq_from_template(
     )
     eligible_model_names = eligible_groups + eligible_individuals
     set_effect_budget(EffectBudget(model_categories))
+    model_positions = get_model_positions(layout_models)
     singing_props_map = find_singing_props(layout_models)
     if singing_props_map:
         print(f"Singing props detected ({len(singing_props_map)}): {', '.join(singing_props_map.keys())}")
@@ -365,6 +368,7 @@ def create_xsq_from_template(
     energy_peaks = None
     lyrics = None
     vocal_onsets = None
+    phrase_boundaries = []
     if seq_type == "Media" and audio_path:
         y, sr = _load_audio(audio_path)
         audio_duration_s = len(y) / sr
@@ -379,6 +383,8 @@ def create_xsq_from_template(
         if lyrics and vocal_onsets is not onsets:
             suppressed = len(onsets or []) - len(vocal_onsets)
             print(f"Lyrics gating: suppressed {suppressed} onset beats in instrumental gaps.")
+        phrase_boundaries = generate_phrase_boundaries(downbeats or [], phrase_size=4)
+        print(f"Phrase boundaries: {len(phrase_boundaries)} phrases detected.")
 
     # Everything group gets only a Black Cherry Cosmos shader (no normal effects)
     if everything_group_name:
@@ -400,11 +406,26 @@ def create_xsq_from_template(
     num_first_beat = add_first_beat_effects(eligible_elements, color_palettes, colors, beats, structure, registry)
     print(f"First-beat POC: placed {num_first_beat} effects across all eligible models.")
 
+    # Build position-sorted element list for spatial sweeps
+    x_sorted_elements = sort_elements_by_position(eligible_elements, model_positions, axis='x')
+
+    # Spatial sweep: staggered On effect across models in X order at each phrase boundary
+    if phrase_boundaries:
+        num_sweep = add_spatial_sweep_effects(
+            x_sorted_elements, seq_duration_ms, color_palettes, colors,
+            phrase_boundaries, structure=structure, registry=registry
+        )
+        print(f"Spatial sweeps: {num_sweep} On effects placed across {len(x_sorted_elements)} models.")
+
     # Helpers: filter eligible elements by effect category rules
     def fe(effect_name):
         return filter_by_effect(eligible_elements, effect_name, model_categories)
     def fg(effect_name):
         return filter_by_effect(eligible_group_elements, effect_name, model_categories)
+
+    # Foreground elements for high-impact effects (chorus/drop category leaders)
+    chorus_fg = get_foreground_elements(eligible_elements, model_categories, "chorus")
+    chorus_fg_groups = get_foreground_elements(eligible_group_elements, model_categories, "chorus")
 
     # Timing aliases — fall back to beats when the richer track is unavailable
     _peaks   = energy_peaks or beats or []         # loud-burst effects
@@ -427,7 +448,10 @@ def create_xsq_from_template(
     num_meteors_added    = add_meteors_effects(fe("Meteors"), fg("Meteors"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_fire_added       = add_fire_effects(fe("Fire"), fg("Fire"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_shimmer_added    = add_shimmer_effects(fe("Shimmer"), fg("Shimmer"), seq_duration_ms, color_palettes, colors, _vocal, structure, registry=registry)
-    num_strobe_added     = add_strobe_effects(fe("Strobe"), fg("Strobe"), seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
+    num_strobe_added     = add_strobe_effects(
+        filter_by_effect(chorus_fg, "Strobe", model_categories),
+        filter_by_effect(chorus_fg_groups, "Strobe", model_categories),
+        seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
     num_fan_added        = add_fan_effects(fe("Fan"), fg("Fan"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_galaxy_added     = add_galaxy_effects(fe("Galaxy"), fg("Galaxy"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_shape_added      = add_shape_effects(fe("Shape"), fg("Shape"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
@@ -438,12 +462,18 @@ def create_xsq_from_template(
     num_snowflakes_added = add_snowflakes_effects(fe("Snowflakes"), fg("Snowflakes"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_garlands_added   = add_garlands_effects(fe("Garlands"), fg("Garlands"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_spirograph_added = add_spirograph_effects(fe("Spirograph"), fg("Spirograph"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
-    num_lightning_added  = add_lightning_effects(fe("Lightning"), fg("Lightning"), seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
+    num_lightning_added  = add_lightning_effects(
+        filter_by_effect(chorus_fg, "Lightning", model_categories),
+        filter_by_effect(chorus_fg_groups, "Lightning", model_categories),
+        seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
     num_circles_added    = add_circles_effects(fe("Circles"), fg("Circles"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_kaleidoscope_added = add_kaleidoscope_effects(fe("Kaleidoscope"), fg("Kaleidoscope"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_liquid_added     = add_liquid_effects(fe("Liquid"), fg("Liquid"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
     num_plasma_added     = add_plasma_effects(fe("Plasma"), fg("Plasma"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
-    num_fireworks_added  = add_fireworks_effects(fe("Fireworks"), fg("Fireworks"), seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
+    num_fireworks_added  = add_fireworks_effects(
+        filter_by_effect(chorus_fg, "Fireworks", model_categories),
+        filter_by_effect(chorus_fg_groups, "Fireworks", model_categories),
+        seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
     num_tendril_added    = add_tendril_effects(fe("Tendril"), fg("Tendril"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
 
     # --- DEV: category label text effect on last 4 beats ---
