@@ -479,6 +479,8 @@ def create_xsq_from_template(
         seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
     num_tendril_added    = add_tendril_effects(fe("Tendril"), fg("Tendril"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
 
+    set_effect_budget(None)  # release budget so DEV text labels are never blocked
+
     # --- DEV: category label text effect on last 4 beats ---
     if beats and len(beats) >= 4:
         text_start = beats[-4]
@@ -519,8 +521,6 @@ def create_xsq_from_template(
             "T_CHOICE_LayerMethod=Normal,T_SLIDER_EffectLayerMix=0"
         )
         place_effect(effect_layer, "Text", text_start, text_end, palette_id, text_settings, registry)
-
-    set_effect_budget(None)  # release budget after all effects are placed
 
     # Write all collected EffectDB entries to XML
     registry.write_to_xml(effect_db_elem)
