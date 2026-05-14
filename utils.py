@@ -5,6 +5,7 @@ import json
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import random
+import colorsys
 from mutagen.mp3 import MP3
 import librosa
 import re
@@ -1104,6 +1105,34 @@ def section_intensity(section_name: str) -> float:
         if k in key:
             return v
     return 0.6
+
+
+def _tint_color(hex_color: str, intensity: float) -> str:
+    """Desaturate a hex color proportionally to intensity (0=grey, 1=full color)."""
+    hex_color = hex_color.lstrip("#")
+    r, g, b = (int(hex_color[i:i+2], 16) / 255.0 for i in (0, 2, 4))
+    h, s, v = colorsys.rgb_to_hsv(r, g, b)
+    s_new = s * max(0.15, intensity)
+    r2, g2, b2 = colorsys.hsv_to_rgb(h, s_new, v)
+    return f"#{int(r2*255):02X}{int(g2*255):02X}{int(b2*255):02X}"
+
+
+def section_colors(colors: list, structure: list, start_ms: int) -> list:
+    """Return a copy of colors desaturated to match section intensity at start_ms.
+
+    High-intensity sections (chorus/drop) return colors unchanged.
+    Low-intensity sections (intro/outro) return a desaturated variant.
+    """
+    if not structure:
+        return colors
+    t_sec = start_ms / 1000.0
+    sect = next((s for s in structure if s.get("start", 0) <= t_sec < s.get("end", float("inf"))), None)
+    if sect is None:
+        sect = structure[-1]
+    intensity = section_intensity(sect.get("section", ""))
+    if intensity >= 0.8:
+        return colors
+    return [_tint_color(c, intensity) for c in colors]
 
 def get_section_for_beat(beat_ms: int, structure: list):
     for sec in structure:

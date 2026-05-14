@@ -176,3 +176,66 @@ def available_effects() -> list:
     """Return list of effect names that have training data."""
     _load()
     return sorted(_data.keys())
+
+
+# ---------------------------------------------------------------------------
+# Transition table  (prev_effect, category) → likely next effects
+# ---------------------------------------------------------------------------
+
+_transitions: dict = {}
+_transitions_built: bool = False
+
+
+def _build_transitions():
+    global _transitions, _transitions_built
+    if _transitions_built:
+        return
+    _load()
+    from collections import defaultdict as _dd
+    table = _dd(Counter)
+    for effect_name, info in _data.items():
+        if effect_name.startswith("_"):
+            continue
+        for obs in info["observations"]:
+            prev = obs.get("prev_effect")
+            if not prev:
+                continue
+            if obs.get("layer_index", 0) != 0:
+                continue  # primary-layer transitions only
+            cat = obs.get("model_type", "unknown")
+            table[(prev, cat)][effect_name] += 1
+    _transitions = dict(table)
+    _transitions_built = True
+    total_keys = len(_transitions)
+    print(f"[param_sampler] Transition table built: {total_keys} (prev_effect, category) pairs.")
+
+
+def sample_next_effect(prev_effect: str, category: str,
+                       allowed_effects: set = None) -> str | None:
+    """Weighted-random sample the effect that most commonly follows prev_effect
+    on a prop of the given category.  Falls back to any-category transitions when
+    the specific (prev, category) pair has no data."""
+    _build_transitions()
+
+    counts = Counter(_transitions.get((prev_effect, category), {}))
+    if not counts:
+        # broad fallback: pool all categories for this prev_effect
+        for (prev, _cat), next_counts in _transitions.items():
+            if prev == prev_effect:
+                counts.update(next_counts)
+    if not counts:
+        return None
+
+    if allowed_effects:
+        counts = Counter({k: v for k, v in counts.items() if k in allowed_effects})
+    if not counts:
+        return None
+
+    total = sum(counts.values())
+    r = random.uniform(0, total)
+    cumulative = 0.0
+    for name, cnt in counts.items():
+        cumulative += cnt
+        if r <= cumulative:
+            return name
+    return list(counts.keys())[-1]

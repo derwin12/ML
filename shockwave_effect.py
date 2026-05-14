@@ -2,11 +2,11 @@
 
 import xml.etree.ElementTree as ET
 import random
-from utils import section_effect_placements, alternating_beat_placements, get_or_create_layer, place_effect
+from utils import section_effect_placements, alternating_beat_placements, get_or_create_layer, place_effect, section_colors
 from param_sampler import sample_params, sample_beat_stride
 
 
-def _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, is_group, palette_id, registry=None):
+def _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, is_group, palette_id, registry=None, structure=None):
     p = sample_params("Shockwave")
     center_x    = p.get("E_SLIDER_Shockwave_CenterX", random.randint(0, 100))
     center_y    = p.get("E_SLIDER_Shockwave_CenterY", random.randint(0, 100))
@@ -21,7 +21,8 @@ def _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_c
                         random.randint(50, 200) if is_group else random.randint(20, 50))
 
     selected_indices = random.sample(range(1, 9), 2)
-    parts = [f"C_BUTTON_Palette{i+1}={fixed_colors[i]}" for i in range(8)]
+    _sc = section_colors(fixed_colors, structure, start_time)
+    parts = [f"C_BUTTON_Palette{i+1}={_sc[i]}" for i in range(8)]
     for k in selected_indices:
         parts.append(f"C_CHECKBOX_Palette{k}=1")
     new_palette = ET.SubElement(color_palettes, "ColorPalette")
@@ -57,7 +58,7 @@ def add_shockwave_effects(eligible_elements, eligible_group_elements, seq_durati
                 if effect_layer is None:
                     continue
                 palette_id = len(color_palettes.findall("ColorPalette"))
-                _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, is_group, palette_id, registry)
+                _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, is_group, palette_id, registry, structure)
                 num_shockwave_added += 1
 
     # --- Sparse pass: existing section-weighted placement on other elements ---

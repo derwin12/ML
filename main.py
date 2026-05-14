@@ -7,7 +7,7 @@ from utils import indent, load_structure_map, get_audio_duration, get_eligible_m
     categorize_models, add_everything_group_effect, EffectDBRegistry, place_effect, find_singing_props, \
     filter_by_effect, EffectBudget, set_effect_budget, filter_beats_vocals_only, \
     get_model_positions, sort_elements_by_position, generate_phrase_boundaries, get_foreground_elements, \
-    filter_by_probability
+    filter_by_probability, section_colors
 from spatial_sweep import add_spatial_sweep_effects
 from singing_face_effect import add_singing_face_effects
 from on_effect import add_on_effects
@@ -191,6 +191,93 @@ def add_first_beat_effects(eligible_elements, color_palettes, colors, beats, str
         count += 1
 
     return count
+
+
+# Effects allowed in the transition pass (excludes chorus-only high-impact effects)
+_TRANSITION_EFFECTS = {
+    "On", "Bars", "Color Wash", "Shockwave", "Spirals", "Pinwheel",
+    "SingleStrand", "Morph", "Fill", "Ripple", "Wave", "Twinkle",
+    "Meteors", "Fire", "Shimmer", "Fan", "Galaxy", "Shape", "Warp",
+    "Marquee", "Curtain", "Butterfly", "Snowflakes", "Garlands",
+    "Spirograph", "Circles", "Kaleidoscope", "Liquid", "Plasma", "Tendril",
+}
+
+
+def add_transition_effects(eligible_elements, model_categories, seq_duration_ms,
+                           color_palettes, colors, beats, structure, registry):
+    """Post-placement pass: read each element's primary layer (layer 0), find the last
+    placed effect, ask the transition table what commonly follows it for that category,
+    and place one follow-on effect in the next beat-aligned window.
+
+    Runs after all effect modules so the budget naturally limits how many fire.
+    """
+    from param_sampler import sample_next_effect, sample_params
+
+    placed = 0
+    beat_list = beats or []
+
+    for elem in eligible_elements:
+        name = elem.attrib.get("name", "")
+        category = model_categories.get(name, "unknown")
+
+        # Read layer 0 only (primary effects)
+        layer = elem.find("EffectLayer")
+        if layer is None:
+            continue
+        layer0_effects = sorted(
+            [e for e in layer.findall("Effect") if e.get("name", "").strip()],
+            key=lambda e: int(e.get("startTime", 0))
+        )
+        if not layer0_effects:
+            continue
+
+        last = layer0_effects[-1]
+        last_name = last.get("name", "")
+        last_end_ms = int(last.get("endTime", 0))
+
+        # Need at least 4 beats of runway after the last effect
+        remaining = [b for b in beat_list if b >= last_end_ms]
+        if len(remaining) < 4:
+            continue
+
+        # Category-eligibility check: skip if this effect isn't allowed on this category
+        next_eff = sample_next_effect(last_name, category, _TRANSITION_EFFECTS)
+        if next_eff is None:
+            continue
+        if not filter_by_effect([elem], next_eff, model_categories):
+            continue
+
+        # Beat-aligned window: 4–12 beats
+        span = min(random.randint(4, 12), len(remaining) - 1)
+        start_ms = remaining[0]
+        end_ms = remaining[span]
+
+        effect_layer = get_or_create_layer(elem, start_ms, end_ms)
+        if effect_layer is None:
+            continue
+
+        # Build settings from sampled params; fall back to bare minimum
+        params = sample_params(next_eff, model_type=category)
+        if params:
+            settings_str = ",".join(f"{k}={v}" for k, v in params.items())
+            if "E1" not in settings_str:
+                settings_str += ",E1=100,E2=100"
+        else:
+            settings_str = "E1=100,E2=100"
+
+        sc = section_colors(colors, structure, start_ms)
+        selected = random.sample(range(1, 9), 3)
+        parts = [f"C_BUTTON_Palette{i+1}={sc[i]}" for i in range(8)]
+        for k in selected:
+            parts.append(f"C_CHECKBOX_Palette{k}=1")
+        new_palette = ET.SubElement(color_palettes, "ColorPalette")
+        new_palette.text = ",".join(parts)
+        palette_id = len(color_palettes.findall("ColorPalette")) - 1
+
+        place_effect(effect_layer, next_eff, start_ms, end_ms, palette_id, settings_str, registry)
+        placed += 1
+
+    return placed
 
 
 def create_xsq_from_template(
@@ -478,6 +565,12 @@ def create_xsq_from_template(
         filter_by_effect(chorus_fg_groups, "Fireworks", model_categories),
         seq_duration_ms, color_palettes, colors, _peaks, structure, registry=registry)
     num_tendril_added    = add_tendril_effects(fe("Tendril"), fg("Tendril"), seq_duration_ms, color_palettes, colors, beats, structure, registry=registry)
+
+    num_transition = add_transition_effects(
+        eligible_elements, model_categories, seq_duration_ms,
+        color_palettes, colors, beats, structure, registry
+    )
+    print(f"Transition pass: {num_transition} follow-on effects placed.")
 
     set_effect_budget(None)
 

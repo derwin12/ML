@@ -6,7 +6,7 @@
 
 import xml.etree.ElementTree as ET
 import random
-from utils import get_or_create_layer, place_effect, section_intensity, get_section_for_beat
+from utils import get_or_create_layer, place_effect, section_intensity, get_section_for_beat, section_colors
 
 
 # Minimum section intensity to fire a sweep (skips intro/outro/breakdown)
@@ -68,7 +68,8 @@ def add_spatial_sweep_effects(
 
         # Pick a single color for the whole sweep to keep it cohesive
         color_idx = random.randint(0, 7)
-        parts = [f"C_BUTTON_Palette{i + 1}={fixed_colors[i]}" for i in range(8)]
+        _sc = section_colors(fixed_colors, structure, phrase_start)
+        parts = [f"C_BUTTON_Palette{i + 1}={_sc[i]}" for i in range(8)]
         parts.append(f"C_CHECKBOX_Palette{color_idx + 1}=1")
         palette_str = ",".join(parts)
 

@@ -5,31 +5,36 @@
 # prop category to the weighted distribution of effect types that human
 # sequencers actually place on that prop type.
 #
+# Layer weighting: layer 0 (primary) = full weight 1.0; layer N = 1/(N+1).
+# This reflects that xLights layer 0 is the main visual effect.
+#
 # Usage: python analyze_choreography.py
 # Output: choreography_probs.json (small, committed to git)
 
 import json
 import os
-from collections import Counter, defaultdict
+from collections import defaultdict
 
 TRAINING_JSON = os.path.join(os.path.dirname(__file__), "training_data.json")
 OUTPUT_JSON   = os.path.join(os.path.dirname(__file__), "choreography_probs.json")
 
-# Map training_data model_type values → one or more of our category names.
-# A model_type can feed multiple categories (e.g. "tree" → both mega_tree and tree_360).
+# Map normalized scan model_type values (post-fix) → generator category names.
+# scan_sequences.py now emits "arch", "line", "tree" etc. matching utils.py categories.
+# A source can feed multiple categories (e.g. "tree" feeds both mega_tree and tree_360).
 CATEGORY_SOURCES = {
     "mega_tree":     ["tree"],
     "tree_360":      ["tree"],
-    "matrix":        ["matrix", "window frame"],
-    "arch":          ["arches", "wreath"],
+    "matrix":        ["matrix"],
+    "window_frame":  ["window_frame"],
+    "arch":          ["arch"],
     "star":          ["star"],
-    "snowflake":     ["star"],       # radial like a star
-    "spinner":       ["matrix"],     # similar 2-D surface
-    "line":          ["single line", "icicles", "poly line"],
-    "flood":         ["single line"],
-    "cane":          ["poly line", "single line"],
+    "snowflake":     ["snowflake", "star"],  # radial like a star
+    "spinner":       ["spinner", "matrix"],
+    "line":          ["line", "icicles"],
+    "flood":         ["flood", "line"],
+    "cane":          ["candy_cane", "line"],
     "cube":          ["cube"],
-    "single_strand": ["arches", "single line"],   # sequential strings
+    "single_strand": ["arch", "line"],
     "unknown":       ["tree", "matrix", "star"],  # average of prominent types
 }
 
@@ -47,33 +52,44 @@ KNOWN_EFFECTS = {
 MIN_PROB = 0.01
 
 
+def layer_weight(layer_index: int) -> float:
+    """Layer 0 (primary) = 1.0; each deeper layer is half as important."""
+    return 1.0 / (layer_index + 1)
+
+
 def build_table(training_data: dict) -> dict:
     """
-    For each source model_type, accumulate effect counts and average durations.
-    Then combine counts per category via CATEGORY_SOURCES, normalize to probabilities.
+    For each source model_type, accumulate weighted effect counts and average durations.
+    Layer 0 effects count fully; layer N counts as 1/(N+1).
+    Combine counts per category via CATEGORY_SOURCES, normalize to probabilities.
     """
-    # raw_counts[model_type][effect_name] = count
+    # raw_counts[model_type][effect_name] = weighted float count
     # raw_durations[model_type][effect_name] = [duration_ms, ...]
-    raw_counts:    dict = defaultdict(Counter)
+    raw_counts:    dict = defaultdict(lambda: defaultdict(float))
     raw_durations: dict = defaultdict(lambda: defaultdict(list))
 
     for effect_name, info in training_data.items():
+        if effect_name.startswith("_"):
+            continue  # skip meta keys like _cooccurrence
         if effect_name not in KNOWN_EFFECTS:
             continue
         for obs in info["observations"]:
             mt = obs.get("model_type", "unknown")
-            raw_counts[mt][effect_name] += 1
+            li = obs.get("layer_index", 0)
+            weight = layer_weight(li)
+            raw_counts[mt][effect_name] += weight
             dur = obs.get("duration_ms", 0)
             if dur > 0:
                 raw_durations[mt][effect_name].append(dur)
 
     result = {}
     for category, sources in CATEGORY_SOURCES.items():
-        merged: Counter = Counter()
+        merged: dict = defaultdict(float)
         merged_dur: dict = defaultdict(list)
 
         for src in sources:
-            merged.update(raw_counts.get(src, {}))
+            for eff, cnt in raw_counts.get(src, {}).items():
+                merged[eff] += cnt
             for eff, durs in raw_durations.get(src, {}).items():
                 merged_dur[eff].extend(durs)
 
@@ -98,7 +114,7 @@ def build_table(training_data: dict) -> dict:
         result[category] = {
             "probs":        probs,
             "avg_duration": avg_durations,
-            "total_obs":    total,
+            "total_obs":    round(total, 1),
         }
 
     return result
@@ -109,7 +125,7 @@ def main():
     with open(TRAINING_JSON, encoding="utf-8") as f:
         training_data = json.load(f)
 
-    print("Building choreography probability table...")
+    print("Building choreography probability table (with layer weighting)...")
     table = build_table(training_data)
 
     with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
@@ -120,7 +136,7 @@ def main():
     for cat, data in sorted(table.items()):
         top = sorted(data["probs"].items(), key=lambda x: -x[1])[:5]
         top_str = "  ".join(f"{e}={p:.0%}" for e, p in top)
-        print(f"  {cat:<15} ({data['total_obs']:>7} obs)  {top_str}")
+        print(f"  {cat:<15} ({data['total_obs']:>9.1f} weighted obs)  {top_str}")
 
 
 if __name__ == "__main__":

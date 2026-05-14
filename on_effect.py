@@ -2,13 +2,14 @@
 
 import xml.etree.ElementTree as ET
 import random
-from utils import section_effect_placements, alternating_beat_placements, get_or_create_layer, place_effect
+from utils import section_effect_placements, alternating_beat_placements, get_or_create_layer, place_effect, section_colors
 from param_sampler import sample_params, sample_beat_stride
 
 
-def _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, palette_id, registry=None):
+def _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, palette_id, registry=None, structure=None):
     selected_indices = [random.randint(1, 8)]
-    parts = [f"C_BUTTON_Palette{i+1}={fixed_colors[i]}" for i in range(8)]
+    _sc = section_colors(fixed_colors, structure, start_time)
+    parts = [f"C_BUTTON_Palette{i+1}={_sc[i]}" for i in range(8)]
     for k in selected_indices:
         parts.append(f"C_CHECKBOX_Palette{k}=1")
     new_palette = ET.SubElement(color_palettes, "ColorPalette")
@@ -35,7 +36,7 @@ def add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, 
                 if effect_layer is None:
                     continue
                 palette_id = len(color_palettes.findall("ColorPalette"))
-                _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, palette_id, registry)
+                _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, palette_id, registry, structure)
                 num_ons_added += 1
 
     # --- Sparse pass: section-weighted placement on other elements ---

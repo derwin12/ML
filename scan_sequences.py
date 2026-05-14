@@ -5,11 +5,35 @@
 import os
 import json
 import xml.etree.ElementTree as ET
-from collections import defaultdict
+from collections import defaultdict, Counter
+from itertools import combinations
 
 XSQ_FOLDER = r"E:\2023\ShowFolder3D"
 LAYOUT_XML  = r"C:\Users\daryl\PycharmProjects\ML\training data\folder 1\xlights_rgbeffects.xml"
 OUTPUT_JSON = r"C:\Users\daryl\PycharmProjects\ML\training_data.json"
+
+# Map xLights DisplayAs values to generator category names (matches utils.py)
+_DISPLAY_AS_TO_CATEGORY = {
+    "arches":       "arch",
+    "single line":  "line",
+    "tree":         "tree",
+    "matrix":       "matrix",
+    "star":         "star",
+    "spinner":      "spinner",
+    "sphere":       "sphere",
+    "icicles":      "icicles",
+    "window frame": "window_frame",
+    "snowflake":    "snowflake",
+    "wreath":       "unknown",
+    "custom":       "unknown",
+    "modelgroup":   "group",
+    "poly line":    "line",
+    "candy canes":  "candy_cane",
+    "cube":         "cube",
+}
+
+# Categories excluded from co-occurrence analysis (not real prop types)
+_SKIP_COOC_CATS = {"group", "unknown", "skip"}
 
 
 # ---------------------------------------------------------------------------
@@ -27,7 +51,6 @@ def parse_settings(text: str) -> dict:
             k, _, v = part.partition("=")
             k = k.strip()
             v = v.strip()
-            # Try to coerce to int or float
             try:
                 v = int(v)
             except ValueError:
@@ -40,23 +63,41 @@ def parse_settings(text: str) -> dict:
     return result
 
 
-def load_model_types(layout_xml: str) -> dict:
-    """Return {model_name_lower: display_as} from xlights_rgbeffects.xml."""
-    model_types = {}
+def _is_flood(model_elem) -> bool:
+    """Single-node Single Line = flood/par-can."""
+    if model_elem.get("DisplayAs", "").lower() != "single line":
+        return False
+    try:
+        nps = int(model_elem.get("NodesPerString", model_elem.get("parm1", 0)))
+        ns  = int(model_elem.get("NumStrings",    model_elem.get("parm2", 1)))
+        lpn = int(model_elem.get("LightsPerNode", 1))
+    except (ValueError, TypeError):
+        return False
+    return nps * ns == 1 and lpn == 1
+
+
+def load_model_categories(layout_xml: str) -> dict:
+    """Return {model_name_lower: category} using normalized category names that
+    match utils.py's categorize_models() output."""
+    cats = {}
     if not os.path.isfile(layout_xml):
-        return model_types
+        return cats
     try:
         root = ET.parse(layout_xml).getroot()
         for m in root.findall(".//model"):
             name = m.get("name", "").strip().lower()
-            display_as = m.get("DisplayAs", "unknown").lower()
-            model_types[name] = display_as
+            da = m.get("DisplayAs", "unknown").lower()
+            # Flood promotion: single-node single line → flood
+            if _is_flood(m):
+                cats[name] = "flood"
+            else:
+                cats[name] = _DISPLAY_AS_TO_CATEGORY.get(da, "unknown")
         for g in root.findall(".//modelGroup"):
             name = g.get("name", "").strip().lower()
-            model_types[name] = "group"
+            cats[name] = "group"
     except ET.ParseError:
         pass
-    return model_types
+    return cats
 
 
 def extract_effect_db(root) -> list:
@@ -82,19 +123,12 @@ def extract_beats(root) -> list:
 
 
 def beat_index_and_span(start_ms: int, end_ms: int, beats: list):
-    """
-    Return (beat_index, beat_span) for an effect given the beats list.
-    beat_index: index of the nearest beat to start_ms (-1 if no beats).
-    beat_span: number of beats the effect covers (rounded, minimum 1).
-    """
+    """Return (beat_index, beat_span) for an effect given the beats list."""
     if not beats:
         return -1, 1
     diffs = [abs(start_ms - b) for b in beats]
     idx = diffs.index(min(diffs))
-    if len(beats) > 1:
-        avg_beat_ms = (beats[-1] - beats[0]) / (len(beats) - 1)
-    else:
-        avg_beat_ms = 500
+    avg_beat_ms = (beats[-1] - beats[0]) / (len(beats) - 1) if len(beats) > 1 else 500
     span = max(1, round((end_ms - start_ms) / avg_beat_ms))
     return idx, span
 
@@ -124,16 +158,30 @@ def section_for_time(start_ms: int, sections: list) -> str:
     return "unknown"
 
 
+def section_position(start_ms: int, sections: list) -> float:
+    """Return 0.0–1.0 position within the containing section (0=section start, 1=end).
+    Returns 0.5 if no section contains start_ms."""
+    for s in sections:
+        if s["start_ms"] <= start_ms < s["end_ms"]:
+            duration = s["end_ms"] - s["start_ms"]
+            if duration > 0:
+                return round((start_ms - s["start_ms"]) / duration, 3)
+    return 0.5
+
+
 # ---------------------------------------------------------------------------
 # Main scan
 # ---------------------------------------------------------------------------
 
 def scan_folder(folder: str, layout_xml: str) -> dict:
-    model_types = load_model_types(layout_xml)
+    model_categories = load_model_categories(layout_xml)
 
     # {effect_name: [observation, ...]}
-    # observation = {params, duration_ms, model_type, section}
     data = defaultdict(list)
+
+    # Co-occurrence: "cat:effect+cat:effect" -> count
+    cooccurrence: Counter = Counter()
+
     files_processed = 0
     errors = []
 
@@ -159,16 +207,27 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
         if len(beats) > 1:
             avg_beat_ms = (beats[-1] - beats[0]) / (len(beats) - 1)
 
-        for elem in root.findall(".//Element[@type='Model']") + root.findall(".//Element"):
-            if elem.get("type") in ("timing", None) and elem.get("type") != "Model":
-                # Skip timing tracks and elements without a Model type
-                if elem.get("type") != "Model":
-                    continue
+        # All effects in this file for co-occurrence: (start_ms, end_ms, category, effect_name)
+        file_effects: list = []
 
-            model_name  = elem.get("name", "").strip()
-            model_type  = model_types.get(model_name.lower(), "unknown")
+        for elem in root.findall(".//Element[@type='timing']"):
+            pass  # skip timing elements in main loop below
 
-            for layer in elem.findall("EffectLayer"):
+        model_elems = root.findall(".//Element[@type='Model']")
+        # Fallback: some XSQs use Element without explicit type
+        if not model_elems:
+            model_elems = [e for e in root.findall(".//Element")
+                           if e.get("type") not in ("timing", None) or e.get("type") == "Model"]
+
+        for elem in model_elems:
+            if elem.get("type") == "timing":
+                continue
+
+            model_name = elem.get("name", "").strip()
+            category   = model_categories.get(model_name.lower(), "unknown")
+
+            for layer_idx, layer in enumerate(elem.findall("EffectLayer")):
+                # Collect and sort all effects on this layer
                 layer_effects = []
                 for effect in layer.findall("Effect"):
                     effect_name = effect.get("name", "").strip()
@@ -182,23 +241,22 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
                     if end_ms - start_ms <= 0:
                         continue
                     layer_effects.append((effect_name, start_ms, end_ms, effect))
+                layer_effects.sort(key=lambda x: x[1])
 
-                # Compute beat stride between consecutive same-name effects on this layer
-                # stride = number of beats between consecutive effect starts (1=every beat, 2=every other, etc.)
-                stride_by_name = defaultdict(list)
+                # Beat stride per effect name on this layer
+                stride_by_name: dict = defaultdict(list)
                 if avg_beat_ms > 0:
-                    prev_by_name = {}
-                    for ename, sms, ems, _ in sorted(layer_effects, key=lambda x: x[1]):
+                    prev_by_name: dict = {}
+                    for ename, sms, ems, _ in layer_effects:
                         if ename in prev_by_name:
                             gap_ms = sms - prev_by_name[ename]
-                            stride = max(1, round(gap_ms / avg_beat_ms))
-                            stride_by_name[ename].append(stride)
+                            stride_by_name[ename].append(max(1, round(gap_ms / avg_beat_ms)))
                         prev_by_name[ename] = sms
 
-                for effect_name, start_ms, end_ms, effect in layer_effects:
+                for i, (effect_name, start_ms, end_ms, effect) in enumerate(layer_effects):
                     duration_ms = end_ms - start_ms
 
-                    # Get params — inline Settings child preferred, fall back to EffectDB ref
+                    # Params: inline Settings child preferred, fall back to EffectDB ref
                     params = {}
                     settings_elem = effect.find("Settings")
                     if settings_elem is not None and settings_elem.text:
@@ -211,7 +269,7 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
                             except (IndexError, ValueError):
                                 pass
 
-                    # Strip palette/color button keys — they're per-sequence, not portable
+                    # Strip palette/color button keys — per-sequence, not portable
                     params = {k: v for k, v in params.items()
                               if not k.startswith("C_BUTTON") and not k.startswith("C_CHECKBOX_Palette")}
 
@@ -219,15 +277,37 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
                     strides = stride_by_name.get(effect_name, [])
                     beat_stride = round(sum(strides) / len(strides)) if strides else 1
 
+                    prev_eff = layer_effects[i - 1][0] if i > 0 else None
+                    next_eff = layer_effects[i + 1][0] if i < len(layer_effects) - 1 else None
+
                     data[effect_name].append({
-                        "params":       params,
-                        "duration_ms":  duration_ms,
-                        "model_type":   model_type,
-                        "section":      section_for_time(start_ms, sections),
-                        "beat_span":    beat_span,
-                        "beat_stride":  beat_stride,
-                        "source":       filename,
+                        "params":           params,
+                        "duration_ms":      duration_ms,
+                        "model_type":       category,
+                        "section":          section_for_time(start_ms, sections),
+                        "section_position": section_position(start_ms, sections),
+                        "beat_span":        beat_span,
+                        "beat_stride":      beat_stride,
+                        "layer_index":      layer_idx,
+                        "prev_effect":      prev_eff,
+                        "next_effect":      next_eff,
+                        "source":           filename,
                     })
+
+                    # Collect for co-occurrence (only layer 0 = primary effects)
+                    if layer_idx == 0 and category not in _SKIP_COOC_CATS:
+                        file_effects.append((start_ms, end_ms, category, effect_name))
+
+        # --- Co-occurrence pass: sample at beats (or every 500ms if no beats) ---
+        if file_effects:
+            max_end = max(e[1] for e in file_effects)
+            sample_times = beats if beats else list(range(0, max_end, 500))
+            for t in sample_times:
+                active = [(cat, eff) for (sms, ems, cat, eff) in file_effects if sms <= t < ems]
+                for (cat_a, eff_a), (cat_b, eff_b) in combinations(active, 2):
+                    if cat_a != cat_b:
+                        key = "+".join(sorted([f"{cat_a}:{eff_a}", f"{cat_b}:{eff_b}"]))
+                        cooccurrence[key] += 1
 
         files_processed += 1
         if files_processed % 10 == 0:
@@ -241,16 +321,19 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
     # Build summary stats per effect
     summary = {}
     for effect_name, observations in data.items():
+        durations = [o["duration_ms"] for o in observations]
         summary[effect_name] = {
             "count":        len(observations),
             "observations": observations,
+            "duration_stats": {
+                "min":  min(durations),
+                "max":  max(durations),
+                "mean": int(sum(durations) / len(durations)),
+            },
         }
-        durations = [o["duration_ms"] for o in observations]
-        summary[effect_name]["duration_stats"] = {
-            "min": min(durations),
-            "max": max(durations),
-            "mean": int(sum(durations) / len(durations)),
-        }
+
+    # Top co-occurrence pairs (keep all, sorted by count descending)
+    summary["_cooccurrence"] = dict(cooccurrence.most_common())
 
     return summary
 
@@ -259,12 +342,22 @@ def main():
     print(f"Scanning: {XSQ_FOLDER}")
     data = scan_folder(XSQ_FOLDER, LAYOUT_XML)
 
-    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+    # Separate _cooccurrence for display before writing
+    cooc = data.pop("_cooccurrence", {})
+    effect_data = data
 
-    print(f"\nSaved {len(data)} effect types to {OUTPUT_JSON}")
-    for name, info in sorted(data.items(), key=lambda x: -x[1]["count"]):
-        print(f"  {name:<25} {info['count']:>5} observations")
+    output = dict(effect_data)
+    output["_cooccurrence"] = cooc
+
+    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
+        json.dump(output, f, indent=2)
+
+    effect_count = sum(v["count"] for v in effect_data.values())
+    print(f"\nSaved {len(effect_data)} effect types, {effect_count:,} observations → {OUTPUT_JSON}")
+    print(f"Co-occurrence pairs: {len(cooc):,}")
+    print()
+    for name, info in sorted(effect_data.items(), key=lambda x: -x[1]["count"]):
+        print(f"  {name:<25} {info['count']:>7,} observations")
 
 
 if __name__ == "__main__":

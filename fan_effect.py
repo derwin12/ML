@@ -2,7 +2,7 @@
 
 import xml.etree.ElementTree as ET
 import random
-from utils import section_effect_placements, get_or_create_layer, place_effect
+from utils import section_effect_placements, section_colors, get_or_create_layer, place_effect
 from param_sampler import sample_params
 
 def add_fan_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None, structure=None, registry=None):
@@ -32,7 +32,8 @@ def add_fan_effects(eligible_elements, eligible_group_elements, seq_duration_ms,
 
         num_colors = random.randint(2, 4)
         selected_indices = random.sample(range(1, 9), num_colors)
-        parts = [f"C_BUTTON_Palette{i+1}={fixed_colors[i]}" for i in range(8)]
+        _sc = section_colors(fixed_colors, structure, start_time)
+        parts = [f"C_BUTTON_Palette{i+1}={_sc[i]}" for i in range(8)]
         for k in selected_indices:
             parts.append(f"C_CHECKBOX_Palette{k}=1")
         palette_str = ",".join(parts)

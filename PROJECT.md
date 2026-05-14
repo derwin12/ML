@@ -426,7 +426,7 @@ Still unknown (1): Weird Thing 1
 ### High priority — next up
 - [x] **Category-aware effect selection** — `EFFECT_EXCLUDED_CATS` + `filter_by_effect()` in `utils.py`; all 33 effect calls in `main.py` pre-filter via `fe()`/`fg()` helpers.
 - [x] **Use new timing tracks in effects** — `downbeats` captured; burst effects (Fireworks/Lightning/Shockwave/Strobe) use `energy_peaks`; slow sweeping (Bars/Color Wash/Wave/Morph/Curtain) use `downbeats`; rapid (On/Shimmer/Twinkle) use `onsets`.
-- [ ] **Smarter palette application** — cool/desaturated colors in low-intensity sections (intro, outro, verse), warm/saturated in high-energy sections (chorus, drop). Section intensity values are already available via `section_intensity()`.
+- [x] **Smarter palette application** — `section_colors()` in `utils.py` desaturates the palette proportionally to `section_intensity()`; all 34 effect modules (including `spatial_sweep.py`) use it per placement window. Chorus/drop = full saturation; intro/outro = ~15–30% saturation.
 - [x] **Identify singing prop category** — `_is_singing_prop()` requires both `Mouth-WQ` + `Eyes-Open` numeric pixel lists in `<faceInfo>`; inactive models excluded.
 - [x] **Singing props → Faces effect only** — `singing_face_effect.py`; uses `CustomColors='1'` face def; excluded from all other effect modules via `get_eligible_models()`.
 - [x] **Add snowflake, cane, cube categories** — `cube` added to `name_category_rules.json`; both included in `EFFECT_EXCLUDED_CATS` for 2D-only effects.
@@ -456,8 +456,17 @@ Still unknown (1): Weird Thing 1
 - [x] **Spatial sweep effect** — `spatial_sweep.py`; staggered On effect fires left→right (alternating) at phrase boundaries in sections with intensity ≥ 0.5; capped at 3 sweeps per section.
 - [x] **Section foreground assignment** — `FOREGROUND_CATS_BY_SECTION` + `get_foreground_elements()`; Strobe/Lightning/Fireworks now only fire on chorus-foreground prop categories (matrix/mega_tree/cube/tree_360).
 - [x] **Learn from example XSQ files** — `analyze_choreography.py` reads `training_data.json` (1.6M obs from 379 real XSQs); builds `choreography_probs.json` mapping each prop category to effect probability distribution. `filter_by_probability()` in `utils.py` gates every effect call against learned thresholds. `sample_effect_for_category()` in `param_sampler.py` for weighted random sampling.
-- [ ] **Smarter palette application** — cool/desaturated in intro/verse, warm/saturated in chorus/drop (section intensity already available).
-- [ ] **Cross-prop coordination (call & response)** — designate one prop category per section as "lead" and others as "support"; support props hold a sustained color while lead fires reactive effects.
+- [x] **Smarter palette application** — see High priority section above.
+- [x] **Effect transition sampler** — `sample_next_effect(prev, category)` in `param_sampler.py` builds a `(prev_effect, category) → Counter` table from layer-0 training observations; `add_transition_effects()` in `main.py` post-pass places one follow-on effect per eligible element in the next beat-aligned gap; budget still enforced.
+- [ ] **Cross-prop coordination (call & response)** — designate one prop category per section as "lead" and others as "support"; support props hold a sustained color while lead fires reactive effects. Co-occurrence data in `training_data.json["_cooccurrence"]` is the foundation.
+
+### Training data — next opportunities (free, no new labeling)
+*All of these require re-running `scan_sequences.py` → `analyze_choreography.py` first.*
+- [ ] **Rescan + rebuild** — re-run `scan_sequences.py` (adds `layer_index`, `prev_effect`, `next_effect`, `section_position`, normalized `model_type`, `_cooccurrence`) then `analyze_choreography.py` (layer-weighted probs, fixed category name mapping). Immediate quality lift for `filter_by_probability()` and `sample_params()`.
+- [ ] **Section-position-aware param sampling** — `sample_params()` currently filters by section name; extend to also match `section_position` bucket (beginning / middle / end of section). Reveals whether human sequencers use faster or slower effects at the start of a chorus vs. the end.
+- [ ] **Layer-index-aware effect selection** — use `layer_index` stats per effect+category to guide which effects are placed as primary (layer 0) vs. accent (layer 1). Currently all modules target layer 0 by default; some effects (Shimmer, Twinkle, On) may naturally belong on higher layers.
+- [ ] **Co-occurrence-driven coordination** — use `_cooccurrence` table to bias simultaneous effect selection: when placing on category A, prefer effects for category B that co-occur with A's effect in the training data. Foundation for the call-and-response pattern.
+- [ ] **Transition sequence extension** — current transition pass adds only one follow-on per element. Extend to chain 2–3 transitions per element to create a full mini-arc (e.g. Bars → Morph → Fireworks across a chorus).
 
 ### Web app / UX (next up)
 - [ ] **Lemonade URL config** — let the user set a custom Lemonade URL from the UI and persist it in `localStorage`; surface in the badge tooltip.
