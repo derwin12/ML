@@ -132,33 +132,40 @@ def _load_choreo():
     _choreo_loaded = True
 
 
-def get_effect_probability(effect_name: str, category: str) -> float:
-    """Return the learned probability (0–1) of effect_name for a given prop category."""
+def _choreo_probs(category: str, section: str = None) -> dict:
+    """Return the probs dict for a category+section, falling back to global.
+    Handles both old flat format {probs:{}} and new nested {global:{probs:{}}, chorus:{probs:{}}}."""
     _load_choreo()
     cat_data = _choreo.get(category)
     if cat_data is None:
-        return 0.0
-    return cat_data["probs"].get(effect_name, 0.0)
+        return {}
+    # New nested format
+    if "global" in cat_data:
+        if section and section in cat_data and cat_data[section].get("probs"):
+            return cat_data[section]["probs"]
+        return cat_data["global"].get("probs", {})
+    # Old flat format — fall back gracefully
+    return cat_data.get("probs", {})
 
 
-def get_choreography_probs(category: str) -> dict:
-    """Return {effect_name: probability} dict for a category, or {} if unknown."""
-    _load_choreo()
-    cat_data = _choreo.get(category)
-    return dict(cat_data["probs"]) if cat_data else {}
+def get_effect_probability(effect_name: str, category: str, section: str = None) -> float:
+    """Return the learned probability (0–1) of effect_name for a given prop category and section."""
+    return _choreo_probs(category, section).get(effect_name, 0.0)
 
 
-def sample_effect_for_category(category: str, allowed_effects: set = None) -> str | None:
+def get_choreography_probs(category: str, section: str = None) -> dict:
+    """Return {effect_name: probability} dict for a category+section, or {} if unknown."""
+    return dict(_choreo_probs(category, section))
+
+
+def sample_effect_for_category(category: str, allowed_effects: set = None,
+                                section: str = None) -> str | None:
     """
-    Weighted-random sample an effect name for a prop category.
+    Weighted-random sample an effect name for a prop category and section.
     Optionally restrict to only effects in allowed_effects.
     Returns None if no data is available.
     """
-    _load_choreo()
-    cat_data = _choreo.get(category)
-    if not cat_data:
-        return None
-    probs = cat_data["probs"]
+    probs = dict(_choreo_probs(category, section))
     if allowed_effects:
         probs = {k: v for k, v in probs.items() if k in allowed_effects}
     if not probs:
