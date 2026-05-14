@@ -776,198 +776,144 @@ def generate_lyrics_track(song_name: str, artist_name: str, duration_s: float,
     return lines
 
 
-def generate_structure_track(audio_path, song_name, artist_name, display_elem, element_effects, seq_duration_ms):
+def detect_structure_audio(y, sr, duration_s: float):
     """
-    Generate a song structure timing track using Lemonade based on song name, artist, and audio duration.
+    Audio-based structure segmentation using beat-sync chroma + MFCC features.
+    Returns list of {"section": str, "start": float, "end": float} dicts,
+    or None if there are too few beats to segment reliably.
+    """
+    import numpy as np
+
+    hop_length = 512
+
+    _, beat_frames = librosa.beat.beat_track(y=y, sr=sr, hop_length=hop_length)
+    if len(beat_frames) < 8:
+        return None
+
+    chroma = librosa.feature.chroma_cqt(y=y, sr=sr, hop_length=hop_length)
+    mfcc   = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13, hop_length=hop_length)
+
+    beat_chroma = librosa.util.sync(chroma, beat_frames, aggregate=np.median)
+    beat_mfcc   = librosa.util.sync(mfcc,   beat_frames, aggregate=np.median)
+    beat_feat   = np.vstack([
+        librosa.util.normalize(beat_chroma, norm=2, axis=0),
+        librosa.util.normalize(beat_mfcc,   norm=2, axis=0),
+    ])
+
+    n_segs = max(4, min(12, round(duration_s / 30)))
+
+    bounds      = librosa.segment.agglomerative(beat_feat, k=n_segs)
+    bound_beats = beat_frames[bounds]
+    bound_times = librosa.frames_to_time(bound_beats, sr=sr, hop_length=hop_length)
+    bound_times = np.unique(np.concatenate([[0.0], bound_times, [duration_s]]))
+
+    rms       = librosa.feature.rms(y=y, hop_length=hop_length)[0]
+    rms_times = librosa.times_like(rms, sr=sr, hop_length=hop_length)
+
+    segs = []
+    for i in range(len(bound_times) - 1):
+        s, e = float(bound_times[i]), float(bound_times[i + 1])
+        mask    = (rms_times >= s) & (rms_times < e)
+        avg_rms = float(np.mean(rms[mask])) if np.any(mask) else float(np.mean(rms))
+        segs.append({"start": s, "end": e, "rms": avg_rms})
+
+    n             = len(segs)
+    rms_vals      = [seg["rms"] for seg in segs]
+    rms_desc      = sorted(rms_vals, reverse=True)
+    chorus_thresh = rms_desc[max(0, round(n * 0.30) - 1)]
+    bridge_thresh = rms_desc[min(n - 1, round(n * 0.75))]
+
+    raw = []
+    for i, seg in enumerate(segs):
+        pos = seg["start"] / duration_s
+        if i == 0:
+            raw.append("Intro")
+        elif i == n - 1:
+            raw.append("Outro")
+        elif seg["rms"] >= chorus_thresh:
+            raw.append("Chorus")
+        elif seg["rms"] <= bridge_thresh and 0.25 < pos < 0.85:
+            raw.append("Bridge")
+        else:
+            raw.append("Verse")
+
+    counts       = {}
+    final_labels = []
+    for lbl in raw:
+        if raw.count(lbl) > 1 and lbl not in ("Intro", "Outro"):
+            counts[lbl] = counts.get(lbl, 0) + 1
+            final_labels.append(f"{lbl} {counts[lbl]}")
+        else:
+            final_labels.append(lbl)
+
+    return [{"section": final_labels[i], "start": segs[i]["start"], "end": segs[i]["end"]}
+            for i in range(n)]
+
+
+def generate_structure_track(audio_path, song_name, artist_name, display_elem, element_effects,
+                             seq_duration_ms, y=None, sr=None):
+    """
+    Generate a Structure timing track from audio analysis (chroma + MFCC segmentation).
     Adds a timing track named 'Structure' to DisplayElements and ElementEffects.
-    Returns the structure data as a list of dictionaries with section names and timings.
+    Optionally accepts pre-loaded audio (y, sr) to avoid reloading.
+    Returns the structure as a list of {"section", "start", "end"} dicts.
     """
-    # Get audio duration in seconds
     duration = get_audio_duration(audio_path)
 
-    # Create prompt for Lemonade
-    prompt = f"""
-    You are a music analysis assistant tasked with generating a song structure for a specific song and artist.
-    The song is "{song_name}" by {artist_name}, with a duration of {duration:.2f} seconds.
-    Generate a timing track named "Structure" that lists the start and end times (in seconds) for each section
-    (e.g., Intro, Verse 1, Pre-Chorus, Chorus, Verse 2, Pre-Chorus, Chorus, Bridge, Chorus, Outro).
-    Ensure the timings are realistic for a modern pop song with a romantic vibe, including at least 7 sections to capture
-    typical pop song complexity. The sections must cover the entire duration without gaps or overlaps.
+    # Load audio once if not already provided
+    if y is None or sr is None:
+        y, sr = _load_audio(audio_path)
 
-    Output the response in strict JSON format, ensuring:
-    - The 'structure' array contains objects with 'section' (string), 'start' (float, seconds), and 'end' (float, seconds).
-    - The sections must start at 0 and end at the song's duration ({duration:.2f} seconds).
-    - No gaps or overlaps between sections (end time of one section equals start time of the next).
-    - At least 7 sections, but more can be included if appropriate.
-    - No trailing commas in the 'structure' array.
-    - No inline comments or extra text outside the JSON structure.
-
-    Example:
-    ```json
-    {{
-      "structure": [
-        {{"section": "Intro", "start": 0.0, "end": 10.0}},
-        {{"section": "Verse 1", "start": 10.0, "end": 40.0}},
-        {{"section": "Pre-Chorus", "start": 40.0, "end": 55.0}},
-        {{"section": "Chorus", "start": 55.0, "end": 85.0}},
-        {{"section": "Verse 2", "start": 85.0, "end": 115.0}},
-        {{"section": "Pre-Chorus", "start": 115.0, "end": 130.0}},
-        {{"section": "Chorus", "start": 130.0, "end": 160.0}},
-        {{"section": "Bridge", "start": 160.0, "end": 185.0}},
-        {{"section": "Chorus", "start": 185.0, "end": 215.0}},
-        {{"section": "Outro", "start": 215.0, "end": 233.0}}
-      ]
-    }}
-    """
-    print(f"Sending structure prompt to Lemonade:\n{prompt}")
-
+    # --- Primary: audio-based segmentation ---
+    structure = None
     try:
-        stdout = _lemonade_complete(prompt)
-        print(f"Lemonade structure response: {stdout}")
-
-        # Extract JSON portion
-        start_idx = stdout.find('{')
-        end_idx = stdout.rfind('}') + 1
-        if start_idx == -1 or end_idx == 0:
-            print(f"No valid JSON found in Lemonade structure output: {stdout}. Using fallback structure.")
-            # Fallback structure
-            structure = [
-                {"section": "Intro", "start": 0.0, "end": duration * 0.1},
-                {"section": "Verse 1", "start": duration * 0.1, "end": duration * 0.4},
-                {"section": "Chorus", "start": duration * 0.4, "end": duration * 0.7},
-                {"section": "Verse 2", "start": duration * 0.7, "end": duration * 0.9},
-                {"section": "Outro", "start": duration * 0.9, "end": duration}
-            ]
-        else:
-            json_str = stdout[start_idx:end_idx]
-            json_str = re.sub(r'//.*?(?=\n|$)', '', json_str)  # Remove comments
-            json_str = re.sub(r',\s*\]', r']', json_str)  # Remove trailing comma
-            print(f"Fixed structure JSON: {json_str}")
-            data = json.loads(json_str)
-            structure = data.get('structure', [])
-
-            # Validate shape/types only — timing problems are repaired below
-            if not structure or not all(
-                isinstance(s, dict) and
-                isinstance(s.get('section'), str) and
-                isinstance(s.get('start'), (int, float)) and
-                isinstance(s.get('end'), (int, float))
-                for s in structure
-            ):
-                print(f"Unparseable structure from Lemonade — using fallback.")
-                structure = [
-                    {"section": "Intro",   "start": 0.0,           "end": duration * 0.1},
-                    {"section": "Verse 1", "start": duration * 0.1, "end": duration * 0.4},
-                    {"section": "Chorus",  "start": duration * 0.4, "end": duration * 0.7},
-                    {"section": "Verse 2", "start": duration * 0.7, "end": duration * 0.9},
-                    {"section": "Outro",   "start": duration * 0.9, "end": duration},
-                ]
-
-        # Repair rather than reject — fix whatever Lemonade got wrong
-        structure.sort(key=lambda x: x['start'])
-
-        # 1. Anchor first section at 0
-        structure[0]['start'] = 0.0
-
-        # 2. Drop sections that start at or beyond the song duration, or are inverted
-        before = len(structure)
-        structure = [s for s in structure if s['start'] < duration and s['start'] < s['end']]
-        if len(structure) < before:
-            print(f"Dropped {before - len(structure)} out-of-range/inverted section(s).")
-
-        if not structure:
-            print("Structure empty after repair — using fallback.")
-            structure = [
-                {"section": "Intro",   "start": 0.0,            "end": duration * 0.1},
-                {"section": "Verse 1", "start": duration * 0.1,  "end": duration * 0.4},
-                {"section": "Chorus",  "start": duration * 0.4,  "end": duration * 0.7},
-                {"section": "Verse 2", "start": duration * 0.7,  "end": duration * 0.9},
-                {"section": "Outro",   "start": duration * 0.9,  "end": duration},
-            ]
-        else:
-            # 3. Clamp any section end that overshoots the song duration
-            for s in structure:
-                if s['end'] > duration:
-                    s['end'] = duration
-
-            # 4. Stitch: align each section's start to the previous section's end
-            #    (fixes both gaps and overlaps in one pass)
-            for i in range(1, len(structure)):
-                structure[i]['start'] = structure[i - 1]['end']
-
-            # 5. Drop zero-length sections created by stitching
-            structure = [s for s in structure if s['start'] < s['end']]
-
-            # 6. Ensure last section reaches exactly the end of the song
-            structure[-1]['end'] = duration
-
-        print(f"Structure: {[s['section'] for s in structure]}")
-
-        # Add to DisplayElements
-        ET.SubElement(display_elem, "Element", {
-            "collapsed": "0",
-            "type": "timing",
-            "name": "Structure",
-            "visible": "1",
-            "active": "0"
-        })
-
-        # Add to ElementEffects
-        structure_effect_elem = ET.SubElement(element_effects, "Element", {
-            "type": "timing",
-            "name": "Structure"
-        })
-
-        effect_layer = ET.SubElement(structure_effect_elem, "EffectLayer")
-
-        for section in structure:
-            start_ms = int(section['start'] * 1000)
-            end_ms = int(section['end'] * 1000)
-            ET.SubElement(effect_layer, "Effect", {
-                "label": section['section'],
-                "startTime": f"{start_ms}",
-                "endTime": f"{end_ms}"
-            })
-
-        return structure
-
+        structure = detect_structure_audio(y, sr, duration)
+        if structure:
+            print(f"Structure (audio): {[s['section'] for s in structure]}")
     except Exception as e:
-        print(f"Lemonade API error for structure track: {e}")
-        # Fallback structure
+        print(f"Audio segmentation failed ({e}) — using proportional fallback.")
+
+    # --- Fallback: fixed proportional sections ---
+    if not structure:
+        print("Structure: using proportional fallback.")
         structure = [
-            {"section": "Intro", "start": 0.0, "end": duration * 0.1},
-            {"section": "Verse 1", "start": duration * 0.1, "end": duration * 0.4},
-            {"section": "Chorus", "start": duration * 0.4, "end": duration * 0.7},
-            {"section": "Verse 2", "start": duration * 0.7, "end": duration * 0.9},
-            {"section": "Outro", "start": duration * 0.9, "end": duration}
+            {"section": "Intro",   "start": 0.0,            "end": duration * 0.10},
+            {"section": "Verse 1", "start": duration * 0.10, "end": duration * 0.35},
+            {"section": "Chorus 1","start": duration * 0.35, "end": duration * 0.55},
+            {"section": "Verse 2", "start": duration * 0.55, "end": duration * 0.75},
+            {"section": "Chorus 2","start": duration * 0.75, "end": duration * 0.90},
+            {"section": "Outro",   "start": duration * 0.90, "end": duration},
         ]
-        # Add to DisplayElements
-        ET.SubElement(display_elem, "Element", {
-            "collapsed": "0",
-            "type": "timing",
-            "name": "Structure",
-            "visible": "1",
-            "active": "0"
+
+    # Anchor ends precisely
+    structure[-1]["end"] = duration
+
+    # Add to DisplayElements
+    ET.SubElement(display_elem, "Element", {
+        "collapsed": "0",
+        "type": "timing",
+        "name": "Structure",
+        "visible": "1",
+        "active": "0"
+    })
+
+    # Add to ElementEffects
+    structure_effect_elem = ET.SubElement(element_effects, "Element", {
+        "type": "timing",
+        "name": "Structure"
+    })
+    effect_layer = ET.SubElement(structure_effect_elem, "EffectLayer")
+
+    for section in structure:
+        start_ms = int(section["start"] * 1000)
+        end_ms   = int(section["end"]   * 1000)
+        ET.SubElement(effect_layer, "Effect", {
+            "label":     section["section"],
+            "startTime": str(start_ms),
+            "endTime":   str(end_ms),
         })
 
-        # Add to ElementEffects
-        structure_effect_elem = ET.SubElement(element_effects, "Element", {
-            "type": "timing",
-            "name": "Structure"
-        })
-
-        effect_layer = ET.SubElement(structure_effect_elem, "EffectLayer")
-
-        for section in structure:
-            start_ms = int(section['start'] * 1000)
-            end_ms = int(section['end'] * 1000)
-            ET.SubElement(effect_layer, "Effect", {
-                "label": section['section'],
-                "startTime": f"{start_ms}",
-                "endTime": f"{end_ms}"
-            })
-
-        return structure
+    return structure
 
 # ---------------------------------------------------------------------------
 # Beat helpers

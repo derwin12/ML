@@ -145,7 +145,7 @@ Audio is loaded once with `_load_audio(audio_path) -> (y, sr)` and passed to all
 | `generate_onsets_track(y, sr, ...)` | Onsets | Every note/drum onset — denser than beats | `list[int]` ms |
 | `generate_energy_peaks_track(y, sr, ...)` | Energy Peaks | RMS energy peaks — loudest moments | `list[int]` ms |
 | `generate_lyrics_track(song, artist, duration_s, ...)` | Lyrics | Synced lyrics from lrclib.net — one mark per sung line | `list[(ms, text)]` |
-| `generate_structure_track(audio_path, ...)` | Structure | LLM-generated section labels (Intro/Verse/Chorus…) | `list[dict]` |
+| `generate_structure_track(audio_path, ...)` | Structure | Audio-based segmentation (chroma+MFCC+recurrence matrix) → section labels (Intro/Verse/Chorus…) | `list[dict]` |
 
 **Beat placement helpers:**
 - `beat_aligned_window(beat_times_ms, min_beats, max_beats)` — picks a random start beat and spans N beats; returns `(start_ms, end_ms)`.
@@ -165,7 +165,7 @@ SECTION_INTENSITY = {
 
 ### Structure generation
 
-`generate_structure_track()` calls Lemonade with the song name/artist/duration and gets back section labels with timestamps. Falls back to a simple 5-section default (Intro/Verse/Chorus/Verse2/Outro) if the call fails or returns invalid JSON.
+`generate_structure_track()` uses `detect_structure_audio()` to segment the song via beat-synchronised chroma + MFCC features and a self-similarity recurrence matrix (`librosa.segment.agglomerative`). Sections are labelled by position (first=Intro, last=Outro) and RMS energy (high=Chorus, interior low-energy=Bridge, else Verse). Duplicates are numbered (Chorus 1, Chorus 2…). Falls back to a proportional 6-section default if audio is too short or librosa fails. Accepts pre-loaded `(y, sr)` to avoid reloading audio.
 
 ---
 
@@ -505,7 +505,7 @@ Still unknown (1): Weird Thing 1
 - [x] Onsets timing track — `librosa.onset.onset_detect`, denser than beats.
 - [x] Energy Peaks timing track — RMS peaks via `librosa.util.peak_pick`, marks loudest moments.
 - [x] Lyrics timing track — synced lyrics from lrclib.net (no API key); `/api/get` with duration first, `/api/search` + nearest-duration fallback.
-- [x] Structure timing track — LLM-generated section labels with timestamps; 5-section fallback on failure.
+- [x] Structure timing track — audio-based segmentation (chroma+MFCC recurrence matrix); proportional fallback if audio too short.
 - [x] 33 effect modules — covers all high/medium-frequency effects from 1.6M training observations.
 - [x] DEV text label overlay — last 4 beats show category name per model on a spare layer (non-destructive, `max_layers=4`).
 - [x] Category-aware effect selection — `EFFECT_EXCLUDED_CATS` + `filter_by_effect()`; floods/lines excluded from 2D effects; SingleStrand excluded from matrices/trees.

@@ -156,7 +156,8 @@ def process_file(xsq_path: str, output_path: str,
         added.append("Energy Peaks")
 
     if want_structure:
-        generate_structure_track(audio_path, song, artist, display_elem, element_effects, duration_ms)
+        generate_structure_track(audio_path, song, artist, display_elem, element_effects, duration_ms,
+                                 y=y, sr=sr)
         added.append("Structure")
 
     # --- Write output (source never touched) ---
