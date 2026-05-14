@@ -363,7 +363,14 @@
                     </label>
 
                     <div class="form-group">
-                        <label>xLights RGBEffects XML <span class="req">*</span></label>
+                        <label>Template XSQ <span class="req">*</span></label>
+                        <input type="file" id="template_xsq" name="template_xsq" accept=".xsq">
+                        <div class="default-tag">Default: {{ defaults.template_xsq }}</div>
+                        <div class="hint">Base sequence file — all generated effects are built on top of this.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>xlights_rgbeffects.xml <span class="req">*</span></label>
                         <input type="file" id="xlights_xml" name="xlights_xml" accept=".xml"
                                onchange="onXmlChange()">
                         <div class="default-tag">Default: {{ defaults.xlights_xml }}</div>
@@ -372,6 +379,7 @@
                     <div class="form-group">
                         <label>Audio File</label>
                         <input type="file" id="audio_path" name="audio_path" accept=".mp3,.wav">
+                        <div class="default-tag">Default: {{ defaults.audio_path }}</div>
                         <div class="hint">Optional for Media sequences. Enables beat detection and LLM palette.</div>
                     </div>
 
@@ -418,7 +426,6 @@
                                autocomplete="off"
                                oninput="acInput('sequence_name')" onfocus="acInput('sequence_name')" onblur="acBlur('sequence_name')">
                         <div class="autocomplete-list" id="ac_sequence_name"></div>
-                        <div class="hint">Embedded in the XSQ file.</div>
                     </div>
 
                     <div class="form-group">
@@ -432,14 +439,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Sequence Type</label>
-                        <select id="sequence_type" name="sequence_type" onchange="onTypeChange()">
-                            <option value="Media" selected>Media (audio file drives timing)</option>
-                            <option value="Animation">Animation (no audio, fixed duration)</option>
-                        </select>
-                    </div>
-
                     <div class="form-group" id="durationGroup" style="display:none;">
                         <label>Duration (seconds)</label>
                         <input type="text" id="duration" name="duration"
@@ -448,9 +447,6 @@
                     </div>
 
                     <div class="button-row">
-                        <button type="button" id="defaultsBtn" class="btn-secondary" onclick="useDefaults()">
-                            Use Defaults
-                        </button>
                         <button type="submit" id="generateBtn" class="btn-primary">
                             Generate Sequence
                         </button>
@@ -539,36 +535,19 @@ document.addEventListener('click', e => {
 });
 
 // ---------------------------------------------------------------------------
-// Sequence type → show/hide duration
+// Audio presence → show/hide duration field
+// No audio = Animation mode; duration field becomes relevant.
 // ---------------------------------------------------------------------------
-function onTypeChange() {
-    const type = document.getElementById('sequence_type').value;
-    document.getElementById('durationGroup').style.display = type === 'Animation' ? '' : 'none';
+const _defaultAudioPath = "{{ defaults.audio_path }}";
+
+function updateDurationVisibility() {
+    const hasUpload  = document.getElementById('audio_path').files.length > 0;
+    const useDefault = document.getElementById('use_default_paths').checked;
+    const hasAudio   = hasUpload || (useDefault && _defaultAudioPath.trim() !== '');
+    document.getElementById('durationGroup').style.display = hasAudio ? 'none' : '';
 }
 
-// ---------------------------------------------------------------------------
-// Use Defaults button
-// ---------------------------------------------------------------------------
-const DEFAULTS = {
-    artist_name:   "{{ defaults.artist_name }}",
-    song_name:     "{{ defaults.song_name }}",
-    sequence_name: "{{ defaults.sequence_name }}",
-    sequence_type: "{{ defaults.sequence_type }}",
-    duration:      "{{ defaults.duration }}",
-};
-
-function useDefaults() {
-    document.getElementById('xlights_xml').value  = '';
-    document.getElementById('audio_path').value   = '';
-    document.getElementById('use_default_paths').checked = true;
-    document.getElementById('bundle_xsqz').checked = false;
-    for (const [k, v] of Object.entries(DEFAULTS)) {
-        const el = document.getElementById(k);
-        if (el) el.value = v;
-    }
-    onTypeChange();
-    showResult('Default values loaded. Click Generate Sequence to proceed.', 'success', false);
-}
+function onTypeChange() { updateDurationVisibility(); }
 
 // ---------------------------------------------------------------------------
 // Autocomplete (localStorage)
@@ -808,10 +787,13 @@ async function loadHistory() {
 let _seqNameAutoMode = true;
 
 document.addEventListener('DOMContentLoaded', () => {
-    onTypeChange();
+    updateDurationVisibility();
     checkLemonade();
     loadHistory();
     setInterval(checkLemonade, 30000);
+
+    document.getElementById('audio_path').addEventListener('change', updateDurationVisibility);
+    document.getElementById('use_default_paths').addEventListener('change', updateDurationVisibility);
 
     const songInput = document.getElementById('song_name');
     const seqInput  = document.getElementById('sequence_name');
