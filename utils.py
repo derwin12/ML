@@ -149,8 +149,25 @@ class EffectDBRegistry:
 
 
 def place_effect(effect_layer, name: str, start_time: int, end_time: int,
-                 palette_id: int, settings_str: str, registry: EffectDBRegistry):
-    """Create a self-closing Effect element that references an EffectDB entry."""
+                 palette_id: int, settings_str: str, registry: EffectDBRegistry,
+                 model_category: str = None):
+    """Create a self-closing Effect element that references an EffectDB entry.
+    Automatically injects B_CHOICE_BufferStyle and T_CHOICE_LayerMethod from
+    training data if not already present in settings_str."""
+    if "B_CHOICE_BufferStyle" not in settings_str or "T_CHOICE_LayerMethod" not in settings_str:
+        try:
+            from param_sampler import sample_render_style, sample_layer_blend
+            prefix_parts = []
+            if "B_CHOICE_BufferStyle" not in settings_str:
+                rs = sample_render_style(name, model_category)
+                prefix_parts.append(f"B_CHOICE_BufferStyle={rs}")
+            if "T_CHOICE_LayerMethod" not in settings_str:
+                lb = sample_layer_blend(name, model_category)
+                prefix_parts.append(f"T_CHOICE_LayerMethod={lb}")
+            if prefix_parts:
+                settings_str = ",".join(prefix_parts) + ("," if settings_str else "") + settings_str
+        except Exception:
+            pass
     ref_id = registry.get_or_add(settings_str)
     ET.SubElement(effect_layer, "Effect", {
         "ref": str(ref_id),
@@ -179,8 +196,11 @@ def categorize_models(layout_models, layout_groups):
         display_as = m.attrib.get("DisplayAs", "") or ""
         protocol = m.attrib.get("Protocol", "") or ""
 
-        # Auto-skip inactive, image, and DMX models
-        if m.attrib.get("Active", "1") == "0" or display_as.lower() == "image" or protocol.upper() == "DMX":
+        # Auto-skip inactive, image, DMX, and shadow models
+        if (m.attrib.get("Active", "1") == "0"
+                or display_as.lower() == "image"
+                or protocol.upper() == "DMX"
+                or m.attrib.get("ShadowModelFor")):
             categories[name] = "skip"
             continue
 

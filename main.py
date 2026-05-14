@@ -370,7 +370,8 @@ def create_xsq_from_template(
     layout_tree = ET.parse(xlights_xml)
     layout_root = layout_tree.getroot()
 
-    layout_models = layout_root.findall(".//model")
+    layout_models = [m for m in layout_root.findall(".//model")
+                     if not m.attrib.get("ShadowModelFor")]
     layout_groups = layout_root.findall(".//modelGroup")
 
     if not layout_models and not layout_groups:

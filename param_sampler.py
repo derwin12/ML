@@ -180,6 +180,75 @@ def available_effects() -> list:
 
 
 # ---------------------------------------------------------------------------
+# Render style + layer blend tables
+# Render style  = B_CHOICE_BufferStyle  (Default, Per Model Default, …)
+# Layer blend   = T_CHOICE_LayerMethod  (Normal, Additive, Average, …)
+# Both keyed on (effect_name, category) for specificity; fall back to
+# (effect_name, None) then to hardcoded defaults.
+# ---------------------------------------------------------------------------
+
+_render_styles: dict = {}
+_layer_blends:  dict = {}
+_render_styles_built: bool = False
+
+
+def _build_render_styles():
+    global _render_styles, _layer_blends, _render_styles_built
+    if _render_styles_built:
+        return
+    _load()
+    rs_table: dict = defaultdict(Counter)
+    lb_table: dict = defaultdict(Counter)
+    for effect_name, info in _data.items():
+        if effect_name.startswith("_"):
+            continue
+        for obs in info["observations"]:
+            category = obs.get("model_type", "unknown")
+            rs = obs.get("render_style", "Default") or "Default"
+            lb = obs.get("layer_blend",  "Normal")  or "Normal"
+            rs_table[(effect_name, category)][rs] += 1
+            rs_table[(effect_name, None)][rs] += 1
+            lb_table[(effect_name, category)][lb] += 1
+            lb_table[(effect_name, None)][lb] += 1
+    _render_styles = dict(rs_table)
+    _layer_blends  = dict(lb_table)
+    _render_styles_built = True
+    print(f"[param_sampler] Render style/blend tables built: "
+          f"{len(_render_styles)} effect-category pairs.")
+
+
+def _weighted_sample(counter: Counter, default: str) -> str:
+    if not counter:
+        return default
+    total = sum(counter.values())
+    r = random.uniform(0, total)
+    cumulative = 0.0
+    for val, cnt in counter.items():
+        cumulative += cnt
+        if r <= cumulative:
+            return val
+    return list(counter.keys())[-1]
+
+
+def sample_render_style(effect_name: str, category: str = None) -> str:
+    """Return a B_CHOICE_BufferStyle value sampled from training data.
+    Falls back to category-agnostic, then 'Default'."""
+    _build_render_styles()
+    counts = _render_styles.get((effect_name, category)) or \
+             _render_styles.get((effect_name, None)) or Counter()
+    return _weighted_sample(counts, "Default")
+
+
+def sample_layer_blend(effect_name: str, category: str = None) -> str:
+    """Return a T_CHOICE_LayerMethod value sampled from training data.
+    Falls back to category-agnostic, then 'Normal'."""
+    _build_render_styles()
+    counts = _layer_blends.get((effect_name, category)) or \
+             _layer_blends.get((effect_name, None)) or Counter()
+    return _weighted_sample(counts, "Normal")
+
+
+# ---------------------------------------------------------------------------
 # Transition table  (prev_effect, category) → likely next effects
 # ---------------------------------------------------------------------------
 

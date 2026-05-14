@@ -41,11 +41,11 @@ _SKIP_COOC_CATS = {"group", "unknown", "skip"}
 # ---------------------------------------------------------------------------
 
 def parse_settings(text: str) -> dict:
-    """Parse 'Key=Value;Key=Value' settings text into a dict."""
+    """Parse 'Key=Value,Key=Value' settings text into a dict (xLights uses comma delimiter)."""
     result = {}
     if not text:
         return result
-    for part in text.split(";"):
+    for part in text.split(","):
         part = part.strip()
         if "=" in part:
             k, _, v = part.partition("=")
@@ -85,6 +85,8 @@ def load_model_categories(layout_xml: str) -> dict:
     try:
         root = ET.parse(layout_xml).getroot()
         for m in root.findall(".//model"):
+            if m.get("ShadowModelFor"):
+                continue
             name = m.get("name", "").strip().lower()
             da = m.get("DisplayAs", "unknown").lower()
             # Flood promotion: single-node single line → flood
@@ -273,6 +275,10 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
                     params = {k: v for k, v in params.items()
                               if not k.startswith("C_BUTTON") and not k.startswith("C_CHECKBOX_Palette")}
 
+                    # Extract render style and layer blend from params (keep in params too)
+                    render_style = str(params.get("B_CHOICE_BufferStyle", "Default"))
+                    layer_blend  = str(params.get("T_CHOICE_LayerMethod", "Normal"))
+
                     beat_idx, beat_span = beat_index_and_span(start_ms, end_ms, beats)
                     strides = stride_by_name.get(effect_name, [])
                     beat_stride = round(sum(strides) / len(strides)) if strides else 1
@@ -289,6 +295,8 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
                         "beat_span":        beat_span,
                         "beat_stride":      beat_stride,
                         "layer_index":      layer_idx,
+                        "render_style":     render_style,
+                        "layer_blend":      layer_blend,
                         "prev_effect":      prev_eff,
                         "next_effect":      next_eff,
                         "source":           filename,

@@ -69,10 +69,10 @@ DEFAULT_VALUES = {
     'template_xsq':    os.path.join(_TD, "folder 1", "Empty Sequence.xsq"),
     'xlights_xml':     os.path.join(_TD, "folder 1", "xlights_rgbeffects.xml"),
     'structure_json':  os.path.join(_TD, "templates", "xlights_template_structures.json"),
-    'audio_path':      r"E:\2023\ShowFolder3D\Audio\Pretty Baby - Alex Sampson.mp3",
-    'artist_name':     "Alex Sampson",
-    'song_name':       "Pretty Baby",
-    'sequence_name':   "Pretty Baby_AI",
+    'audio_path':      r"E:\2023\ShowFolder3D\Audio\David Guetta Alphaville and Ava Max - Forever Young.mp3",
+    'artist_name':     "David Guetta",
+    'song_name':       "Forever Young",
+    'sequence_name':   "Forever Young_AI",
     'duration':        "",
 }
 
@@ -529,4 +529,22 @@ def run_timing_tracks_route():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    import argparse as _ap
+    _parser = _ap.ArgumentParser(description="xLights AI sequence generator web UI")
+    _parser.add_argument('--audio',  metavar='PATH', default=None,
+                         help='Default audio file path shown in the UI')
+    _parser.add_argument('--song',   metavar='NAME', default=None,
+                         help='Default song name shown in the UI')
+    _parser.add_argument('--artist', metavar='NAME', default=None,
+                         help='Default artist name shown in the UI')
+    _parser.add_argument('--port',   metavar='N', type=int, default=5000,
+                         help='Port to listen on (default: 5000)')
+    _args = _parser.parse_args()
+    if _args.audio:
+        DEFAULT_VALUES['audio_path'] = _args.audio
+    if _args.song:
+        DEFAULT_VALUES['song_name']     = _args.song
+        DEFAULT_VALUES['sequence_name'] = f"{_args.song}_AI"
+    if _args.artist:
+        DEFAULT_VALUES['artist_name'] = _args.artist
+    app.run(debug=True, host='0.0.0.0', port=_args.port)
