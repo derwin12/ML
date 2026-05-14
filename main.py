@@ -481,6 +481,42 @@ def create_xsq_from_template(
 
     set_effect_budget(None)
 
+    # --- DEV: category label overlay — last 5 s, new layer per model ---
+    text_start = max(0, seq_duration_ms - 5000)
+    text_end   = seq_duration_ms
+    _SKIP_CATS = {"skip", "everything_group", "generic_group"}
+    for elem in elements:
+        name     = elem.attrib.get("name", "")
+        category = model_categories.get(name, "")
+        if not category or category in _SKIP_CATS:
+            continue
+        label_layer = ET.SubElement(elem, "EffectLayer")
+        palette_parts = [f"C_BUTTON_Palette{i+1}=#FFFFFF" for i in range(8)]
+        palette_parts.append("C_CHECKBOX_Palette1=1")
+        new_palette      = ET.SubElement(color_palettes, "ColorPalette")
+        new_palette.text = ",".join(palette_parts)
+        palette_id       = len(color_palettes) - 1
+        settings_str = (
+            f"E_TEXTCTRL_Text={category},"
+            "E_CHOICE_Text_Dir=none,"
+            "E_SLIDER_Text_Speed=10,"
+            "E_CHECKBOX_Text_PixelOffsets=0,"
+            "E_SLIDER_Text_XStart=0,"
+            "E_SLIDER_Text_YStart=50,"
+            "E_SLIDER_Text_XEnd=100,"
+            "E_SLIDER_Text_YEnd=50,"
+            "E_CHOICE_Text_Effect=normal,"
+            "T_CHECKBOX_LayerMorph=0,"
+            "T_CHECKBOX_OverlayBkg=0,"
+            "T_CHOICE_LayerMethod=Normal,"
+            "T_SLIDER_SparkleFrequency=200,"
+            "T_CHECKBOX_MusicSparkles=0,"
+            "T_SLIDER_Brightness=100,"
+            "T_SLIDER_Contrast=0,"
+            "T_CHECKBOX_ResetAtStart=0"
+        )
+        place_effect(label_layer, "Text", text_start, text_end, palette_id, settings_str, registry)
+
     # Write all collected EffectDB entries to XML
     registry.write_to_xml(effect_db_elem)
 
