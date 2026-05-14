@@ -12,7 +12,8 @@ A Python tool that generates `.xsq` xLights sequence files automatically. It rea
 |---|---|
 | `main.py` | Entry point. Orchestrates the full generation pipeline. |
 | `utils.py` | Shared helpers: Lemonade client, beat/structure helpers, XML utilities, audio analysis, model categorization. |
-| `app.py` | Flask web UI — wraps `create_xsq_from_template` behind a form. |
+| `app.py` | Flask web UI — async generation with SSE streaming, Lemonade health check, category preview, history. |
+| `templates/index.html` | Single-page UI: live log panel, Lemonade badge, history sidebar, localStorage autocomplete. |
 | `name_category_rules.json` | Editable substring rules for name-based category resolution (secondary pass). |
 | `name_exact_overrides.json` | Exact name → category overrides; highest user-controlled precedence. |
 | `scan_for_arches.py` | Analyzes existing `.xsq` files and extracts effect params for arch models — training data harvesting. |
@@ -221,7 +222,40 @@ All path arguments (`--template`, `--layout`, `--output`, `--structure`) default
 python app.py
 ```
 
-Then open `http://localhost:5000` and fill in the form (audio path, song name, artist, sequence type).
+Then open `http://localhost:5000`.
+
+#### Web UI features
+
+| Feature | Details |
+|---|---|
+| **Lemonade status badge** | Header shows green/red dot; click for URL + model list; auto-refreshes every 30 s |
+| **Async generation** | `/generate` returns immediately with a `task_id`; generation runs in a background thread |
+| **Live log streaming** | SSE endpoint `/stream/<task_id>` streams every `print()` from the pipeline to the browser in real-time |
+| **Model category preview** | "Preview Model Categories" button calls `/preview_categories` — shows colored chips per category before running a full generation |
+| **Generation history** | Right-column sidebar lists last 20 runs with elapsed time and download links; persists for the session |
+| **localStorage autocomplete** | Artist, Song, Sequence Name fields remember the last 15 values |
+| **Per-request output isolation** | Output files are UUID-prefixed — concurrent users never overwrite each other |
+| **Auto temp cleanup** | Downloaded files are deleted from disk 10 s after the download completes |
+| **Friendly error messages** | Connection errors, missing files, and parse failures show human-readable messages; tracebacks stay server-side |
+| **Duration field auto-hide** | Duration input is only shown when Sequence Type is Animation |
+
+#### API endpoints
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/` | GET | Serve the UI |
+| `/generate` | POST | Start async generation; returns `{task_id}` |
+| `/stream/<task_id>` | GET | SSE stream of log lines and completion event |
+| `/status/<task_id>` | GET | Poll task status (fallback if SSE fails) |
+| `/download/<filename>` | GET | Download generated XSQ; file auto-deleted after 10 s |
+| `/lemonade_status` | GET | Check if local Lemonade LLM server is reachable |
+| `/preview_categories` | POST | Parse layout XML and return model category breakdown |
+| `/history` | GET | Return last 20 generation results for the session |
+| `/get_defaults` | GET | Return default path/value configuration |
+
+#### PyCharm run configuration
+
+A `Flask Web App` run configuration is included in `.idea/runConfigurations/Flask_Web_App.xml`. Select it from the Run dropdown and click Run.
 
 ---
 
@@ -405,6 +439,16 @@ Still unknown (1): Weird Thing 1
 - [x] **Section-aware effect gating** — `chorus_only_placements()` in `utils.py`; `Strobe`, `Lightning`, `Fireworks` restricted to chorus/drop (threshold ≥ 0.9).
 - [x] **Lyrics-driven vocal gating** — `filter_beats_vocals_only()` in `utils.py`; `_vocal` beat list used for On/Twinkle/Shimmer; suppresses rapid effects during 8s+ instrumental gaps.
 - [x] **App.py / web UI sync** — paths now relative to script dir (VM-compatible); `sequence_name` and `duration` added to form, handler, and `index.html`.
+- [x] **Async generation** — background thread + SSE streaming; browser never times out; live log panel streams every `print()` line.
+- [x] **Lemonade health badge** — `/lemonade_status` endpoint; header badge shows online/offline with model list; auto-refreshes every 30 s.
+- [x] **Model category preview** — `/preview_categories` parses layout XML and returns categorized model breakdown before generation.
+- [x] **Per-request UUID output isolation** — prevents concurrent-user file collisions; UUID prefix stripped from download filename.
+- [x] **Friendly error messages** — maps `ConnectionRefusedError`, `FileNotFoundError`, `ET.ParseError` to readable strings; tracebacks stay server-side.
+- [x] **Auto temp file cleanup** — generated XSQ deleted 10 s after download completes.
+- [x] **Generation history sidebar** — last 20 runs with elapsed time and download links; in-memory `deque`.
+- [x] **localStorage autocomplete** — Artist, Song, Sequence Name remember last 15 values across sessions.
+- [x] **Duration field auto-hide** — hidden for Media sequences, visible for Animation only.
+- [x] **PyCharm run config** — `Flask Web App` added to `.idea/runConfigurations/Flask_Web_App.xml`.
 
 ### Choreography (new priority tier — highest impact on output quality)
 - [x] **Spatial position extraction** — `get_model_positions()` reads `WorldPosX/Z` from layout; `sort_elements_by_position()` sorts elements by axis.
@@ -414,6 +458,12 @@ Still unknown (1): Weird Thing 1
 - [x] **Learn from example XSQ files** — `analyze_choreography.py` reads `training_data.json` (1.6M obs from 379 real XSQs); builds `choreography_probs.json` mapping each prop category to effect probability distribution. `filter_by_probability()` in `utils.py` gates every effect call against learned thresholds. `sample_effect_for_category()` in `param_sampler.py` for weighted random sampling.
 - [ ] **Smarter palette application** — cool/desaturated in intro/verse, warm/saturated in chorus/drop (section intensity already available).
 - [ ] **Cross-prop coordination (call & response)** — designate one prop category per section as "lead" and others as "support"; support props hold a sustained color while lead fires reactive effects.
+
+### Web app / UX (next up)
+- [ ] **Lemonade URL config** — let the user set a custom Lemonade URL from the UI and persist it in `localStorage`; surface in the badge tooltip.
+- [ ] **Cancel in-flight generation** — add a Cancel button that signals the background thread to stop early (requires cooperative cancellation flag checked between effect modules).
+- [ ] **Session-persistent history** — write history to a local SQLite or JSON file so it survives server restarts.
+- [ ] **Shareable generation presets** — export/import JSON of artist/song/type/sequence_name so a preset can be pasted or bookmarked.
 
 ### Low priority / future ideas
 - [ ] **Harmonic/percussive separation** (`librosa.effects.hpss`) — cleaner kick/snare detection on percussive channel; chord-change detection on harmonic channel.

@@ -3,358 +3,827 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XSequence Generator</title>
+    <title>xLights Sequence Generator</title>
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
             font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
+            background: #f0f2f5;
             color: #333;
-            text-align: center;
-            margin-bottom: 30px;
+            min-height: 100vh;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            background-color: #fafafa;
+        .page-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
         }
+
+        .page-header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.5px; }
+
+        .lemonade-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .lemonade-badge:hover { background: rgba(255,255,255,0.18); }
+
+        .status-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #aaa;
+            flex-shrink: 0;
+            transition: background 0.3s;
+        }
+        .status-dot.online  { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+        .status-dot.offline { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+        .status-dot.checking { background: #f59e0b; animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .main-layout {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 820px) {
+            .main-layout { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #495057;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .card-body { padding: 20px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group:last-child { margin-bottom: 0; }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 600;
             color: #555;
+            margin-bottom: 6px;
         }
+
+        label .req { color: #e53e3e; margin-left: 2px; }
 
         input[type="file"],
         input[type="text"],
         select {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            padding: 9px 12px;
+            border: 1.5px solid #ddd;
+            border-radius: 6px;
             font-size: 14px;
-            margin-bottom: 5px;
+            transition: border-color 0.2s;
+            background: white;
+        }
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #4f80d9;
         }
 
-        input[type="file"] {
-            background-color: #f9f9f9;
+        .hint {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
         }
 
-        .required::after {
-            content: " *";
-            color: red;
+        .default-tag {
+            font-size: 11px;
+            color: #7a6000;
+            background: #fff8dc;
+            border-left: 3px solid #f0b800;
+            padding: 4px 8px;
+            border-radius: 0 4px 4px 0;
+            margin-top: 4px;
+            word-break: break-all;
         }
 
-        .button-group {
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #444;
+        }
+        .checkbox-row input[type="checkbox"] { width: auto; accent-color: #4f80d9; }
+
+        .divider { border: none; border-top: 1px solid #eee; margin: 18px 0; }
+
+        .button-row {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
 
         button {
-            padding: 12px 30px;
+            padding: 11px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
-            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s, opacity 0.2s;
+        }
+        button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        .btn-primary   { background: #4f80d9; color: white; flex: 2; }
+        .btn-primary:hover:not(:disabled)   { background: #3a68c4; }
+
+        .btn-secondary { background: #6c757d; color: white; flex: 1; }
+        .btn-secondary:hover:not(:disabled) { background: #545b62; }
+
+        .btn-outline {
+            background: white;
+            color: #4f80d9;
+            border: 1.5px solid #4f80d9;
+            padding: 7px 14px;
+            font-size: 13px;
+        }
+        .btn-outline:hover:not(:disabled) { background: #f0f5ff; }
+
+        /* Preview categories panel */
+        #previewPanel {
+            margin-top: 16px;
+            display: none;
+        }
+        #previewPanel .cat-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .cat-chip {
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: #e8edf8;
+            color: #3557a0;
+            font-weight: 600;
         }
 
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #545b62;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .message {
-            padding: 15px;
-            border-radius: 5px;
+        /* Progress / log panel */
+        #logPanel {
             margin-top: 20px;
             display: none;
         }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .file-info {
+        #logBox {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            font-family: 'Courier New', monospace;
             font-size: 12px;
-            color: #666;
-            margin-top: 5px;
+            border-radius: 6px;
+            padding: 12px 14px;
+            height: 220px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        #logBox .log-line { line-height: 1.5; }
+        #logBox .log-line.highlight { color: #a6e3a1; }
+
+        /* Result banner */
+        .result-banner {
+            margin-top: 16px;
+            padding: 14px 18px;
+            border-radius: 6px;
+            display: none;
+            font-size: 14px;
+        }
+        .result-banner.success {
+            background: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+        }
+        .result-banner.error {
+            background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
         }
 
-        .default-path {
-            font-size: 11px;
-            color: #888;
-            background-color: #fff3cd;
-            padding: 5px;
-            border-radius: 3px;
-            margin-top: 5px;
-            border-left: 3px solid #ffc107;
-        }
-
-        .download-link {
-            display: block;
-            text-align: center;
-            padding: 12px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 15px;
-        }
-
-        .download-link:hover {
-            background-color: #218838;
-        }
-
-        .checkbox-group {
-            margin: 15px 0;
-        }
-
-        .checkbox-group label {
+        .download-btn {
             display: inline-flex;
             align-items: center;
-            font-weight: normal;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: #22c55e;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .download-btn:hover { background: #16a34a; }
+
+        /* History sidebar */
+        .history-list { padding: 0; list-style: none; }
+        .history-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+        .history-item:last-child { border-bottom: none; }
+        .history-item .h-title {
+            font-weight: 700;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .history-item .h-meta { color: #888; font-size: 11px; margin-top: 2px; }
+        .history-item .h-status { font-size: 11px; margin-top: 4px; }
+        .history-item .h-status.done { color: #22c55e; }
+        .history-item .h-status.error { color: #ef4444; }
+        .history-item .h-status.running { color: #f59e0b; }
+
+        .history-empty { padding: 24px 20px; color: #aaa; font-size: 13px; text-align: center; }
+
+        .history-dl {
+            font-size: 11px;
+            color: #4f80d9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .history-dl:hover { text-decoration: underline; }
+
+        /* Lemonade tooltip */
+        #lemonadeTooltip {
+            position: fixed;
+            top: 68px;
+            right: 20px;
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-family: monospace;
+            max-width: 320px;
+            z-index: 999;
+            display: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Autocomplete dropdown */
+        .autocomplete-wrap { position: relative; }
+        .autocomplete-list {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: white;
+            border: 1.5px solid #4f80d9;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            z-index: 50;
+            max-height: 140px;
+            overflow-y: auto;
+            display: none;
+        }
+        .autocomplete-list div {
+            padding: 8px 12px;
             cursor: pointer;
+            font-size: 13px;
         }
-
-        .checkbox-group input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
-        }
-
-        .section-header {
-            background-color: #e9ecef;
-            padding: 10px 15px;
-            margin: -15px -15px 15px -15px;
-            border-radius: 5px 5px 0 0;
-            font-weight: bold;
-            color: #495057;
-        }
+        .autocomplete-list div:hover { background: #f0f5ff; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>xLights Sequence Generator</h1>
 
-        <form id="sequenceForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <div class="section-header">File Inputs</div>
+<header class="page-header">
+    <h1>xLights Sequence Generator</h1>
+    <div class="lemonade-badge" id="lemonadeBadge" onclick="toggleLemonadeTooltip()" title="Click for details">
+        <span class="status-dot checking" id="statusDot"></span>
+        <span id="statusText">Checking Lemonade…</span>
+    </div>
+</header>
 
-                <div class="checkbox-group">
-                    <label>
-                        <input type="checkbox" id="use_default_paths" name="use_default_paths" value="true">
-                        Use default file paths and values (will use uploaded files or entered values if provided, otherwise fall back to defaults)
+<div id="lemonadeTooltip"></div>
+
+<div class="main-layout">
+
+    <!-- ===== LEFT: Form ===== -->
+    <div>
+        <div class="card" style="margin-bottom:20px;">
+            <div class="card-header">File Inputs</div>
+            <div class="card-body">
+                <form id="sequenceForm" enctype="multipart/form-data">
+
+                    <label class="checkbox-row" style="margin-bottom:16px;">
+                        <input type="checkbox" id="use_default_paths" name="use_default_paths" value="true" checked>
+                        Use defaults for any field not filled in
                     </label>
+
+                    <div class="form-group">
+                        <label>xLights RGBEffects XML <span class="req">*</span></label>
+                        <input type="file" id="xlights_xml" name="xlights_xml" accept=".xml"
+                               onchange="onXmlChange()">
+                        <div class="default-tag">Default: {{ defaults.xlights_xml }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Audio File</label>
+                        <input type="file" id="audio_path" name="audio_path" accept=".mp3,.wav">
+                        <div class="hint">Optional for Media sequences. Enables beat detection and LLM palette.</div>
+                    </div>
+
+                    <div class="form-group autocomplete-wrap">
+                        <label>Artist Name</label>
+                        <input type="text" id="artist_name" name="artist_name"
+                               value="{{ defaults.artist_name }}"
+                               autocomplete="off"
+                               oninput="acInput('artist_name')" onfocus="acInput('artist_name')" onblur="acBlur('artist_name')">
+                        <div class="autocomplete-list" id="ac_artist_name"></div>
+                    </div>
+
+                    <div class="form-group autocomplete-wrap">
+                        <label>Song Name</label>
+                        <input type="text" id="song_name" name="song_name"
+                               value="{{ defaults.song_name }}"
+                               autocomplete="off"
+                               oninput="acInput('song_name')" onfocus="acInput('song_name')" onblur="acBlur('song_name')">
+                        <div class="autocomplete-list" id="ac_song_name"></div>
+                    </div>
+
+                    <!-- Preview button -->
+                    <button type="button" class="btn-outline" id="previewBtn"
+                            onclick="previewCategories()" style="margin-top:4px;">
+                        Preview Model Categories
+                    </button>
+
+                    <div id="previewPanel">
+                        <div class="cat-grid" id="catGrid"></div>
+                        <details style="margin-top:10px;">
+                            <summary style="font-size:12px;color:#555;cursor:pointer;">All models</summary>
+                            <div id="catTable" style="margin-top:8px;font-size:12px;"></div>
+                        </details>
+                    </div>
+
+                    <hr class="divider">
+
+                    <div class="card-header" style="margin:-20px -20px 16px;border-radius:0;">Output Settings</div>
+
+                    <div class="form-group autocomplete-wrap">
+                        <label>Sequence Name</label>
+                        <input type="text" id="sequence_name" name="sequence_name"
+                               value="{{ defaults.sequence_name }}"
+                               autocomplete="off"
+                               oninput="acInput('sequence_name')" onfocus="acInput('sequence_name')" onblur="acBlur('sequence_name')">
+                        <div class="autocomplete-list" id="ac_sequence_name"></div>
+                        <div class="hint">Embedded in the XSQ file.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-row">
+                            <input type="checkbox" id="bundle_xsqz" name="bundle_xsqz" value="true" checked>
+                            Bundle as .xsqz (auto-load package — includes audio + layout + network files)
+                        </label>
+                        <div class="hint" style="margin-top:6px;">
+                            xsqz is a self-contained ZIP that xLights can open directly.
+                            Bundles: sequence, audio, xlights_rgbeffects.xml, xlights_networks.xml.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sequence Type</label>
+                        <select id="sequence_type" name="sequence_type" onchange="onTypeChange()">
+                            <option value="Media" selected>Media (audio file drives timing)</option>
+                            <option value="Animation">Animation (no audio, fixed duration)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="durationGroup" style="display:none;">
+                        <label>Duration (seconds)</label>
+                        <input type="text" id="duration" name="duration"
+                               value="{{ defaults.duration }}" placeholder="Leave blank for random (30–120 s)">
+                        <div class="hint">Only used for Animation sequences.</div>
+                    </div>
+
+                    <div class="button-row">
+                        <button type="button" id="defaultsBtn" class="btn-secondary" onclick="useDefaults()">
+                            Use Defaults
+                        </button>
+                        <button type="submit" id="generateBtn" class="btn-primary">
+                            Generate Sequence
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- Log panel -->
+                <div id="logPanel">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                        <strong style="font-size:13px;">Generation Log</strong>
+                        <button class="btn-outline" style="padding:3px 10px;font-size:11px;" onclick="clearLog()">Clear</button>
+                    </div>
+                    <div id="logBox"></div>
                 </div>
 
-                <label for="xlights_xml" class="required">xLights RGBEffects File</label>
-                <input type="file" id="xlights_xml" name="xlights_xml" accept=".xml">
-                <div class="default-path" id="default_xlights_xml">Default: {{ defaults.xlights_xml }}</div>
-                <div class="file-info">Upload a file or use the default path above</div>
-
-                <label for="audio_path">Audio File</label>
-                <input type="file" id="audio_path" name="audio_path" accept=".mp3,.wav">
-                <div class="default-path" id="default_audio_path">Default: {{ defaults.audio_path }}</div>
-                <div class="file-info">Optional: Upload a file or use the default path above</div>
-
-                <label for="artist_name">Artist Name</label>
-                <input type="text" id="artist_name" name="artist_name" value="{{ defaults.artist_name }}">
-                <div class="file-info">Artist name for the sequence (used in generation)</div>
-
-                <label for="song_name">Song Name</label>
-                <input type="text" id="song_name" name="song_name" value="{{ defaults.song_name }}">
-                <div class="file-info">Song name for the sequence (used in generation)</div>
+                <div id="resultBanner" class="result-banner"></div>
+                <a id="downloadLink" class="download-btn" style="display:none;" href="#">
+                    ⬇ Download Sequence
+                </a>
             </div>
-
-            <div class="form-group">
-                <div class="section-header">Output Settings</div>
-
-                <label for="sequence_name">Sequence Name</label>
-                <input type="text" id="sequence_name" name="sequence_name" value="{{ defaults.sequence_name }}">
-                <div class="file-info">Name embedded in the XSQ file (default: AI_Sequence)</div>
-
-                <label for="output_filename">Output Filename</label>
-                <input type="text" id="output_filename" name="output_filename" value="{{ defaults.output_filename }}">
-                <div class="file-info">Name for the generated sequence file</div>
-
-                <label for="sequence_type">Sequence Type</label>
-                <select id="sequence_type" name="sequence_type">
-                    <option value="Media" selected>Media</option>
-                    <option value="Animation">Animation</option>
-                </select>
-
-                <label for="duration" style="margin-top:12px;">Duration (seconds, Animation only)</label>
-                <input type="text" id="duration" name="duration" value="{{ defaults.duration }}" placeholder="Leave blank for random (30–120s)">
-                <div class="file-info">Only used for Animation sequences; ignored for Media</div>
-            </div>
-
-            <div class="button-group">
-                <button type="button" id="useDefaultsBtn" class="btn-secondary">Use Defaults Only</button>
-                <button type="submit" id="generateBtn" class="btn-primary">Generate Sequence</button>
-            </div>
-        </form>
-
-        <div id="message" class="message"></div>
-        <a id="downloadLink" class="download-link" style="display: none;">Download Generated Sequence</a>
+        </div>
     </div>
 
-    <script>
-        // Default values from server
-        const defaults = {
-            xlights_xml:    "{{ defaults.xlights_xml }}",
-            output_filename: "{{ defaults.output_filename }}",
-            audio_path:     "{{ defaults.audio_path }}",
-            sequence_type:  "{{ defaults.sequence_type }}",
-            artist_name:    "{{ defaults.artist_name }}",
-            song_name:      "{{ defaults.song_name }}",
-            sequence_name:  "{{ defaults.sequence_name }}",
-            duration:       "{{ defaults.duration }}"
+    <!-- ===== RIGHT: History sidebar ===== -->
+    <div>
+        <div class="card">
+            <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+                <span>Recent Generations</span>
+                <button class="btn-outline" style="padding:3px 10px;font-size:11px;text-transform:none;"
+                        onclick="loadHistory()">Refresh</button>
+            </div>
+            <ul class="history-list" id="historyList">
+                <li class="history-empty">No generations yet this session.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Lemonade status badge
+// ---------------------------------------------------------------------------
+let _lemonadeData = null;
+
+async function checkLemonade() {
+    const dot  = document.getElementById('statusDot');
+    const text = document.getElementById('statusText');
+    dot.className = 'status-dot checking';
+    text.textContent = 'Checking Lemonade…';
+    try {
+        const r = await fetch('/lemonade_status');
+        _lemonadeData = await r.json();
+        if (_lemonadeData.status === 'online') {
+            dot.className  = 'status-dot online';
+            text.textContent = 'Lemonade online';
+        } else {
+            dot.className  = 'status-dot offline';
+            text.textContent = 'Lemonade offline';
+        }
+    } catch {
+        dot.className  = 'status-dot offline';
+        text.textContent = 'Lemonade offline';
+        _lemonadeData = { status: 'offline', error: 'Network error' };
+    }
+}
+
+function toggleLemonadeTooltip() {
+    const tip = document.getElementById('lemonadeTooltip');
+    if (tip.style.display === 'block') { tip.style.display = 'none'; return; }
+    if (!_lemonadeData) { tip.textContent = 'Checking…'; tip.style.display = 'block'; return; }
+    if (_lemonadeData.status === 'online') {
+        const models = (_lemonadeData.models || []).join(', ') || '(none listed)';
+        tip.innerHTML = `<strong style="color:#a6e3a1">● Online</strong> — ${_lemonadeData.url}<br>Models: ${models}`;
+    } else {
+        tip.innerHTML = `<strong style="color:#f38ba8">● Offline</strong><br>${_lemonadeData.error || 'Cannot connect'}`;
+    }
+    tip.style.display = 'block';
+}
+
+document.addEventListener('click', e => {
+    const tip = document.getElementById('lemonadeTooltip');
+    if (tip.style.display === 'block' && !document.getElementById('lemonadeBadge').contains(e.target))
+        tip.style.display = 'none';
+});
+
+// ---------------------------------------------------------------------------
+// Sequence type → show/hide duration
+// ---------------------------------------------------------------------------
+function onTypeChange() {
+    const type = document.getElementById('sequence_type').value;
+    document.getElementById('durationGroup').style.display = type === 'Animation' ? '' : 'none';
+}
+
+// ---------------------------------------------------------------------------
+// Use Defaults button
+// ---------------------------------------------------------------------------
+const DEFAULTS = {
+    artist_name:   "{{ defaults.artist_name }}",
+    song_name:     "{{ defaults.song_name }}",
+    sequence_name: "{{ defaults.sequence_name }}",
+    sequence_type: "{{ defaults.sequence_type }}",
+    duration:      "{{ defaults.duration }}",
+};
+
+function useDefaults() {
+    document.getElementById('xlights_xml').value  = '';
+    document.getElementById('audio_path').value   = '';
+    document.getElementById('use_default_paths').checked = true;
+    document.getElementById('bundle_xsqz').checked = false;
+    for (const [k, v] of Object.entries(DEFAULTS)) {
+        const el = document.getElementById(k);
+        if (el) el.value = v;
+    }
+    onTypeChange();
+    showResult('Default values loaded. Click Generate Sequence to proceed.', 'success', false);
+}
+
+// ---------------------------------------------------------------------------
+// Autocomplete (localStorage)
+// ---------------------------------------------------------------------------
+const AC_FIELDS = ['artist_name', 'song_name', 'sequence_name'];
+const AC_MAX    = 15;
+
+function acStorageKey(field) { return `xlgen_ac_${field}`; }
+
+function acLoad(field) {
+    try { return JSON.parse(localStorage.getItem(acStorageKey(field)) || '[]'); }
+    catch { return []; }
+}
+
+function acSave(field, value) {
+    if (!value.trim()) return;
+    let arr = acLoad(field).filter(v => v !== value);
+    arr.unshift(value);
+    if (arr.length > AC_MAX) arr = arr.slice(0, AC_MAX);
+    localStorage.setItem(acStorageKey(field), JSON.stringify(arr));
+}
+
+function acInput(field) {
+    const input  = document.getElementById(field);
+    const list   = document.getElementById(`ac_${field}`);
+    const query  = input.value.toLowerCase();
+    const items  = acLoad(field).filter(v => v.toLowerCase().includes(query) && v !== input.value);
+    if (!items.length) { list.style.display = 'none'; return; }
+    list.innerHTML = items.map(v => `<div onmousedown="acSelect('${field}','${v.replace(/'/g,"\\'")}')">
+        ${v.replace(/</g,'&lt;')}</div>`).join('');
+    list.style.display = 'block';
+}
+
+function acSelect(field, value) {
+    document.getElementById(field).value = value;
+    document.getElementById(`ac_${field}`).style.display = 'none';
+}
+
+function acBlur(field) {
+    setTimeout(() => { document.getElementById(`ac_${field}`).style.display = 'none'; }, 150);
+}
+
+// ---------------------------------------------------------------------------
+// Preview model categories
+// ---------------------------------------------------------------------------
+async function previewCategories() {
+    const panel = document.getElementById('previewPanel');
+    const btn   = document.getElementById('previewBtn');
+    const grid  = document.getElementById('catGrid');
+    const table = document.getElementById('catTable');
+    btn.disabled = true;
+    btn.textContent = 'Loading…';
+    panel.style.display = 'none';
+
+    const fd = new FormData();
+    const xmlFile = document.getElementById('xlights_xml').files[0];
+    if (xmlFile) fd.append('xlights_xml', xmlFile);
+    else fd.append('use_default', 'true');
+
+    try {
+        const r   = await fetch('/preview_categories', { method: 'POST', body: fd });
+        const res = await r.json();
+        if (!r.ok) { alert(res.error || 'Preview failed'); return; }
+
+        const CAT_COLORS = {
+            arch:'#dbeafe', line:'#d1fae5', matrix:'#ede9fe', flood:'#fee2e2',
+            tree:'#dcfce7', mega_tree:'#bbf7d0', star:'#fef9c3', snowflake:'#e0f2fe',
+            sphere:'#fce7f3', spinner:'#ffedd5', group:'#f3f4f6',
+            everything_group:'#fef3c7', generic_group:'#f1f5f9',
+            singing_prop:'#fdf4ff', candy_cane:'#ffe4e6', cube:'#f0fdf4',
+            icicles:'#cffafe', window_frame:'#ecfdf5', unknown:'#f9fafb',
+        };
+        grid.innerHTML = Object.entries(res.by_category).map(([cat, n]) => {
+            const bg = CAT_COLORS[cat] || '#f3f4f6';
+            return `<span class="cat-chip" style="background:${bg}">${cat} <b>${n}</b></span>`;
+        }).join('') + `<span class="cat-chip" style="background:#fee2e2;color:#b91c1c">skip <b>${res.skip}</b></span>`;
+
+        table.innerHTML = res.models.map(m =>
+            `<div style="display:flex;gap:8px;padding:2px 0;border-bottom:1px solid #f0f0f0;">
+                <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${m.name}</span>
+                <span style="background:${CAT_COLORS[m.category]||'#f3f4f6'};border-radius:4px;padding:0 6px;font-size:11px;white-space:nowrap;">${m.category}</span>
+            </div>`
+        ).join('');
+
+        panel.style.display = 'block';
+    } catch (e) {
+        alert('Preview error: ' + e.message);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Preview Model Categories';
+    }
+}
+
+function onXmlChange() {
+    document.getElementById('previewPanel').style.display = 'none';
+}
+
+// ---------------------------------------------------------------------------
+// Generation + SSE streaming
+// ---------------------------------------------------------------------------
+let _currentSource = null;
+
+document.getElementById('sequenceForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const generateBtn = document.getElementById('generateBtn');
+    const logPanel    = document.getElementById('logPanel');
+    const logBox      = document.getElementById('logBox');
+    const resultBanner = document.getElementById('resultBanner');
+    const downloadLink = document.getElementById('downloadLink');
+
+    // Reset UI
+    resultBanner.style.display = 'none';
+    downloadLink.style.display = 'none';
+    logBox.innerHTML = '';
+    logPanel.style.display = 'block';
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '<span class="spinner"></span>Generating…';
+
+    if (_currentSource) { _currentSource.close(); _currentSource = null; }
+
+    // Save autocomplete values
+    for (const f of AC_FIELDS) {
+        const el = document.getElementById(f);
+        if (el) acSave(f, el.value);
+    }
+
+    try {
+        const fd = new FormData(this);
+        const r  = await fetch('/generate', { method: 'POST', body: fd });
+        const res = await r.json();
+
+        if (!r.ok) {
+            showResult(res.error || 'Unknown error', 'error');
+            return;
+        }
+
+        const { task_id } = res;
+        appendLog(`Task ${task_id.slice(0,8)} started…`);
+
+        // Open SSE stream
+        _currentSource = new EventSource(`/stream/${task_id}`);
+
+        _currentSource.onmessage = function(ev) {
+            const msg = JSON.parse(ev.data);
+            if (msg.type === 'log') {
+                appendLog(msg.message);
+            } else if (msg.type === 'heartbeat') {
+                // ignore
+            } else if (msg.type === 'done') {
+                _currentSource.close();
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate Sequence';
+                showResult('Sequence generated successfully!', 'success');
+                downloadLink.href = msg.download_url;
+                downloadLink.style.display = 'inline-flex';
+                appendLog('✓ Done! Click the download button below.', true);
+                loadHistory();
+            } else if (msg.type === 'error') {
+                _currentSource.close();
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate Sequence';
+                showResult(msg.message, 'error');
+                appendLog('✗ Error: ' + msg.message);
+                loadHistory();
+            }
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const useDefaultsBtn = document.getElementById('useDefaultsBtn');
-            const useDefaultPathsCheckbox = document.getElementById('use_default_paths');
-            const generateBtn = document.getElementById('generateBtn');
+        _currentSource.onerror = function() {
+            _currentSource.close();
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate Sequence';
+            showResult('Lost connection to server during generation. Check the server console.', 'error');
+        };
 
-            // Set default values
-            document.getElementById('sequence_type').value = defaults.sequence_type;
-            document.getElementById('artist_name').value = defaults.artist_name;
-            document.getElementById('song_name').value = defaults.song_name;
+    } catch (err) {
+        generateBtn.disabled = false;
+        generateBtn.textContent = 'Generate Sequence';
+        showResult('Error: ' + err.message, 'error');
+    }
+});
 
-            // Use Defaults Only button
-            useDefaultsBtn.addEventListener('click', function() {
-                // Clear all file inputs
-                document.getElementById('xlights_xml').value = '';
-                document.getElementById('audio_path').value = '';
+function appendLog(text, highlight = false) {
+    const logBox = document.getElementById('logBox');
+    const line = document.createElement('div');
+    line.className = 'log-line' + (highlight ? ' highlight' : '');
+    line.textContent = text;
+    logBox.appendChild(line);
+    logBox.scrollTop = logBox.scrollHeight;
+}
 
-                // Check the use defaults checkbox
-                useDefaultPathsCheckbox.checked = true;
+function clearLog() {
+    document.getElementById('logBox').innerHTML = '';
+}
 
-                // Set output filename to default
-                document.getElementById('output_filename').value = defaults.output_filename;
+function showResult(message, type, autoHide = true) {
+    const banner = document.getElementById('resultBanner');
+    banner.className = `result-banner ${type}`;
+    banner.textContent = message;
+    banner.style.display = 'block';
+    if (autoHide && type === 'success') {
+        setTimeout(() => { banner.style.display = 'none'; }, 6000);
+    }
+}
 
-                // Set artist name and song name to defaults
-                document.getElementById('artist_name').value = defaults.artist_name;
-                document.getElementById('song_name').value = defaults.song_name;
-
-                // Set sequence name and duration to defaults
-                document.getElementById('sequence_name').value = defaults.sequence_name;
-                document.getElementById('duration').value = defaults.duration;
-
-                // Set sequence type to default
-                document.getElementById('sequence_type').value = defaults.sequence_type;
-
-                showMessage('Using default file paths and values. Click "Generate Sequence" to proceed.', 'success');
-            });
-
-            // Form submission
-            document.getElementById('sequenceForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const messageDiv = document.getElementById('message');
-                const downloadLink = document.getElementById('downloadLink');
-
-                // Reset UI
-                messageDiv.style.display = 'none';
-                downloadLink.style.display = 'none';
-                generateBtn.disabled = true;
-                generateBtn.textContent = 'Generating...';
-
-                try {
-                    const formData = new FormData(this);
-
-                    const response = await fetch('/generate', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok && result.success) {
-                        messageDiv.className = 'message success';
-                        let message = result.message;
-                        if (result.used_defaults) {
-                            message += ' (Used default file paths)';
-                        }
-                        messageDiv.textContent = message;
-                        messageDiv.style.display = 'block';
-
-                        if (result.download_url) {
-                            downloadLink.href = result.download_url;
-                            downloadLink.style.display = 'block';
-                        }
-                    } else {
-                        throw new Error(result.error || 'Unknown error occurred');
-                    }
-
-                } catch (error) {
-                    messageDiv.className = 'message error';
-                    messageDiv.textContent = 'Error: ' + error.message;
-                    messageDiv.style.display = 'block';
-                    console.error('Error:', error);
-                } finally {
-                    generateBtn.disabled = false;
-                    generateBtn.textContent = 'Generate Sequence';
-                }
-            });
-        });
-
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.className = `message ${type}`;
-            messageDiv.textContent = message;
-            messageDiv.style.display = 'block';
-
-            // Auto-hide success messages after 5 seconds
-            if (type === 'success') {
-                setTimeout(() => {
-                    messageDiv.style.display = 'none';
-                }, 5000);
-            }
+// ---------------------------------------------------------------------------
+// History
+// ---------------------------------------------------------------------------
+async function loadHistory() {
+    try {
+        const r    = await fetch('/history');
+        const list = await r.json();
+        const ul   = document.getElementById('historyList');
+        if (!list.length) {
+            ul.innerHTML = '<li class="history-empty">No generations yet this session.</li>';
+            return;
         }
-    </script>
+        ul.innerHTML = list.map(h => {
+            const title = h.song ? `${h.artist || '?'} — ${h.song}` : (h.sequence_name || 'Animation');
+            const dl = h.download_url
+                ? `<a class="history-dl" href="${h.download_url}">⬇ Download</a>`
+                : '';
+            return `<li class="history-item">
+                <div class="h-title" title="${title}">${title}</div>
+                <div class="h-meta">${h.timestamp} · ${h.sequence_type} · ${h.elapsed}s</div>
+                <div class="h-status ${h.status}">${h.status === 'done' ? '✓ Done' : h.status === 'error' ? '✗ Failed' : '⏳ Running'} ${dl}</div>
+            </li>`;
+        }).join('');
+    } catch { /* ignore */ }
+}
+
+// ---------------------------------------------------------------------------
+// Init
+// ---------------------------------------------------------------------------
+// Auto-update sequence name when song name changes,
+// unless the user has manually edited the sequence name field.
+let _seqNameAutoMode = true;
+
+document.addEventListener('DOMContentLoaded', () => {
+    onTypeChange();
+    checkLemonade();
+    loadHistory();
+    setInterval(checkLemonade, 30000);
+
+    const songInput = document.getElementById('song_name');
+    const seqInput  = document.getElementById('sequence_name');
+
+    seqInput.addEventListener('input', () => { _seqNameAutoMode = false; });
+
+    songInput.addEventListener('input', () => {
+        if (!_seqNameAutoMode) return;
+        const song = songInput.value.trim();
+        seqInput.value = song ? `${song}_AI` : '';
+    });
+});
+</script>
 </body>
 </html>

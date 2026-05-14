@@ -14,3 +14,4 @@ venv/
 
 # Chat histories
 chat_histories.json
+.dual-graph/
