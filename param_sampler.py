@@ -5,7 +5,7 @@
 import json
 import os
 import random
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 TRAINING_DATA_PATH = os.path.join(os.path.dirname(__file__), "training_data.json")
 
@@ -21,7 +21,8 @@ def _load():
         try:
             with open(TRAINING_DATA_PATH, "r", encoding="utf-8") as f:
                 _data = json.load(f)
-            total = sum(v["count"] for v in _data.values())
+            total = sum(v["count"] for k, v in _data.items()
+                        if not k.startswith("_") and isinstance(v, dict) and "count" in v)
             print(f"[param_sampler] Loaded training data: {len(_data)} effect types, {total} observations.")
         except (json.JSONDecodeError, Exception) as e:
             print(f"[param_sampler] training_data.json is corrupt ({e}) — using fallback random params.")
@@ -191,8 +192,7 @@ def _build_transitions():
     if _transitions_built:
         return
     _load()
-    from collections import defaultdict as _dd
-    table = _dd(Counter)
+    table = defaultdict(Counter)
     for effect_name, info in _data.items():
         if effect_name.startswith("_"):
             continue
