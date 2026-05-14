@@ -544,8 +544,12 @@ def add_everything_group_effect(element, seq_duration_ms, color_palettes, regist
 
 def _load_audio(audio_path):
     """Load audio file with librosa. Returns (y, sr)."""
+    import warnings
     print(f"Loading audio: {audio_path}")
-    y, sr = librosa.load(audio_path, sr=None)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="PySoundFile failed")
+        warnings.filterwarnings("ignore", category=FutureWarning, module="librosa")
+        y, sr = librosa.load(audio_path, sr=None)
     print(f"Audio loaded: {len(y)/sr:.1f}s at {sr}Hz")
     return y, sr
 
@@ -776,9 +780,55 @@ def generate_lyrics_track(song_name: str, artist_name: str, duration_s: float,
     return lines
 
 
+def _pychorus_chorus_times(y, sr, duration_s: float, clip_length: float = 15.0):
+    """
+    Use pychorus time-lag repetition analysis to find all chorus start times.
+    Returns a set of floats (seconds), or empty set if pychorus is unavailable / finds nothing.
+    clip_length controls minimum chorus length in seconds — smaller values find shorter repeats.
+    """
+    try:
+        import numpy as np
+        from pychorus.helpers import (
+            detect_lines, count_overlapping_lines, local_maxima_rows,
+        )
+        from pychorus.similarity_matrix import TimeTimeSimilarityMatrix, TimeLagSimilarityMatrix
+
+        # pychorus uses chroma_stft, not chroma_cqt — match its expectations
+        chroma_stft = librosa.feature.chroma_stft(y=y, sr=sr)
+        num_samples = chroma_stft.shape[1]
+        chroma_sr   = num_samples / duration_s
+
+        tt_sim = TimeTimeSimilarityMatrix(chroma_stft, sr)
+        tl_sim = TimeLagSimilarityMatrix(chroma_stft, sr)
+
+        smoothing_samples = int(2.0 * chroma_sr)
+        tl_sim.denoise(tt_sim.matrix, smoothing_samples)
+
+        clip_samples    = clip_length * chroma_sr
+        candidate_rows  = local_maxima_rows(tl_sim.matrix)
+        lines           = detect_lines(tl_sim.matrix, candidate_rows, clip_samples)
+
+        if not lines:
+            return set()
+
+        line_scores  = count_overlapping_lines(lines, 0.1 * clip_samples, clip_samples)
+        max_score    = max(line_scores.values())
+        # Accept any line scoring at least 60% of the best — catches all chorus instances
+        threshold    = max(1, max_score * 0.6)
+        chorus_times = {line.start / chroma_sr
+                        for line, score in line_scores.items()
+                        if score >= threshold}
+        return chorus_times
+
+    except Exception as e:
+        print(f"[pychorus] Skipped: {e}")
+        return set()
+
+
 def detect_structure_audio(y, sr, duration_s: float):
     """
-    Audio-based structure segmentation using beat-sync chroma + MFCC features.
+    Audio-based structure segmentation using beat-sync chroma + MFCC features,
+    with pychorus repetition analysis for accurate chorus labeling.
     Returns list of {"section": str, "start": float, "end": float} dicts,
     or None if there are too few beats to segment reliably.
     """
@@ -817,10 +867,21 @@ def detect_structure_audio(y, sr, duration_s: float):
         avg_rms = float(np.mean(rms[mask])) if np.any(mask) else float(np.mean(rms))
         segs.append({"start": s, "end": e, "rms": avg_rms})
 
+    # --- pychorus: repetition-based chorus detection ---
+    # Use a clip_length of min-segment-duration so short repeats are caught
+    min_seg_dur   = min(seg["end"] - seg["start"] for seg in segs)
+    clip_length   = max(8.0, min(20.0, min_seg_dur * 0.8))
+    chorus_hits   = _pychorus_chorus_times(y, sr, duration_s, clip_length=clip_length)
+    snap_margin   = max(8.0, min_seg_dur * 0.5)  # seconds tolerance for matching a hit to a segment
+
+    def _near_chorus_hit(seg_start):
+        return any(abs(seg_start - t) <= snap_margin for t in chorus_hits)
+
+    # --- Energy-based fallback thresholds (used when pychorus gives no hits) ---
     n             = len(segs)
     rms_vals      = [seg["rms"] for seg in segs]
     rms_desc      = sorted(rms_vals, reverse=True)
-    chorus_thresh = rms_desc[max(0, round(n * 0.30) - 1)]
+    energy_chorus = rms_desc[max(0, round(n * 0.30) - 1)]
     bridge_thresh = rms_desc[min(n - 1, round(n * 0.75))]
 
     raw = []
@@ -830,12 +891,17 @@ def detect_structure_audio(y, sr, duration_s: float):
             raw.append("Intro")
         elif i == n - 1:
             raw.append("Outro")
-        elif seg["rms"] >= chorus_thresh:
+        elif chorus_hits and _near_chorus_hit(seg["start"]):
+            raw.append("Chorus")
+        elif not chorus_hits and seg["rms"] >= energy_chorus:
             raw.append("Chorus")
         elif seg["rms"] <= bridge_thresh and 0.25 < pos < 0.85:
             raw.append("Bridge")
         else:
             raw.append("Verse")
+
+    if chorus_hits:
+        print(f"[pychorus] Chorus hits at: {sorted(f'{t:.1f}s' for t in chorus_hits)}")
 
     counts       = {}
     final_labels = []

@@ -339,8 +339,15 @@ def scan_folder(folder: str, layout_xml: str) -> dict:
 
 
 def main():
-    print(f"Scanning: {XSQ_FOLDER}")
-    data = scan_folder(XSQ_FOLDER, LAYOUT_XML)
+    import argparse
+    parser = argparse.ArgumentParser(description="Scan .xsq files and build training_data.json")
+    parser.add_argument("--folder", default=XSQ_FOLDER,
+                        help=f"Folder to scan (default: {XSQ_FOLDER})")
+    args = parser.parse_args()
+
+    folder = args.folder
+    print(f"Scanning: {folder}")
+    data = scan_folder(folder, LAYOUT_XML)
 
     # Separate _cooccurrence for display before writing
     cooc = data.pop("_cooccurrence", {})

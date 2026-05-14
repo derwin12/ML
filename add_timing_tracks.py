@@ -172,24 +172,15 @@ def process_file(xsq_path: str, output_path: str,
 # Main
 # ---------------------------------------------------------------------------
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Add timing tracks to xLights .xsq files without modifying originals."
-    )
-    parser.add_argument("--no-structure",   action="store_true",
-                        help="Skip Structure track (don't call Lemonade)")
-    parser.add_argument("--structure-only", action="store_true",
-                        help="Only add Structure track (skip Beats/Downbeats/Energy Peaks)")
-    parser.add_argument("--overwrite",      action="store_true",
-                        help="Re-process files that already exist in the output folder")
-    args = parser.parse_args()
-
-    add_beats     = not args.structure_only
-    add_structure = not args.no_structure
-
-    if args.structure_only:
+def run(add_beats: bool = True, add_structure: bool = True, overwrite: bool = False) -> dict:
+    """
+    Batch-add timing tracks to all .xsq files in SOURCE_FOLDER.
+    Writes results to OUTPUT_FOLDER only — source files are never modified.
+    Returns {"added": int, "skipped": int, "errors": int}.
+    """
+    if not add_beats and add_structure:
         print("Mode: Structure track only")
-    elif args.no_structure:
+    elif not add_structure:
         print("Mode: Beats + Downbeats + Energy Peaks (no Structure)")
     else:
         print("Mode: all tracks (Beats, Downbeats, Energy Peaks, Structure)")
@@ -207,8 +198,8 @@ def main():
         src  = os.path.join(SOURCE_FOLDER, fname)
         dest = os.path.join(OUTPUT_FOLDER, fname)
 
-        if not args.overwrite and os.path.isfile(dest):
-            print(f"[{i:3}/{len(xsq_files)}] {fname}  →  skip (output exists, use --overwrite)")
+        if not overwrite and os.path.isfile(dest):
+            print(f"[{i:3}/{len(xsq_files)}] {fname}  →  skip (output exists)")
             results["skipped"] += 1
             continue
 
@@ -227,6 +218,26 @@ def main():
 
     print(f"\n{'='*60}")
     print(f"Done.  {results['added']} updated  |  {results['skipped']} skipped  |  {results['errors']} errors")
+    return results
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Add timing tracks to xLights .xsq files without modifying originals."
+    )
+    parser.add_argument("--no-structure",   action="store_true",
+                        help="Skip Structure track")
+    parser.add_argument("--structure-only", action="store_true",
+                        help="Only add Structure track (skip Beats/Downbeats/Energy Peaks)")
+    parser.add_argument("--overwrite",      action="store_true",
+                        help="Re-process files that already exist in the output folder")
+    args = parser.parse_args()
+
+    run(
+        add_beats     = not args.structure_only,
+        add_structure = not args.no_structure,
+        overwrite     = args.overwrite,
+    )
 
 
 if __name__ == "__main__":

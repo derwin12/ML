@@ -454,5 +454,79 @@ def history():
     return jsonify(list(HISTORY))
 
 
+# ---------------------------------------------------------------------------
+# Add Timing Tracks — background worker + route
+# ---------------------------------------------------------------------------
+
+def _run_timing_tracks(task_id: str, add_beats: bool, add_structure: bool, overwrite: bool):
+    task = TASKS[task_id]
+    q    = task['queue']
+    _writer.register(q)
+    start = time.time()
+    try:
+        from add_timing_tracks import run as run_timing
+        results = run_timing(add_beats=add_beats, add_structure=add_structure, overwrite=overwrite)
+        elapsed = round(time.time() - start, 1)
+        summary = f"{results['added']} updated | {results['skipped']} skipped | {results['errors']} errors"
+        with _TASKS_LOCK:
+            task['status']  = 'done'
+            task['elapsed'] = elapsed
+        HISTORY.appendleft({
+            'task_id':       task_id,
+            'timestamp':     time.strftime('%Y-%m-%d %H:%M:%S'),
+            'artist':        '',
+            'song':          'Add Timing Tracks',
+            'sequence_type': 'batch',
+            'sequence_name': summary,
+            'output_file':   '',
+            'elapsed':       elapsed,
+            'status':        'done',
+            'download_url':  '',
+        })
+        q.put(('done', ''))
+    except Exception as exc:
+        traceback.print_exc()
+        friendly = str(exc)
+        with _TASKS_LOCK:
+            task['status'] = 'error'
+            task['error']  = friendly
+        HISTORY.appendleft({
+            'task_id':       task_id,
+            'timestamp':     time.strftime('%Y-%m-%d %H:%M:%S'),
+            'artist':        '',
+            'song':          'Add Timing Tracks',
+            'sequence_type': 'batch',
+            'sequence_name': '',
+            'output_file':   '',
+            'elapsed':       round(time.time() - start, 1),
+            'status':        'error',
+            'download_url':  '',
+        })
+        q.put(('error', friendly))
+    finally:
+        _writer.unregister()
+
+
+@app.route('/run_timing_tracks', methods=['POST'])
+def run_timing_tracks_route():
+    overwrite      = request.form.get('overwrite')      == 'true'
+    no_structure   = request.form.get('no_structure')   == 'true'
+    structure_only = request.form.get('structure_only') == 'true'
+
+    task_id   = str(uuid.uuid4())
+    log_queue = queue.Queue()
+    with _TASKS_LOCK:
+        TASKS[task_id] = {'status': 'running', 'queue': log_queue,
+                          'output_path': None, 'error': None, 'meta': {}}
+
+    thread = threading.Thread(
+        target=_run_timing_tracks,
+        args=(task_id, not structure_only, not no_structure, overwrite),
+        daemon=True,
+    )
+    thread.start()
+    return jsonify({'task_id': task_id})
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

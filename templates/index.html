@@ -208,7 +208,7 @@
             margin-top: 20px;
             display: none;
         }
-        #logBox {
+        .log-box {
             background: #1e1e2e;
             color: #cdd6f4;
             font-family: 'Courier New', monospace;
@@ -220,8 +220,9 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
-        #logBox .log-line { line-height: 1.5; }
-        #logBox .log-line.highlight { color: #a6e3a1; }
+        .log-box .log-line { line-height: 1.5; }
+        .log-box .log-line.highlight { color: #a6e3a1; }
+        #logBox { }  /* alias kept for existing JS references */
 
         /* Result banner */
         .result-banner {
@@ -462,13 +463,70 @@
                         <strong style="font-size:13px;">Generation Log</strong>
                         <button class="btn-outline" style="padding:3px 10px;font-size:11px;" onclick="clearLog()">Clear</button>
                     </div>
-                    <div id="logBox"></div>
+                    <div id="logBox" class="log-box"></div>
                 </div>
 
                 <div id="resultBanner" class="result-banner"></div>
                 <a id="downloadLink" class="download-btn" style="display:none;" href="#">
                     ⬇ Download Sequence
                 </a>
+            </div>
+        </div>
+    </div>
+
+        <!-- ===== Add Timing Tracks card ===== -->
+        <div class="card">
+            <div class="card-header">Add Timing Tracks to Existing Sequences</div>
+            <div class="card-body">
+                <p class="hint" style="margin-bottom:14px;">
+                    Scans all .xsq files in the show folder and adds Beats, Downbeats, Energy Peaks, and
+                    Structure timing tracks. Output goes to <strong>LabeledShowFolder</strong> —
+                    source files are never modified.
+                </p>
+
+                <div class="form-group">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="tt_overwrite" value="true">
+                        Overwrite — re-process files already in output folder
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="tt_no_structure" value="true"
+                               onchange="ttModeChange()">
+                        Skip Structure track (faster — skips audio segmentation)
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="tt_structure_only" value="true"
+                               onchange="ttModeChange()">
+                        Structure only — skip Beats / Downbeats / Energy Peaks
+                    </label>
+                </div>
+
+                <div class="button-row">
+                    <button type="button" id="timingBtn" class="btn-primary" onclick="runTimingTracks()">
+                        Run Add Timing Tracks
+                    </button>
+                    <button type="button" class="btn-secondary" id="timingStopBtn"
+                            style="display:none;" onclick="timingStop()">
+                        Stop
+                    </button>
+                </div>
+
+                <div id="timingLogPanel" style="margin-top:20px;display:none;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                        <strong style="font-size:13px;">Timing Track Log</strong>
+                        <button class="btn-outline" style="padding:3px 10px;font-size:11px;"
+                                onclick="document.getElementById('timingLogBox').innerHTML=''">Clear</button>
+                    </div>
+                    <div id="timingLogBox" class="log-box"></div>
+                </div>
+
+                <div id="timingResultBanner" class="result-banner"></div>
             </div>
         </div>
     </div>
@@ -779,6 +837,117 @@ async function loadHistory() {
             </li>`;
         }).join('');
     } catch { /* ignore */ }
+}
+
+// ---------------------------------------------------------------------------
+// Add Timing Tracks
+// ---------------------------------------------------------------------------
+let _timingSource = null;
+
+function ttModeChange() {
+    const noStruct     = document.getElementById('tt_no_structure');
+    const structOnly   = document.getElementById('tt_structure_only');
+    // mutually exclusive
+    if (this === noStruct   && noStruct.checked)   structOnly.checked = false;
+    if (this === structOnly && structOnly.checked) noStruct.checked   = false;
+}
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('tt_no_structure').addEventListener('change', function() {
+        if (this.checked) document.getElementById('tt_structure_only').checked = false;
+    });
+    document.getElementById('tt_structure_only').addEventListener('change', function() {
+        if (this.checked) document.getElementById('tt_no_structure').checked = false;
+    });
+});
+
+async function runTimingTracks() {
+    const btn        = document.getElementById('timingBtn');
+    const stopBtn    = document.getElementById('timingStopBtn');
+    const logPanel   = document.getElementById('timingLogPanel');
+    const logBox     = document.getElementById('timingLogBox');
+    const banner     = document.getElementById('timingResultBanner');
+
+    logBox.innerHTML = '';
+    banner.style.display = 'none';
+    logPanel.style.display = 'block';
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Running…';
+    stopBtn.style.display = 'inline-block';
+
+    if (_timingSource) { _timingSource.close(); _timingSource = null; }
+
+    const fd = new FormData();
+    if (document.getElementById('tt_overwrite').checked)      fd.append('overwrite',      'true');
+    if (document.getElementById('tt_no_structure').checked)   fd.append('no_structure',   'true');
+    if (document.getElementById('tt_structure_only').checked) fd.append('structure_only', 'true');
+
+    try {
+        const r   = await fetch('/run_timing_tracks', { method: 'POST', body: fd });
+        const res = await r.json();
+        if (!r.ok) { ttShowResult(res.error || 'Unknown error', 'error'); ttReset(); return; }
+
+        const { task_id } = res;
+        ttLog(`Task ${task_id.slice(0,8)} started…`);
+
+        _timingSource = new EventSource(`/stream/${task_id}`);
+        _timingSource.onmessage = function(ev) {
+            const msg = JSON.parse(ev.data);
+            if (msg.type === 'log') {
+                ttLog(msg.message);
+            } else if (msg.type === 'done') {
+                _timingSource.close();
+                ttShowResult('Timing tracks batch complete!', 'success');
+                ttLog('✓ Done!', true);
+                ttReset();
+                loadHistory();
+            } else if (msg.type === 'error') {
+                _timingSource.close();
+                ttShowResult(msg.message, 'error');
+                ttLog('✗ Error: ' + msg.message);
+                ttReset();
+                loadHistory();
+            }
+        };
+        _timingSource.onerror = function() {
+            _timingSource.close();
+            ttShowResult('Lost connection to server. Check the server console.', 'error');
+            ttReset();
+        };
+    } catch (err) {
+        ttShowResult('Error: ' + err.message, 'error');
+        ttReset();
+    }
+}
+
+function timingStop() {
+    if (_timingSource) { _timingSource.close(); _timingSource = null; }
+    ttLog('— Disconnected from log stream (job may still be running server-side).');
+    ttReset();
+}
+
+function ttLog(text, highlight = false) {
+    const logBox = document.getElementById('timingLogBox');
+    const line   = document.createElement('div');
+    line.className = 'log-line' + (highlight ? ' highlight' : '');
+    line.textContent = text;
+    logBox.appendChild(line);
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
+function ttShowResult(message, type) {
+    const banner = document.getElementById('timingResultBanner');
+    banner.className = `result-banner ${type}`;
+    banner.textContent = message;
+    banner.style.display = 'block';
+    if (type === 'success') setTimeout(() => { banner.style.display = 'none'; }, 8000);
+}
+
+function ttReset() {
+    const btn     = document.getElementById('timingBtn');
+    const stopBtn = document.getElementById('timingStopBtn');
+    btn.disabled = false;
+    btn.textContent = 'Run Add Timing Tracks';
+    stopBtn.style.display = 'none';
 }
 
 // ---------------------------------------------------------------------------

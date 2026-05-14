@@ -505,7 +505,7 @@ Still unknown (1): Weird Thing 1
 - [x] Onsets timing track — `librosa.onset.onset_detect`, denser than beats.
 - [x] Energy Peaks timing track — RMS peaks via `librosa.util.peak_pick`, marks loudest moments.
 - [x] Lyrics timing track — synced lyrics from lrclib.net (no API key); `/api/get` with duration first, `/api/search` + nearest-duration fallback.
-- [x] Structure timing track — audio-based segmentation (chroma+MFCC recurrence matrix); proportional fallback if audio too short.
+- [x] Structure timing track — agglomerative segmentation (chroma+MFCC) for boundaries; pychorus time-lag repetition for chorus labeling; proportional fallback if audio too short.
 - [x] 33 effect modules — covers all high/medium-frequency effects from 1.6M training observations.
 - [x] DEV text label overlay — last 4 beats show category name per model on a spare layer (non-destructive, `max_layers=4`).
 - [x] Category-aware effect selection — `EFFECT_EXCLUDED_CATS` + `filter_by_effect()`; floods/lines excluded from 2D effects; SingleStrand excluded from matrices/trees.
@@ -527,6 +527,7 @@ grok3api==0.1.0rc2
 setuptools==80.9.0
 mutagen              # MP3 duration
 librosa              # Beat detection, onset detection, audio analysis
+pychorus             # Time-lag repetition analysis for chorus detection
 numpy                # Audio processing
 scipy                # Bandpass/highpass filters for drum sub-separation
 demucs               # Stem separation (drums, bass, guitar, piano, vocals) — downloads ~300MB model on first run
