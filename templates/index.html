@@ -507,6 +507,22 @@
                     </label>
                 </div>
 
+                <div class="form-group">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="tt_add_stems" value="true" onchange="ttStemsChange()">
+                        Add stem tracks — Vocals, Bass, Guitar, Piano + drum sub-tracks (slow: runs Demucs)
+                    </label>
+                </div>
+
+                <div class="form-group" id="tt_drum_preset_row" style="display:none; margin-left:1.5rem;">
+                    <label for="tt_drum_preset" style="margin-right:.5rem;">Drum sensitivity:</label>
+                    <select id="tt_drum_preset">
+                        <option value="balanced">Balanced — good starting point for most songs</option>
+                        <option value="strict">Strict — major hits only (sparse / acoustic)</option>
+                        <option value="sensitive">Sensitive — more detections (dense / electronic)</option>
+                    </select>
+                </div>
+
                 <div class="button-row">
                     <button type="button" id="timingBtn" class="btn-primary" onclick="runTimingTracks()">
                         Run Add Timing Tracks
@@ -844,6 +860,11 @@ async function loadHistory() {
 // ---------------------------------------------------------------------------
 let _timingSource = null;
 
+function ttStemsChange() {
+    const row = document.getElementById('tt_drum_preset_row');
+    row.style.display = document.getElementById('tt_add_stems').checked ? '' : 'none';
+}
+
 function ttModeChange() {
     const noStruct     = document.getElementById('tt_no_structure');
     const structOnly   = document.getElementById('tt_structure_only');
@@ -880,6 +901,10 @@ async function runTimingTracks() {
     if (document.getElementById('tt_overwrite').checked)      fd.append('overwrite',      'true');
     if (document.getElementById('tt_no_structure').checked)   fd.append('no_structure',   'true');
     if (document.getElementById('tt_structure_only').checked) fd.append('structure_only', 'true');
+    if (document.getElementById('tt_add_stems').checked) {
+        fd.append('add_stems',   'true');
+        fd.append('drum_preset', document.getElementById('tt_drum_preset').value);
+    }
 
     try {
         const r   = await fetch('/run_timing_tracks', { method: 'POST', body: fd });

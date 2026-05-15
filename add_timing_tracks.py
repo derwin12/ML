@@ -86,7 +86,8 @@ def get_sections(root):
 # ---------------------------------------------------------------------------
 
 def process_file(xsq_path: str, output_path: str,
-                 add_beats: bool, add_structure: bool) -> str:
+                 add_beats: bool, add_structure: bool, add_stems: bool = False,
+                 drum_preset: str = "balanced") -> str:
     """
     Parse xsq_path into memory, add missing timing tracks, write to output_path.
     Never touches xsq_path.  Returns a human-readable status string.
@@ -95,7 +96,7 @@ def process_file(xsq_path: str, output_path: str,
     from utils import (
         _load_audio, _add_timing_track,
         generate_beats_track, generate_energy_peaks_track,
-        generate_structure_track, get_audio_duration, indent,
+        generate_structure_track, generate_stem_tracks, get_audio_duration, indent,
     )
     import librosa
 
@@ -122,8 +123,9 @@ def process_file(xsq_path: str, output_path: str,
     want_downbeats   = add_beats and "Downbeats"    not in existing
     want_peaks       = add_beats and "Energy Peaks" not in existing
     want_structure   = add_structure and "Structure" not in existing
+    want_stems       = add_stems and "Vocals"       not in existing
 
-    if not any([want_beats, want_downbeats, want_peaks, want_structure]):
+    if not any([want_beats, want_downbeats, want_peaks, want_structure, want_stems]):
         return "skip — all requested tracks already present"
 
     duration_ms = int(get_audio_duration(audio_path) * 1000)
@@ -160,6 +162,11 @@ def process_file(xsq_path: str, output_path: str,
                                  y=y, sr=sr)
         added.append("Structure")
 
+    if want_stems:
+        stem_tracks = generate_stem_tracks(audio_path, display_elem, element_effects, duration_ms,
+                                           drum_preset=drum_preset)
+        added.extend(stem_tracks.keys())
+
     # --- Write output (source never touched) ---
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
     indent(root)
@@ -172,18 +179,21 @@ def process_file(xsq_path: str, output_path: str,
 # Main
 # ---------------------------------------------------------------------------
 
-def run(add_beats: bool = True, add_structure: bool = True, overwrite: bool = False) -> dict:
+def run(add_beats: bool = True, add_structure: bool = True, add_stems: bool = False,
+        drum_preset: str = "balanced", overwrite: bool = False) -> dict:
     """
     Batch-add timing tracks to all .xsq files in SOURCE_FOLDER.
     Writes results to OUTPUT_FOLDER only — source files are never modified.
     Returns {"added": int, "skipped": int, "errors": int}.
     """
-    if not add_beats and add_structure:
-        print("Mode: Structure track only")
-    elif not add_structure:
-        print("Mode: Beats + Downbeats + Energy Peaks (no Structure)")
-    else:
-        print("Mode: all tracks (Beats, Downbeats, Energy Peaks, Structure)")
+    parts = []
+    if add_beats:
+        parts.append("Beats + Downbeats + Energy Peaks")
+    if add_structure:
+        parts.append("Structure")
+    if add_stems:
+        parts.append("Stems (Vocals + instruments)")
+    print(f"Mode: {', '.join(parts) or 'nothing selected'}")
 
     xsq_files = sorted(
         f for f in os.listdir(SOURCE_FOLDER)
@@ -205,7 +215,8 @@ def run(add_beats: bool = True, add_structure: bool = True, overwrite: bool = Fa
 
         print(f"[{i:3}/{len(xsq_files)}] {fname}")
         try:
-            status = process_file(src, dest, add_beats=add_beats, add_structure=add_structure)
+            status = process_file(src, dest, add_beats=add_beats, add_structure=add_structure,
+                                  add_stems=add_stems, drum_preset=drum_preset)
             if status.startswith("skip"):
                 print(f"           {status}")
                 results["skipped"] += 1
@@ -229,6 +240,11 @@ def main():
                         help="Skip Structure track")
     parser.add_argument("--structure-only", action="store_true",
                         help="Only add Structure track (skip Beats/Downbeats/Energy Peaks)")
+    parser.add_argument("--stems",          action="store_true",
+                        help="Add stem timing tracks (Vocals, Bass, Guitar, Piano, drums)")
+    parser.add_argument("--drum-preset",    default="balanced",
+                        choices=["balanced", "strict", "sensitive"],
+                        help="Drum onset detection sensitivity (default: balanced)")
     parser.add_argument("--overwrite",      action="store_true",
                         help="Re-process files that already exist in the output folder")
     args = parser.parse_args()
@@ -236,6 +252,8 @@ def main():
     run(
         add_beats     = not args.structure_only,
         add_structure = not args.no_structure,
+        add_stems     = args.stems,
+        drum_preset   = args.drum_preset,
         overwrite     = args.overwrite,
     )
 

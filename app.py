@@ -458,14 +458,16 @@ def history():
 # Add Timing Tracks — background worker + route
 # ---------------------------------------------------------------------------
 
-def _run_timing_tracks(task_id: str, add_beats: bool, add_structure: bool, overwrite: bool):
+def _run_timing_tracks(task_id: str, add_beats: bool, add_structure: bool, add_stems: bool,
+                       drum_preset: str, overwrite: bool):
     task = TASKS[task_id]
     q    = task['queue']
     _writer.register(q)
     start = time.time()
     try:
         from add_timing_tracks import run as run_timing
-        results = run_timing(add_beats=add_beats, add_structure=add_structure, overwrite=overwrite)
+        results = run_timing(add_beats=add_beats, add_structure=add_structure, add_stems=add_stems,
+                             drum_preset=drum_preset, overwrite=overwrite)
         elapsed = round(time.time() - start, 1)
         summary = f"{results['added']} updated | {results['skipped']} skipped | {results['errors']} errors"
         with _TASKS_LOCK:
@@ -512,6 +514,10 @@ def run_timing_tracks_route():
     overwrite      = request.form.get('overwrite')      == 'true'
     no_structure   = request.form.get('no_structure')   == 'true'
     structure_only = request.form.get('structure_only') == 'true'
+    add_stems      = request.form.get('add_stems')      == 'true'
+    drum_preset    = request.form.get('drum_preset', 'balanced')
+    if drum_preset not in ('balanced', 'strict', 'sensitive'):
+        drum_preset = 'balanced'
 
     task_id   = str(uuid.uuid4())
     log_queue = queue.Queue()
@@ -521,7 +527,7 @@ def run_timing_tracks_route():
 
     thread = threading.Thread(
         target=_run_timing_tracks,
-        args=(task_id, not structure_only, not no_structure, overwrite),
+        args=(task_id, not structure_only, not no_structure, add_stems, drum_preset, overwrite),
         daemon=True,
     )
     thread.start()

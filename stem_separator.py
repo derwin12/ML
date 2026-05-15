@@ -19,14 +19,36 @@ DRUM_BANDS = {
     "cymbal": (3000, 18000),
 }
 
-# Onset detection tuning per drum type
-DRUM_ONSET_PARAMS = {
-    "kick":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.06, wait=8),
-    "snare":  dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.06, wait=6),
-    "hihat":  dict(pre_max=2, post_max=2, pre_avg=2, post_avg=3, delta=0.05, wait=4),
-    "toms":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.07, wait=8),
-    "cymbal": dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.06, wait=6),
+# Onset detection presets — normalize=False prevents cross-band bleed amplification.
+# Balanced: good starting point for most songs.
+# Strict:   fewer detections, major hits only — good for sparse/acoustic arrangements.
+# Sensitive: more detections — good for dense/electronic music or busy drummers.
+DRUM_ONSET_PRESETS = {
+    "balanced": {
+        "kick":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.15, wait=8,  normalize=False),
+        "snare":  dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.10, wait=6,  normalize=False),
+        "hihat":  dict(pre_max=2, post_max=2, pre_avg=2, post_avg=3, delta=0.07, wait=4,  normalize=False),
+        "toms":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.12, wait=8,  normalize=False),
+        "cymbal": dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.08, wait=6,  normalize=False),
+    },
+    "strict": {
+        "kick":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.25, wait=10, normalize=False),
+        "snare":  dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.18, wait=8,  normalize=False),
+        "hihat":  dict(pre_max=2, post_max=2, pre_avg=2, post_avg=3, delta=0.12, wait=5,  normalize=False),
+        "toms":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.20, wait=10, normalize=False),
+        "cymbal": dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.14, wait=8,  normalize=False),
+    },
+    "sensitive": {
+        "kick":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.08, wait=6,  normalize=False),
+        "snare":  dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.06, wait=4,  normalize=False),
+        "hihat":  dict(pre_max=2, post_max=2, pre_avg=2, post_avg=3, delta=0.04, wait=3,  normalize=False),
+        "toms":   dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.07, wait=6,  normalize=False),
+        "cymbal": dict(pre_max=3, post_max=3, pre_avg=3, post_avg=5, delta=0.05, wait=4,  normalize=False),
+    },
 }
+
+# Default alias
+DRUM_ONSET_PARAMS = DRUM_ONSET_PRESETS["balanced"]
 
 
 def separate_stems(audio_path, output_dir=None, model="htdemucs_6s"):
@@ -78,11 +100,13 @@ def _butter_highpass(y, sr, cutoff_hz):
     return scipy.signal.filtfilt(b, a, y)
 
 
-def extract_drum_onsets(drum_wav_path):
+def extract_drum_onsets(drum_wav_path, preset="balanced"):
     """
     Split drum stem by frequency band and detect onsets per drum type.
+    preset: "balanced" | "strict" | "sensitive"
     Returns dict: kick/snare/hihat/toms/cymbal -> list[int] ms
     """
+    onset_params = DRUM_ONSET_PRESETS.get(preset, DRUM_ONSET_PRESETS["balanced"])
     y, sr = librosa.load(drum_wav_path, sr=None, mono=True)
     results = {}
 
@@ -94,7 +118,7 @@ def extract_drum_onsets(drum_wav_path):
 
         filtered = np.nan_to_num(filtered, nan=0.0, posinf=0.0, neginf=0.0)
 
-        params = DRUM_ONSET_PARAMS[name]
+        params = onset_params[name]
         onset_times = librosa.onset.onset_detect(y=filtered, sr=sr, units='time', **params)
         results[name] = [int(t * 1000) for t in onset_times]
         print(f"  {name}: {len(results[name])} hits")

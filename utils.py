@@ -683,16 +683,17 @@ def generate_energy_peaks_track(y, sr, display_elem, element_effects, seq_durati
 
 
 def generate_stem_tracks(audio_path, display_elem, element_effects, seq_duration_ms,
-                         output_dir=None, model="htdemucs_6s"):
+                         output_dir=None, model="htdemucs_6s", drum_preset="balanced"):
     """
     Separate audio into stems with Demucs then build timing tracks for each instrument.
     Drum stem → kick, snare, hihat, toms, cymbal tracks (frequency-filtered onsets).
-    Bass, guitar, piano stems → onset tracks.
+    Bass, guitar, piano, vocals stems → onset tracks.
+    drum_preset: "balanced" | "strict" | "sensitive"
     Returns dict of track_name -> list[int] ms.
     """
     from stem_separator import separate_stems, extract_drum_onsets, get_stem_onsets
 
-    print("=== Stem separation starting ===")
+    print(f"=== Stem separation starting (drum preset: {drum_preset}) ===")
     stems = separate_stems(audio_path, output_dir=output_dir, model=model)
 
     all_tracks = {}
@@ -700,7 +701,7 @@ def generate_stem_tracks(audio_path, display_elem, element_effects, seq_duration
     # Drum sub-tracks
     if "drums" in stems and os.path.isfile(stems["drums"]):
         print("Extracting drum sub-tracks...")
-        drum_hits = extract_drum_onsets(stems["drums"])
+        drum_hits = extract_drum_onsets(stems["drums"], preset=drum_preset)
         for drum_name, ms_list in drum_hits.items():
             if ms_list:
                 labels = [""] * len(ms_list)
@@ -710,7 +711,7 @@ def generate_stem_tracks(audio_path, display_elem, element_effects, seq_duration
                 print(f"  {track_name} track: {len(ms_list)} markers")
 
     # Melodic stems
-    for stem in ("bass", "guitar", "piano"):
+    for stem in ("bass", "guitar", "piano", "vocals"):
         if stem in stems and os.path.isfile(stems[stem]):
             print(f"Extracting {stem} onsets...")
             ms_list = get_stem_onsets(stems[stem], stem)
