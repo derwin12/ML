@@ -3,11 +3,13 @@
 from utils import indent, load_structure_map, get_audio_duration, get_eligible_models, sort_models, update_metadata, \
     generate_beats_track, generate_downbeats_track, generate_onsets_track, generate_energy_peaks_track, \
     generate_stem_tracks, \
-    generate_lyrics_track, generate_structure_track, _lemonade_complete, _load_audio, get_or_create_layer, \
+    generate_structure_track, _lemonade_complete, _load_audio, get_or_create_layer, \
     categorize_models, add_everything_group_effect, EffectDBRegistry, place_effect, find_singing_props, \
     filter_by_effect, EffectBudget, set_effect_budget, filter_beats_vocals_only, \
     get_model_positions, sort_elements_by_position, generate_phrase_boundaries, get_foreground_elements, \
     filter_by_probability, section_colors
+from generate_lyrics_track import generate_whisper_lyrics_track
+from arch_effect import add_arch_effects
 from spatial_sweep import add_spatial_sweep_effects
 from singing_face_effect import add_singing_face_effects
 from on_effect import add_on_effects
@@ -411,6 +413,13 @@ def create_xsq_from_template(
     eligible_groups, eligible_individuals, everything_group_name = get_eligible_models(
         layout_models, layout_groups, model_categories
     )
+    # Arch groups are sequenced separately (beat-sync only); individual arch
+    # models are excluded from the general effect pipeline entirely.
+    arch_group_names = {n for n in eligible_groups if model_categories.get(n) == "arch"}
+    arch_individual_names = {n for n in eligible_individuals if model_categories.get(n) == "arch"}
+    eligible_groups      = [n for n in eligible_groups      if n not in arch_group_names]
+    eligible_individuals = [n for n in eligible_individuals if n not in arch_individual_names]
+
     eligible_model_names = eligible_groups + eligible_individuals
     set_effect_budget(EffectBudget(model_categories))
     model_positions = get_model_positions(layout_models)
@@ -474,6 +483,9 @@ def create_xsq_from_template(
     eligible_group_elements = [e for e in eligible_elements if e.attrib["name"] in eligible_groups]
     eligible_individual_elements = [e for e in eligible_elements if e.attrib["name"] in eligible_individuals]
 
+    # Arch groups — beat-synced, handled separately from the main pipeline
+    arch_group_elements = [e for e in elements if e.attrib["name"] in arch_group_names]
+
     # Singing props get only a Faces effect
     singing_prop_elements = [e for e in elements if e.attrib.get("name") in singing_props_map]
 
@@ -494,7 +506,7 @@ def create_xsq_from_template(
         downbeats = generate_downbeats_track(y, sr, display_elem, element_effects, seq_duration_ms)
         onsets = generate_onsets_track(y, sr, display_elem, element_effects, seq_duration_ms)
         energy_peaks = generate_energy_peaks_track(y, sr, display_elem, element_effects, seq_duration_ms)
-        lyrics = generate_lyrics_track(song, artist, audio_duration_s, display_elem, element_effects, seq_duration_ms)
+        lyrics = generate_whisper_lyrics_track(audio_path, song, artist, display_elem, element_effects, seq_duration_ms)
         structure = generate_structure_track(audio_path, song, artist, display_elem, element_effects, seq_duration_ms)
         generate_stem_tracks(audio_path, display_elem, element_effects, seq_duration_ms)
         vocal_onsets = filter_beats_vocals_only(onsets or [], lyrics or [])
@@ -516,9 +528,15 @@ def create_xsq_from_template(
     # Singing props get only a Faces effect
     if singing_prop_elements:
         num_singing = add_singing_face_effects(
-            singing_prop_elements, singing_props_map, color_palettes, seq_duration_ms, registry
+            singing_prop_elements, singing_props_map, color_palettes, seq_duration_ms, registry,
+            timing_track_name="Lyrics"
         )
         print(f"Singing props: {num_singing} Faces effects placed.")
+
+    # Arch groups: beat-synchronized effects (separate from general pipeline)
+    if arch_group_elements:
+        num_arch = add_arch_effects(arch_group_elements, seq_duration_ms, color_palettes, colors, beats or [], structure, registry)
+        print(f"Arch groups: {num_arch} beat-synced effects placed across {len(arch_group_elements)} group(s).")
 
     # POC: place one random effect on every eligible model/group spanning the first beat
     num_first_beat = add_first_beat_effects(eligible_elements, color_palettes, colors, beats, structure, registry)
@@ -647,15 +665,18 @@ def create_xsq_from_template(
         new_palette      = ET.SubElement(color_palettes, "ColorPalette")
         new_palette.text = ",".join(palette_parts)
         palette_id       = len(color_palettes) - 1
+        is_group     = name in eligible_groups
+        render_prefix = "B_CHOICE_BufferStyle=Per Model Default," if is_group else ""
         settings_str = (
+            f"{render_prefix}"
             f"E_TEXTCTRL_Text={category},"
-            "E_CHOICE_Text_Dir=none,"
+            "E_CHOICE_Text_Dir=left,"
             "E_SLIDER_Text_Speed=10,"
             "E_CHECKBOX_Text_PixelOffsets=0,"
             "E_SLIDER_Text_XStart=0,"
-            "E_SLIDER_Text_YStart=50,"
-            "E_SLIDER_Text_XEnd=100,"
-            "E_SLIDER_Text_YEnd=50,"
+            "E_SLIDER_Text_YStart=0,"
+            "E_SLIDER_Text_XEnd=0,"
+            "E_SLIDER_Text_YEnd=0,"
             "E_CHOICE_Text_Effect=normal,"
             "T_CHECKBOX_LayerMorph=0,"
             "T_CHECKBOX_OverlayBkg=0,"

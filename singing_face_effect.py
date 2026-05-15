@@ -13,13 +13,20 @@ _FACES_PALETTE = (
 )
 
 
-def _faces_settings(face_def_name):
+def _faces_settings(face_def_name, timing_track_name="Lyrics"):
     return (
-        f"E_CHECKBOX_Faces_Outline=1,E_CHECKBOX_Faces_SuppressShimmer=0,"
-        f"E_CHECKBOX_Faces_SuppressWhenNotSinging=0,E_CHECKBOX_Faces_TransparentBlack=0,"
-        f"E_CHOICE_Faces_EyeBlinkDuration=Normal,E_CHOICE_Faces_EyeBlinkFrequency=Normal,"
-        f"E_CHOICE_Faces_Eyes=Auto,E_CHOICE_Faces_FaceDefinition={face_def_name},"
-        f"E_CHOICE_Faces_Phoneme=AI,E_CHOICE_Faces_UseState=,"
+        f"E_CHECKBOX_Faces_Fade=1,"
+        f"E_CHECKBOX_Faces_Outline=1,"
+        f"E_CHECKBOX_Faces_SuppressShimmer=0,"
+        f"E_CHECKBOX_Faces_SuppressWhenNotSinging=1,"
+        f"E_CHECKBOX_Faces_TransparentBlack=0,"
+        f"E_CHOICE_Faces_EyeBlinkDuration=Normal,"
+        f"E_CHOICE_Faces_EyeBlinkFrequency=Normal,"
+        f"E_CHOICE_Faces_Eyes=Auto,"
+        f"E_CHOICE_Faces_FaceDefinition={face_def_name},"
+        f"E_CHOICE_Faces_TimingTrack={timing_track_name},"
+        f"E_CHOICE_Faces_UseState=,"
+        f"E_SPINCTRL_Faces_LeadFrames=120,"
         f"E_TEXTCTRL_Faces_TransparentBlack=0,"
         f"T_CHECKBOX_Canvas=0,T_CHECKBOX_LayerMorph=0,"
         f"T_CHOICE_LayerMethod=Normal,T_SLIDER_EffectLayerMix=0"
@@ -27,7 +34,7 @@ def _faces_settings(face_def_name):
 
 
 def add_singing_face_effects(singing_prop_elements, face_defs, color_palettes,
-                              seq_duration_ms, registry=None):
+                              seq_duration_ms, registry=None, timing_track_name="Lyrics"):
     """
     Place a Faces effect spanning the full sequence on each singing prop element.
 
@@ -49,7 +56,7 @@ def add_singing_face_effects(singing_prop_elements, face_defs, color_palettes,
         cp = ET.SubElement(color_palettes, "ColorPalette")
         cp.text = _FACES_PALETTE
 
-        settings_str = _faces_settings(face_def) + "\t" + _FACES_PALETTE
+        settings_str = _faces_settings(face_def, timing_track_name) + "\t" + _FACES_PALETTE
         place_effect(effect_layer, "Faces", 0, seq_duration_ms, palette_id, settings_str, registry)
         count += 1
         print(f"  Singing prop '{model_name}': Faces effect placed (def='{face_def}')")

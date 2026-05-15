@@ -16,7 +16,7 @@ def _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_c
     end_width   = p.get("E_SLIDER_Shockwave_End_Width", random.randint(5, 20))
     accel       = p.get("E_SLIDER_Shockwave_Accel", random.randint(-50, 50))
     blend_edges = p.get("E_CHECKBOX_Shockwave_Blend_Edges", random.choice([0, 1]))
-    scale       = p.get("E_CHECKBOX_Shockwave_Scale", random.choice([0, 1]))
+    scale       = 1  # always Scale to Buffer
     end_radius  = p.get("E_SLIDER_Shockwave_End_Radius",
                         random.randint(50, 200) if is_group else random.randint(20, 50))
 
