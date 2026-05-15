@@ -77,29 +77,34 @@ def _is_flood(model_elem) -> bool:
 
 
 def load_model_categories(layout_xml: str) -> dict:
-    """Return {model_name_lower: category} using normalized category names that
-    match utils.py's categorize_models() output."""
-    cats = {}
+    """Return {model_name_lower: category} using the same logic as utils.categorize_models
+    so [T:*] description hints, flood promotion, and group classification all match generation."""
     if not os.path.isfile(layout_xml):
-        return cats
+        return {}
     try:
+        from utils import categorize_models
         root = ET.parse(layout_xml).getroot()
-        for m in root.findall(".//model"):
-            if m.get("ShadowModelFor"):
-                continue
-            name = m.get("name", "").strip().lower()
-            da = m.get("DisplayAs", "unknown").lower()
-            # Flood promotion: single-node single line → flood
-            if _is_flood(m):
-                cats[name] = "flood"
-            else:
-                cats[name] = _DISPLAY_AS_TO_CATEGORY.get(da, "unknown")
-        for g in root.findall(".//modelGroup"):
-            name = g.get("name", "").strip().lower()
-            cats[name] = "group"
-    except ET.ParseError:
-        pass
-    return cats
+        layout_models = root.findall(".//model")
+        layout_groups = root.findall(".//modelGroup")
+        cats = categorize_models(layout_models, layout_groups)
+        return {k.lower(): v for k, v in cats.items()}
+    except Exception as e:
+        print(f"[load_model_categories] falling back to DisplayAs map: {e}")
+        cats = {}
+        try:
+            root = ET.parse(layout_xml).getroot()
+            for m in root.findall(".//model"):
+                if m.get("ShadowModelFor"):
+                    continue
+                name = m.get("name", "").strip().lower()
+                da = m.get("DisplayAs", "unknown").lower()
+                cats[name] = "flood" if _is_flood(m) else _DISPLAY_AS_TO_CATEGORY.get(da, "unknown")
+            for g in root.findall(".//modelGroup"):
+                name = g.get("name", "").strip().lower()
+                cats[name] = "group"
+        except ET.ParseError:
+            pass
+        return cats
 
 
 def extract_effect_db(root) -> list:

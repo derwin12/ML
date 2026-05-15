@@ -574,10 +574,11 @@ def create_xsq_from_template(
         _chorus_fg       = get_foreground_elements(eligible_elements,       model_categories, "chorus") if _sname == "chorus" else []
         _chorus_fg_groups= get_foreground_elements(eligible_group_elements, model_categories, "chorus") if _sname == "chorus" else []
 
-        num_ons_added        += add_on_effects(fe("On", _sname), fg("On", _sname), seq_duration_ms, color_palettes, colors, _vocal_s, structure, registry=registry)
+        # Shockwave runs first — it's the primary feature effect for stars/groups in chorus
+        # and must claim layer 0 before ambient effects (Bars, Color Wash) fill it.
+        num_shockwave_added  += add_shockwave_effects(fe("Shockwave", _sname), fg("Shockwave", _sname), seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
         num_bars_added       += add_bars_effects(fe("Bars", _sname), fg("Bars", _sname), seq_duration_ms, color_palettes, colors, _down_s, structure, registry=registry)
         num_color_wash_added += add_color_wash_effects(fe("Color Wash", _sname), fg("Color Wash", _sname), seq_duration_ms, color_palettes, colors, _down_s, structure, registry=registry)
-        num_shockwave_added  += add_shockwave_effects(fe("Shockwave", _sname), fg("Shockwave", _sname), seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
         num_spirals_added    += add_spirals_effects(fe("Spirals", _sname), fg("Spirals", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_pinwheel_added   += add_pinwheel_effects(fe("Pinwheel", _sname), fg("Pinwheel", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_single_strand_added += add_single_strand_effects(fe("SingleStrand", _sname), fg("SingleStrand", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
@@ -589,10 +590,11 @@ def create_xsq_from_template(
         num_meteors_added    += add_meteors_effects(fe("Meteors", _sname), fg("Meteors", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_fire_added       += add_fire_effects(fe("Fire", _sname), fg("Fire", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_shimmer_added    += add_shimmer_effects(fe("Shimmer", _sname), fg("Shimmer", _sname), seq_duration_ms, color_palettes, colors, _vocal_s, structure, registry=registry)
-        num_strobe_added     += add_strobe_effects(
-            filter_by_effect(_chorus_fg, "Strobe", model_categories),
-            filter_by_effect(_chorus_fg_groups, "Strobe", model_categories),
-            seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
+        if _chorus_fg:
+            num_strobe_added += add_strobe_effects(
+                filter_by_effect(_chorus_fg, "Strobe", model_categories),
+                filter_by_effect(_chorus_fg_groups, "Strobe", model_categories),
+                seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
         num_fan_added        += add_fan_effects(fe("Fan", _sname), fg("Fan", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_galaxy_added     += add_galaxy_effects(fe("Galaxy", _sname), fg("Galaxy", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_shape_added      += add_shape_effects(fe("Shape", _sname), fg("Shape", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
@@ -603,19 +605,24 @@ def create_xsq_from_template(
         num_snowflakes_added += add_snowflakes_effects(fe("Snowflakes", _sname), fg("Snowflakes", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_garlands_added   += add_garlands_effects(fe("Garlands", _sname), fg("Garlands", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_spirograph_added += add_spirograph_effects(fe("Spirograph", _sname), fg("Spirograph", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
-        num_lightning_added  += add_lightning_effects(
-            filter_by_effect(_chorus_fg, "Lightning", model_categories),
-            filter_by_effect(_chorus_fg_groups, "Lightning", model_categories),
-            seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
+        if _chorus_fg:
+            num_lightning_added += add_lightning_effects(
+                filter_by_effect(_chorus_fg, "Lightning", model_categories),
+                filter_by_effect(_chorus_fg_groups, "Lightning", model_categories),
+                seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
         num_circles_added    += add_circles_effects(fe("Circles", _sname), fg("Circles", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_kaleidoscope_added += add_kaleidoscope_effects(fe("Kaleidoscope", _sname), fg("Kaleidoscope", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_liquid_added     += add_liquid_effects(fe("Liquid", _sname), fg("Liquid", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
         num_plasma_added     += add_plasma_effects(fe("Plasma", _sname), fg("Plasma", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
-        num_fireworks_added  += add_fireworks_effects(
-            filter_by_effect(_chorus_fg, "Fireworks", model_categories),
-            filter_by_effect(_chorus_fg_groups, "Fireworks", model_categories),
-            seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
+        if _chorus_fg:
+            num_fireworks_added += add_fireworks_effects(
+                filter_by_effect(_chorus_fg, "Fireworks", model_categories),
+                filter_by_effect(_chorus_fg_groups, "Fireworks", model_categories),
+                seq_duration_ms, color_palettes, colors, _peaks_s, structure, registry=registry)
         num_tendril_added    += add_tendril_effects(fe("Tendril", _sname), fg("Tendril", _sname), seq_duration_ms, color_palettes, colors, _beats_s, structure, registry=registry)
+        # On is placed last — it's a fill/fallback effect and should not compete with
+        # feature effects (Shockwave, Morph, Bars, etc.) for layer 0.
+        num_ons_added        += add_on_effects(fe("On", _sname), fg("On", _sname), seq_duration_ms, color_palettes, colors, _vocal_s, structure, registry=registry)
 
     num_transition = add_transition_effects(
         eligible_elements, model_categories, seq_duration_ms,

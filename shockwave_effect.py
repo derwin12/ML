@@ -28,7 +28,10 @@ def _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_c
     new_palette = ET.SubElement(color_palettes, "ColorPalette")
     new_palette.text = ",".join(parts)
 
-    settings_str = (f"E_SLIDER_Shockwave_CenterX={center_x},"
+    # Groups must use Per Model Default so the wave spans the group's coordinate space.
+    render_prefix = "B_CHOICE_BufferStyle=Per Model Default," if is_group else ""
+    settings_str = (f"{render_prefix}"
+                    f"E_SLIDER_Shockwave_CenterX={center_x},"
                     f"E_SLIDER_Shockwave_CenterY={center_y},"
                     f"E_SLIDER_Shockwave_Cycles={cycles:.1f},"
                     f"E_SLIDER_Shockwave_Start_Radius={start_radius},"
@@ -45,21 +48,36 @@ def _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_c
 def add_shockwave_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None, structure=None, registry=None):
     num_shockwave_added = 0
 
-    # --- Alternating beat pass: 1-2 elements get shockwaves on every Nth beat ---
+    # --- Beat pass: groups always fire on every beat; models get a strided subset ---
     if beats and len(beats) >= 4:
         stride = sample_beat_stride("Shockwave")
-        num_alt = random.randint(1, min(2, len(eligible_elements)))
-        alt_elements = random.sample(eligible_elements, num_alt)
-        alt_placements = alternating_beat_placements(beats, stride=stride, duration_beats=1, structure=structure)
-        for elem in alt_elements:
-            is_group = elem in eligible_group_elements
-            for start_time, end_time in alt_placements:
-                effect_layer = get_or_create_layer(elem, start_time, end_time)
+        beat_placements = alternating_beat_placements(beats, stride=stride, duration_beats=1, structure=structure)
+
+        # Groups (e.g. "Group - Stars") get every beat — this is the primary visual.
+        # max_layers=4 + skip_budget so beat-aligned shockwaves are never blocked by
+        # effects placed in earlier sections consuming the per-model budget.
+        for elem in eligible_group_elements:
+            for start_time, end_time in beat_placements:
+                effect_layer = get_or_create_layer(elem, start_time, end_time, max_layers=4, skip_budget=True)
                 if effect_layer is None:
+                    blocked += 1
                     continue
                 palette_id = len(color_palettes.findall("ColorPalette"))
-                _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, is_group, palette_id, registry, structure)
+                _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, True, palette_id, registry, structure)
                 num_shockwave_added += 1
+
+        # Individual models: 1-2 randomly chosen, same stride
+        if eligible_elements:
+            num_alt = random.randint(1, min(2, len(eligible_elements)))
+            alt_elements = random.sample(eligible_elements, num_alt)
+            for elem in alt_elements:
+                for start_time, end_time in beat_placements:
+                    effect_layer = get_or_create_layer(elem, start_time, end_time)
+                    if effect_layer is None:
+                        continue
+                    palette_id = len(color_palettes.findall("ColorPalette"))
+                    _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, False, palette_id, registry, structure)
+                    num_shockwave_added += 1
 
     # --- Sparse pass: existing section-weighted placement on other elements ---
     placements = section_effect_placements(8, structure or [], beats or [], min_beats=5, max_beats=16)

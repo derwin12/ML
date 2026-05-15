@@ -31,7 +31,43 @@ _DISPLAY_AS_MAP = {
     "modelgroup": "group",
 }
 
+# Maps [T:Tag] / t:tag values to internal category strings.
+# Tags not in this map are used as-is (lowercased).
+_TAG_ALIAS_MAP = {
+    "arch":             "arch",
+    "candycane":        "cane",
+    "candy_cane":       "cane",
+    "cross":            "unknown",
+    "cube":             "cube",
+    "flood":            "flood",
+    "icicles":          "icicles",
+    "line":             "line",
+    "matrix":           "matrix",
+    "matrix_horizontal":"matrix",
+    "matrix_column":    "matrix",
+    "matrix_pole":      "matrix",
+    "megatree":         "mega_tree",
+    "mega_tree":        "mega_tree",
+    "skip":             "skip",
+    "snowflake":        "snowflake",
+    "sphere":           "sphere",
+    "spinner":          "spinner",
+    "star":             "star",
+    "tree":             "tree",
+    "tree_360":         "tree_360",
+    "tuneto":           "skip",   # Tune-To signs carry no effect value
+    "windowframe":      "window_frame",
+    "window_frame":     "window_frame",
+}
+
+# Matches [T:category] in Description fields.
 _TYPE_HINT_RE = re.compile(r'\[T:([^\]]+)\]', re.IGNORECASE)
+
+
+def _type_hint(match) -> str:
+    """Return the internal category from a _TYPE_HINT_RE match, resolving aliases."""
+    raw = match.group(1).lower().strip()
+    return _TAG_ALIAS_MAP.get(raw, raw)
 
 _NAME_RULES_PATH = os.path.join(os.path.dirname(__file__), "name_category_rules.json")
 
@@ -154,6 +190,8 @@ def place_effect(effect_layer, name: str, start_time: int, end_time: int,
     """Create a self-closing Effect element that references an EffectDB entry.
     Automatically injects B_CHOICE_BufferStyle and T_CHOICE_LayerMethod from
     training data if not already present in settings_str."""
+    if end_time <= start_time:
+        return  # skip zero/negative-duration effects
     if "B_CHOICE_BufferStyle" not in settings_str or "T_CHOICE_LayerMethod" not in settings_str:
         try:
             from param_sampler import sample_render_style, sample_layer_blend
@@ -206,7 +244,7 @@ def categorize_models(layout_models, layout_groups):
 
         hint = _TYPE_HINT_RE.search(desc)
         if hint:
-            categories[name] = hint.group(1).lower()
+            categories[name] = _type_hint(hint)
         elif display_as.lower() == "custom" and _is_singing_prop(m):
             categories[name] = "singing_prop"
         else:
@@ -247,7 +285,7 @@ def categorize_models(layout_models, layout_groups):
         # [T:*] hint overrides member-based classification
         hint = _TYPE_HINT_RE.search(desc)
         if hint:
-            categories[name] = hint.group(1).lower()
+            categories[name] = _type_hint(hint)
             continue
 
         members = group_members.get(name, [])
@@ -687,9 +725,29 @@ def generate_stem_tracks(audio_path, display_elem, element_effects, seq_duration
     return all_tracks
 
 
+_LYRICS_CACHE_DIR = os.path.join(os.path.dirname(__file__), "lyrics_cache")
+
+
+def _lyrics_cache_path(song_name: str, artist_name: str) -> str:
+    safe = re.sub(r'[^\w\s-]', '', f"{artist_name} - {song_name}").strip()
+    safe = re.sub(r'\s+', '_', safe)
+    return os.path.join(_LYRICS_CACHE_DIR, f"{safe}.json")
+
+
+def _save_lyrics_cache(path: str, data: dict) -> None:
+    os.makedirs(_LYRICS_CACHE_DIR, exist_ok=True)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[lyrics cache] Could not write {path}: {e}")
+
+
 def _fetch_lyrics(song_name: str, artist_name: str, duration_s: float) -> dict:
     """
     Fetch the best-matching lyrics dict from lrclib.net or return {}.
+    Results are cached to lyrics_cache/<artist> - <song>.json so repeated
+    runs for the same song skip the network request.
 
     Strategy:
       1. /api/get with duration — lrclib does its own near-match on duration.
@@ -698,6 +756,16 @@ def _fetch_lyrics(song_name: str, artist_name: str, duration_s: float) -> dict:
     """
     import urllib.request
     import urllib.parse
+
+    cache_path = _lyrics_cache_path(song_name, artist_name)
+    if os.path.isfile(cache_path):
+        try:
+            with open(cache_path, encoding="utf-8") as f:
+                cached = json.load(f)
+            print(f"Lyrics cache hit: {os.path.basename(cache_path)}")
+            return cached
+        except Exception:
+            pass  # corrupt cache — re-fetch
 
     base = "https://lrclib.net/api"
     tolerance = max(10.0, duration_s * 0.05)
@@ -717,6 +785,7 @@ def _fetch_lyrics(song_name: str, artist_name: str, duration_s: float) -> dict:
             if r.status == 200:
                 data = json.loads(r.read().decode())
                 if data and data.get("syncedLyrics"):
+                    _save_lyrics_cache(cache_path, data)
                     return data
     except Exception as e:
         print(f"lrclib /get failed: {e}")
@@ -744,6 +813,7 @@ def _fetch_lyrics(song_name: str, artist_name: str, duration_s: float) -> dict:
                         print(f"lrclib search matched '{best.get('trackName')}' by "
                               f"'{best.get('artistName')}' ({best.get('duration')}s, "
                               f"Δ{delta:.1f}s from {duration_s:.1f}s)")
+                        _save_lyrics_cache(cache_path, best)
                         return best
                     else:
                         print(f"lrclib search: closest match is {delta:.1f}s away "
@@ -1065,7 +1135,7 @@ FOREGROUND_CATS_BY_SECTION = {
     "intro":      {"flood", "line", "single_strand", "cane"},
     "verse":      {"arch", "tree_360", "spinner", "line", "star"},
     "pre-chorus": {"arch", "tree_360", "matrix", "star"},
-    "chorus":     {"matrix", "mega_tree", "cube", "tree_360"},
+    "chorus":     {"matrix", "mega_tree", "cube", "tree_360", "star"},
     "drop":       {"matrix", "mega_tree", "cube", "tree_360"},
     "bridge":     {"arch", "matrix", "spinner", "star"},
     "outro":      {"flood", "line", "single_strand", "cane"},
@@ -1076,20 +1146,44 @@ FOREGROUND_CATS_BY_SECTION = {
 def filter_by_probability(elements: list, effect_name: str, model_categories: dict,
                           threshold: float = 0.02, section: str = None) -> list:
     """
-    Filter elements to those where effect_name has at least `threshold` learned probability
-    for that model's category and section (from choreography_probs.json via param_sampler).
-    Falls back to returning all elements if param_sampler has no data for that category.
-    Always returns at least one element to avoid empty lists breaking callers.
+    Filter elements to those where effect_name meets the learned probability threshold.
+
+    When `section` is given and section-specific training data exists for a model's
+    category, a stricter threshold (0.08) is applied.  Critically, p==0.0 WITH
+    section data means the effect is absent from that section — those models are
+    excluded.  p==0.0 with NO section data means "no training coverage" — those
+    models are included (no filtering).
+
+    Returns all elements only when NONE had training-data-driven decisions (pure
+    unknown situation).  Returns an intentionally-empty list when data says no.
     """
-    from param_sampler import get_effect_probability
+    from param_sampler import get_effect_probability, get_choreography_probs
     result = []
+    data_driven = False
+    _sec_cache: dict = {}
+
     for elem in elements:
         name = elem.attrib.get("name", "")
         cat = model_categories.get(name, "unknown")
         p = get_effect_probability(effect_name, cat, section=section)
-        if p == 0.0 or p >= threshold:
+
+        if p > 0.0:
+            data_driven = True
+            effective_threshold = max(threshold, 0.10) if section else threshold
+            if p >= effective_threshold:
+                result.append(elem)
+        elif section:
+            if cat not in _sec_cache:
+                _sec_cache[cat] = get_choreography_probs(cat, section=section)
+            if _sec_cache[cat]:
+                # Section data exists and effect has 0% in it — intentionally exclude
+                data_driven = True
+            else:
+                result.append(elem)
+        else:
             result.append(elem)
-    return result if result else elements
+
+    return result if (result or data_driven) else elements
 
 
 def get_foreground_elements(elements: list, model_categories: dict, section_name: str) -> list:
