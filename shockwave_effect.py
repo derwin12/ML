@@ -53,14 +53,10 @@ def add_shockwave_effects(eligible_elements, eligible_group_elements, seq_durati
         stride = sample_beat_stride("Shockwave")
         beat_placements = alternating_beat_placements(beats, stride=stride, duration_beats=1, structure=structure)
 
-        # Groups (e.g. "Group - Stars") get every beat — this is the primary visual.
-        # max_layers=4 + skip_budget so beat-aligned shockwaves are never blocked by
-        # effects placed in earlier sections consuming the per-model budget.
         for elem in eligible_group_elements:
             for start_time, end_time in beat_placements:
                 effect_layer = get_or_create_layer(elem, start_time, end_time, max_layers=4, skip_budget=True)
                 if effect_layer is None:
-                    blocked += 1
                     continue
                 palette_id = len(color_palettes.findall("ColorPalette"))
                 _place_shockwave(effect_layer, start_time, end_time, color_palettes, fixed_colors, True, palette_id, registry, structure)

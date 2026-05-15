@@ -5,7 +5,7 @@ from utils import indent, load_structure_map, get_audio_duration, get_eligible_m
     generate_stem_tracks, \
     generate_structure_track, _lemonade_complete, _load_audio, get_or_create_layer, \
     categorize_models, add_everything_group_effect, EffectDBRegistry, place_effect, find_singing_props, \
-    filter_by_effect, EffectBudget, set_effect_budget, filter_beats_vocals_only, \
+    filter_by_effect, filter_beats_vocals_only, \
     get_model_positions, sort_elements_by_position, generate_phrase_boundaries, get_foreground_elements, \
     filter_by_probability, section_colors
 from generate_lyrics_track import generate_whisper_lyrics_track
@@ -421,7 +421,6 @@ def create_xsq_from_template(
     eligible_individuals = [n for n in eligible_individuals if n not in arch_individual_names]
 
     eligible_model_names = eligible_groups + eligible_individuals
-    set_effect_budget(EffectBudget(model_categories))
     model_positions = get_model_positions(layout_models)
     singing_props_map = find_singing_props(layout_models)
     if singing_props_map:
@@ -647,8 +646,6 @@ def create_xsq_from_template(
         color_palettes, colors, beats, structure, registry
     )
     print(f"Transition pass: {num_transition} follow-on effects placed.")
-
-    set_effect_budget(None)
 
     # --- DEV: category label overlay — last 5 s, new layer per model ---
     text_start = max(0, seq_duration_ms - 5000)

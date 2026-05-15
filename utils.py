@@ -1111,22 +1111,6 @@ SECTION_INTENSITY = {
     "drop":       1.0,
 }
 
-# Max total effects per model, keyed by category
-CATEGORY_EFFECT_BUDGET = {
-    "flood":         4,
-    "single_strand": 6,
-    "line":          8,
-    "arch":          10,
-    "star":          8,
-    "snowflake":     8,
-    "cane":          6,
-    "cube":          12,
-    "matrix":        20,
-    "mega_tree":     20,
-    "tree_360":      15,
-    "spinner":       12,
-    "unknown":       8,
-}
 
 _CHORUS_INTENSITY_THRESHOLD = 0.9  # chorus=1.0, drop=1.0 qualify; bridge=0.8 does not
 
@@ -1203,27 +1187,6 @@ def get_foreground_elements(elements: list, model_categories: dict, section_name
     return fg if fg else elements
 
 
-class EffectBudget:
-    """Tracks how many effects have been placed on each model and enforces per-category caps."""
-    def __init__(self, model_categories: dict):
-        self._categories = model_categories
-        self._counts: dict = {}
-
-    def is_full(self, model_name: str) -> bool:
-        cat = self._categories.get(model_name, "unknown")
-        budget = CATEGORY_EFFECT_BUDGET.get(cat, 8)
-        return self._counts.get(model_name, 0) >= budget
-
-    def charge(self, model_name: str):
-        self._counts[model_name] = self._counts.get(model_name, 0) + 1
-
-
-_active_budget: 'EffectBudget | None' = None
-
-
-def set_effect_budget(budget):
-    global _active_budget
-    _active_budget = budget
 
 def section_intensity(section_name: str) -> float:
     key = section_name.lower()
@@ -1486,19 +1449,12 @@ def get_or_create_layer(elem, start_ms: int, end_ms: int, max_layers: int = 2, s
     """
     Return an EffectLayer on elem that has no conflict with [start_ms, end_ms).
     Tries existing layers first; creates a new one (up to max_layers) if all conflict.
-    Returns None if no layer is available or if the model has hit its effect budget.
-    skip_budget=True bypasses budget checks (used by spatial sweep so it doesn't eat the budget).
+    Returns None if no layer is available.
+    skip_budget parameter retained for call-site compatibility but has no effect.
     """
-    model_name = elem.attrib.get("name", "")
-    if not skip_budget and _active_budget and _active_budget.is_full(model_name):
-        return None
     for layer in elem.findall("EffectLayer"):
         if not is_overlapping(start_ms, end_ms, get_occupied_slots(layer)):
-            if not skip_budget and _active_budget:
-                _active_budget.charge(model_name)
             return layer
     if len(elem.findall("EffectLayer")) < max_layers:
-        if not skip_budget and _active_budget:
-            _active_budget.charge(model_name)
         return ET.SubElement(elem, "EffectLayer")
     return None
