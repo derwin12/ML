@@ -1,6 +1,6 @@
 # singing_face_effect.py
 
-from utils import get_or_create_layer, place_effect, EffectDBRegistry
+from utils import get_or_create_layer, place_effect, EffectDBRegistry, get_or_create_palette
 
 _FACES_PALETTE = (
     "C_BUTTON_Palette1=#FFFFFF,C_BUTTON_Palette2=#FF0000,C_BUTTON_Palette3=#00FF00,"
@@ -50,11 +50,7 @@ def add_singing_face_effects(singing_prop_elements, face_defs, color_palettes,
         if effect_layer is None:
             continue
 
-        palette_id = len(color_palettes.findall("ColorPalette"))
-
-        import xml.etree.ElementTree as ET
-        cp = ET.SubElement(color_palettes, "ColorPalette")
-        cp.text = _FACES_PALETTE
+        palette_id = get_or_create_palette(color_palettes, _FACES_PALETTE)
 
         settings_str = _faces_settings(face_def, timing_track_name) + "\t" + _FACES_PALETTE
         place_effect(effect_layer, "Faces", 0, seq_duration_ms, palette_id, settings_str, registry)

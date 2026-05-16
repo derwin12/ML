@@ -7,7 +7,7 @@ from utils import indent, load_structure_map, get_audio_duration, get_eligible_m
     categorize_models, add_everything_group_effect, EffectDBRegistry, place_effect, find_singing_props, \
     filter_by_effect, filter_beats_vocals_only, \
     get_model_positions, sort_elements_by_position, generate_phrase_boundaries, get_foreground_elements, \
-    filter_by_probability, section_colors
+    filter_by_probability, section_colors, get_or_create_palette
 from generate_lyrics_track import generate_whisper_lyrics_track
 from arch_effect import add_arch_effects
 from spatial_sweep import add_spatial_sweep_effects
@@ -15,7 +15,7 @@ from singing_face_effect import add_singing_face_effects
 from on_effect import add_on_effects
 from bars_effect import add_bars_effects
 from color_wash_effect import add_color_wash_effects
-from shockwave_effect import add_shockwave_effects
+from shockwave_effect import add_shockwave_effects, _place_shockwave
 from spirals_effect import add_spirals_effects
 from pinwheel_effect import add_pinwheel_effects
 from single_strand_effect import add_single_strand_effects
@@ -168,15 +168,11 @@ def add_first_beat_effects(eligible_elements, color_palettes, colors, beats, str
             continue
 
         effect_name = random.choice(effect_choices)
-        selected_indices = random.sample(range(1, 9), min(2, 8))
         parts = [f"C_BUTTON_Palette{i+1}={colors[i]}" for i in range(8)]
-        for k in selected_indices:
-            parts.append(f"C_CHECKBOX_Palette{k}=1")
+        parts += ["C_CHECKBOX_Palette1=1", "C_CHECKBOX_Palette2=1"]
         palette_str = ",".join(parts)
 
-        new_palette = ET.SubElement(color_palettes, "ColorPalette")
-        new_palette.text = palette_str
-        palette_id = len(color_palettes.findall("ColorPalette")) - 1
+        palette_id = get_or_create_palette(color_palettes, palette_str)
 
         if registry is not None:
             place_effect(effect_layer, effect_name, start_ms, end_ms, palette_id, "E1=100,E2=100", registry)
@@ -297,16 +293,68 @@ def add_transition_effects(eligible_elements, model_categories, seq_duration_ms,
             settings_str = "E1=100,E2=100"
 
         sc = section_colors(colors, structure, start_ms)
-        selected = random.sample(range(1, 9), 3)
         parts = [f"C_BUTTON_Palette{i+1}={sc[i]}" for i in range(8)]
-        for k in selected:
+        for k in range(1, 4):
             parts.append(f"C_CHECKBOX_Palette{k}=1")
-        new_palette = ET.SubElement(color_palettes, "ColorPalette")
-        new_palette.text = ",".join(parts)
-        palette_id = len(color_palettes.findall("ColorPalette")) - 1
+        palette_id = get_or_create_palette(color_palettes, ",".join(parts))
 
         place_effect(effect_layer, next_eff, start_ms, end_ms, palette_id, settings_str, registry)
         placed += 1
+
+    return placed
+
+
+def _section_at(structure, t_ms: int) -> str:
+    """Return the canonical section name for a timestamp (ms). Falls back to 'unknown'."""
+    if not structure:
+        return "unknown"
+    for sec in structure:
+        start = int(sec.get("start", 0) * 1000)
+        end   = int(sec.get("end",   0) * 1000)
+        if start <= t_ms < end:
+            return _normalize_section(sec["section"])
+    return _normalize_section(structure[-1]["section"])
+
+
+def add_peak_anchor_effects(energy_peaks, beats, eligible_elements, eligible_group_elements,
+                             model_categories, seq_duration_ms, color_palettes, colors,
+                             structure, registry) -> int:
+    """Guarantee a Shockwave at every energy peak on foreground elements.
+
+    Runs before the section loop so it claims layer 0 at peak moments.
+    The section loop's effects spill to layer 1 or are blocked by get_or_create_layer,
+    keeping peak windows visually distinct.
+    """
+    if not energy_peaks or not beats:
+        return 0
+
+    beat_arr = sorted(beats)
+    group_names = {e.attrib.get("name", "") for e in eligible_group_elements}
+    placed = 0
+
+    for peak_ms in energy_peaks:
+        before = [b for b in beat_arr if b <= peak_ms]
+        after  = [b for b in beat_arr if b > peak_ms]
+        if not before or not after:
+            continue
+
+        start_ms = before[-1]
+        end_ms   = after[0]
+        # Extend to 2 beats if the window is very narrow (<200 ms)
+        if end_ms - start_ms < 200 and len(after) > 1:
+            end_ms = after[1]
+
+        sec_name = _section_at(structure, peak_ms)
+        fg_all    = get_foreground_elements(eligible_elements,       model_categories, sec_name)
+        fg_groups = get_foreground_elements(eligible_group_elements, model_categories, sec_name)
+
+        for elem in fg_groups + [e for e in fg_all if e not in fg_groups]:
+            layer = get_or_create_layer(elem, start_ms, end_ms, max_layers=4)
+            if layer is None:
+                continue
+            is_group = elem.attrib.get("name", "") in group_names
+            _place_shockwave(layer, start_ms, end_ms, color_palettes, colors, is_group, registry, structure)
+            placed += 1
 
     return placed
 
@@ -566,6 +614,14 @@ def create_xsq_from_template(
     _down    = downbeats or beats or []
     _vocal   = vocal_onsets if vocal_onsets is not None else _onsets
 
+    # Peak anchor pass — place guaranteed Shockwaves at every energy peak before
+    # the section loop claims layer 0.  Foreground elements only; section-aware.
+    num_peak_anchors = add_peak_anchor_effects(
+        energy_peaks, beats, eligible_elements, eligible_group_elements,
+        model_categories, seq_duration_ms, color_palettes, colors, structure, registry
+    )
+    print(f"Peak anchors: {num_peak_anchors} Shockwaves placed at {len(energy_peaks or [])} energy peaks.")
+
     # Effect placement — loop per section so probability filtering is section-aware
     # and each effect only fires at beats within its section.
     _structure_list = structure or [{"section": "unknown", "start": 0, "end": seq_duration_ms / 1000}]
@@ -647,7 +703,10 @@ def create_xsq_from_template(
     )
     print(f"Transition pass: {num_transition} follow-on effects placed.")
 
-    # --- DEV: category label overlay — last 5 s, new layer per model ---
+    # Write all collected EffectDB entries to XML
+    registry.write_to_xml(effect_db_elem)
+
+    # --- DEV: category label overlay — last 5 s, appended after all other effects ---
     text_start = max(0, seq_duration_ms - 5000)
     text_end   = seq_duration_ms
     _SKIP_CATS = {"skip", "everything_group", "generic_group"}
@@ -659,9 +718,7 @@ def create_xsq_from_template(
         label_layer = ET.SubElement(elem, "EffectLayer")
         palette_parts = [f"C_BUTTON_Palette{i+1}=#FFFFFF" for i in range(8)]
         palette_parts.append("C_CHECKBOX_Palette1=1")
-        new_palette      = ET.SubElement(color_palettes, "ColorPalette")
-        new_palette.text = ",".join(palette_parts)
-        palette_id       = len(color_palettes) - 1
+        palette_id = get_or_create_palette(color_palettes, ",".join(palette_parts))
         is_group     = name in eligible_groups
         render_prefix = "B_CHOICE_BufferStyle=Per Model Default," if is_group else ""
         settings_str = (
@@ -686,21 +743,25 @@ def create_xsq_from_template(
         )
         place_effect(label_layer, "Text", text_start, text_end, palette_id, settings_str, registry)
 
-    # Write all collected EffectDB entries to XML
-    registry.write_to_xml(effect_db_elem)
-
     # --- Set visibility for models with no effects ---
+    # Never touch arch groups or singing props — they have dedicated pipelines
+    # and may have effects on layers other than layer 0.
+    _skip_visibility = arch_group_names | set(singing_props_map.keys())
     num_visible = 0
-    for elem in elements:  # all elements in ElementEffects
-        effect_layer = elem.find("EffectLayer")
-        has_effects = bool(effect_layer.findall("Effect")) if effect_layer is not None else False
+    for elem in elements:
+        name = elem.attrib.get("name", "")
+        if name in _skip_visibility:
+            continue
+        has_effects = any(
+            bool(layer.findall("Effect"))
+            for layer in elem.findall("EffectLayer")
+        )
         visibility = "1" if has_effects else "0"
         if visibility == "1":
             num_visible += 1
 
-        # Find corresponding display element
         for de in display_elem.findall("Element"):
-            if de.attrib["name"] == elem.attrib["name"]:
+            if de.attrib["name"] == name:
                 de.set("visible", visibility)
                 break
 

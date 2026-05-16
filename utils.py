@@ -184,6 +184,18 @@ class EffectDBRegistry:
             entry.text = settings_str
 
 
+def get_or_create_palette(color_palettes, palette_str: str) -> int:
+    """Return index of an existing ColorPalette matching palette_str, creating one if absent."""
+    needle = palette_str.strip()
+    for i, cp in enumerate(color_palettes.findall("ColorPalette")):
+        if (cp.text or "").strip() == needle:
+            return i
+    import xml.etree.ElementTree as ET
+    new_cp = ET.SubElement(color_palettes, "ColorPalette")
+    new_cp.text = palette_str
+    return len(color_palettes.findall("ColorPalette")) - 1
+
+
 def place_effect(effect_layer, name: str, start_time: int, end_time: int,
                  palette_id: int, settings_str: str, registry: EffectDBRegistry,
                  model_category: str = None):
@@ -585,9 +597,7 @@ def add_everything_group_effect(element, seq_duration_ms, color_palettes, regist
         "C_CHECKBOX_Palette4=0,C_CHECKBOX_Palette5=0,C_CHECKBOX_Palette6=0,"
         "C_CHECKBOX_Palette7=0,C_CHECKBOX_Palette8=0,C_SLIDER_SparkleFrequency=0"
     )
-    new_palette = ET.SubElement(color_palettes, "ColorPalette")
-    new_palette.text = palette_str
-    palette_id = len(color_palettes.findall("ColorPalette")) - 1
+    palette_id = get_or_create_palette(color_palettes, palette_str)
 
     settings_str = (
         f"E_0FILEPICKERCTRL_IFS={_SHADER_PATH},"
@@ -671,8 +681,8 @@ def generate_energy_peaks_track(y, sr, display_elem, element_effects, seq_durati
         rms_smooth,
         pre_max=3, post_max=3,
         pre_avg=5,  post_avg=5,
-        delta=float(rms_smooth.mean() * 0.2),
-        wait=int(sr / 512 * 0.25),  # ~0.25 s minimum gap between peaks
+        delta=float(rms_smooth.std() * 0.5),   # std scales with dynamic range; mean was too high for compressed audio
+        wait=int(sr / 512 * 0.5),  # ~0.5 s minimum gap between peaks
     )
     peak_times = librosa.frames_to_time(peak_frames, sr=sr)
     markers = [int(t * 1000) for t in peak_times]
@@ -833,11 +843,61 @@ def _parse_lrc(synced_lyrics: str) -> list:
         m = pattern.match(raw.strip())
         if m:
             minutes, seconds, text = m.group(1), m.group(2), m.group(3).strip()
+            # Strip any inline <mm:ss.xx> word tags to get clean phrase text
+            text = re.sub(r'<\d+:\d+(?:\.\d+)?>', '', text).strip()
             time_ms = int(float(minutes) * 60_000 + float(seconds) * 1_000)
             if text:
                 lines.append((time_ms, text))
     lines.sort(key=lambda x: x[0])
     return lines
+
+
+def _parse_enhanced_lrc(synced_lyrics: str) -> list[tuple[int, int, str]]:
+    """
+    Parse Enhanced LRC (A2 extension) word-level timestamps.
+    Format: [mm:ss.xx]<mm:ss.xx>word1 <mm:ss.xx>word2 ...
+
+    Returns list of (start_ms, end_ms, word) sorted by start time, or [] if
+    no inline word timestamps are present.
+    """
+    line_re = re.compile(r'\[(\d+):(\d+(?:\.\d+)?)\](.*)')
+    word_re = re.compile(r'<(\d+):(\d+(?:\.\d+)?)>\s*([^<\[\]]+?)(?=\s*<|\s*\[|$)')
+
+    if '<' not in synced_lyrics:
+        return []
+
+    # Collect all lines with their line-start times, then pass to next line for end times
+    raw_lines = []
+    for raw in synced_lyrics.splitlines():
+        m = line_re.match(raw.strip())
+        if not m:
+            continue
+        line_ms = int(float(m.group(1)) * 60_000 + float(m.group(2)) * 1_000)
+        body = m.group(3)
+        words = [(int(float(wm.group(1)) * 60_000 + float(wm.group(2)) * 1_000),
+                  wm.group(3).strip())
+                 for wm in word_re.finditer(body) if wm.group(3).strip()]
+        if words:
+            raw_lines.append((line_ms, words))
+
+    if not raw_lines:
+        return []
+
+    result = []
+    for i, (line_ms, words) in enumerate(raw_lines):
+        next_line_ms = raw_lines[i + 1][0] if i + 1 < len(raw_lines) else None
+        for j, (w_start, word) in enumerate(words):
+            if j + 1 < len(words):
+                w_end = words[j + 1][0]
+            elif next_line_ms is not None:
+                w_end = next_line_ms
+            else:
+                w_end = w_start + 500  # last word of last line: generous default
+            if word and w_start < w_end:
+                result.append((w_start, w_end, word))
+
+    result.sort(key=lambda x: x[0])
+    return result
 
 
 def generate_lyrics_track(song_name: str, artist_name: str, duration_s: float,

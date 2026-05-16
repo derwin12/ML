@@ -1,8 +1,7 @@
 # strobe_effect.py
 
-import xml.etree.ElementTree as ET
 import random
-from utils import chorus_only_placements, section_colors, get_or_create_layer, place_effect
+from utils import chorus_only_placements, section_colors, get_or_create_layer, place_effect, get_or_create_palette
 from param_sampler import sample_params
 
 def add_strobe_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None, structure=None, registry=None):
@@ -25,15 +24,13 @@ def add_strobe_effects(eligible_elements, eligible_group_elements, seq_duration_
         duty_cycle = p.get("E_SLIDER_Strobe_Duty_Cycle", random.randint(10, 50))
         frequency  = p.get("E_SLIDER_Strobe_Freq", random.randint(1, 30))
 
-        selected_indices = [random.randint(1, 8)]
+        selected_indices = [1]
         _sc = section_colors(fixed_colors, structure, start_time)
         parts = [f"C_BUTTON_Palette{i+1}={_sc[i]}" for i in range(8)]
         for k in selected_indices:
             parts.append(f"C_CHECKBOX_Palette{k}=1")
 
-        new_palette = ET.SubElement(color_palettes, "ColorPalette")
-        new_palette.text = ",".join(parts)
-        palette_id = len(color_palettes.findall("ColorPalette")) - 1
+        palette_id = get_or_create_palette(color_palettes, ",".join(parts))
 
         settings_str = (
             f"E_SLIDER_Strobe_Duty_Cycle={duty_cycle},"

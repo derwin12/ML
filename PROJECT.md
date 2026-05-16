@@ -21,6 +21,11 @@ A Python tool that generates `.xsq` xLights sequence files automatically. It rea
 | `xlights_classifier.py` | Classifies XML elements. |
 | `param_sampler.py` | Samples effect parameters from training data observations. |
 | `grok3api_example.py` | Scratch file: testing Grok-3 API for structure generation. |
+| `generate_lyrics_track.py` | Generates a 3-layer Lyrics timing track (phrases / words / phonemes) from lrclib.net + vocal stem. |
+| `stem_separator.py` | Demucs stem separation + per-stem onset detection with RMS energy gate. |
+| `arch_effect.py` | Beat-synchronized SingleStrand effects for arch groups only (pro-modelled). |
+| `singing_face_effect.py` | Places Faces effects on singing props using vocal stem onset timing. |
+| `compare_sequences.py` | Compares a generated `.xsq` against a pro `.xsq` — per-(section, category) divergence report. |
 
 ### Effect modules (33 total)
 
@@ -88,6 +93,7 @@ Audio file
   Rebuild DisplayElements + ElementEffects
   Add Beats timing track
   Add Structure timing track
+  add_arch_effects()           — SingleStrand on arch groups (section-selective, paired direction)
   add_first_beat_effects()     — POC: 1 effect per model spanning the intro section
   add_on_effects()             — On
   add_bars_effects()           — Bars
@@ -122,9 +128,9 @@ Audio file
   add_plasma_effects()         — Plasma
   add_fireworks_effects()      — Fireworks
   add_tendril_effects()        — Tendril
-  DEV: Text label effect on last 4 beats (shows category name per model)
+  registry.write_to_xml()      — write deduplicated EffectDB entries
   Set visibility (hide models with no effects)
-  Write EffectDB entries
+  DEV: Text label effect on last 5 s (appended last — never blocks effect placement)
   Write pretty-printed XML → output.xsq
 ```
 
@@ -144,7 +150,7 @@ Audio is loaded once with `_load_audio(audio_path) -> (y, sr)` and passed to all
 | `generate_downbeats_track(y, sr, ...)` | Downbeats | Every 4th beat (bar 1), labelled by bar number | `list[int]` ms |
 | `generate_onsets_track(y, sr, ...)` | Onsets | Every note/drum onset — denser than beats | `list[int]` ms |
 | `generate_energy_peaks_track(y, sr, ...)` | Energy Peaks | RMS energy peaks — loudest moments | `list[int]` ms |
-| `generate_lyrics_track(song, artist, duration_s, ...)` | Lyrics | Synced lyrics from lrclib.net — one mark per sung line | `list[(ms, text)]` |
+| `generate_lyrics_track(song, artist, duration_s, ...)` | Lyrics | Synced lyrics from lrclib.net — phrases / words / phonemes (3 layers) | `list[(ms, text)]` |
 | `generate_structure_track(audio_path, ...)` | Structure | Audio-based segmentation (chroma+MFCC+recurrence matrix) → section labels (Intro/Verse/Chorus…) | `list[dict]` |
 
 **Beat placement helpers:**
@@ -421,6 +427,47 @@ Still unknown (1): Weird Thing 1
 
 ---
 
+## Color Palette Deduplication
+
+`get_or_create_palette(color_palettes, palette_str) -> int` in `utils.py` deduplicates `ColorPalette` entries. Before appending a new palette it scans existing entries for a string match; if found, returns the existing index. All 33 effect modules and `main.py` use this helper — a sequence with 2,000 effects against a 16-color palette will have at most 16 palette entries, not 2,000.
+
+---
+
+## Lyrics Timing Track
+
+`generate_lyrics_track.py` builds a 3-layer timing track: **phrases** (Layer 0), **words** (Layer 1), **phonemes** (Layer 2). Word timing uses a 4-tier pipeline — first success wins:
+
+| Tier | Source | Notes |
+|------|--------|-------|
+| 1 | Enhanced LRC (`<mm:ss>word` inline tags from lrclib) | Free — data already fetched for phrases |
+| 2 | WhisperX forced alignment on vocal stem | Needs `pip install whisperx` |
+| 3 | Vocal onset snapping (`get_stem_onsets` on cached `vocals.wav`) | Lightweight, uses existing Demucs stem |
+| 4 | Proportional by character length | Pure fallback, no audio needed |
+
+Phonemes use CMU dict → Preston Blair mouth shapes. Every phoneme is guaranteed ≥ 25 ms (one xLights frame) via `_MIN_PHONEME_MS`.
+
+---
+
+## Arch Effect
+
+`arch_effect.py` is modelled on pro choreography analysis of real show sequences:
+- **SingleStrand only** — no rotation of effect types
+- **Paired direction cycle** — `Left, Left, Right, Right, Left, Left...` (`pair_idx` increments only on placed effects, so gaps don't break the pattern)
+- **Section-selective** — arches only fire in `verse`, `chorus`, `drop`, `pre-chorus`; all other sections (`intro`, `bridge`, `breakdown`, `outro`) are silent
+- **Group only** — individual arch models receive no effects; only `Group - Arches` / `Group - Triple Arches` style groups are sequenced
+
+---
+
+## Stem Separation
+
+`stem_separator.py` runs Demucs `htdemucs_6s` to produce six stems: `drums`, `bass`, `guitar`, `piano`, `vocals`, `other`. Stems are cached to `<audio_dir>/stems/htdemucs_6s/<track>/` as WAV files and reused on subsequent runs.
+
+**Drum onsets** (`extract_drum_onsets`): frequency-band filtered per drum type (kick/snare/hihat/toms/cymbal). Three presets — `balanced` / `strict` / `sensitive` — control `librosa.onset` parameters. Selectable from the web UI.
+
+**Melodic/vocal onsets** (`get_stem_onsets`): raw onset detection plus an **RMS energy gate** (`energy_threshold_db`, default −30 dB relative to track RMS peak). Suppresses false onsets from breath noise and bleed during non-singing passages.
+
+---
+
 ## Future Tasks / Roadmap
 
 ### High priority — next up
@@ -431,7 +478,12 @@ Still unknown (1): Weird Thing 1
 - [x] **Singing props → Faces effect only** — `singing_face_effect.py`; uses `CustomColors='1'` face def; excluded from all other effect modules via `get_eligible_models()`.
 - [x] **Add snowflake, cane, cube categories** — `cube` added to `name_category_rules.json`; both included in `EFFECT_EXCLUDED_CATS` for 2D-only effects.
 - [x] **Stem separation** — `stem_separator.py` (Demucs `htdemucs_6s`); timing tracks for Kick/Snare/Hihat/Toms/Cymbal/Bass/Guitar/Piano; blank labels; stems cached per audio file.
-
+- [x] **Drum onset presets** — `balanced` / `strict` / `sensitive` presets wired through `stem_separator` → `utils` → `app.py` → UI dropdown (shown when stems checkbox is checked).
+- [x] **Vocal stem onset energy gate** — `get_stem_onsets` rejects onsets below −30 dB RMS; eliminates breath/bleed false positives.
+- [x] **4-tier lyrics word timing** — enhanced LRC → WhisperX → vocal onset snapping → proportional; phonemes ≥ 25 ms enforced.
+- [x] **Arch effect rewrite** — SingleStrand only, paired L/L/R/R direction, section-selective silence modelled on pro sequence analysis.
+- [x] **Color palette deduplication** — `get_or_create_palette()` in `utils.py`; all 33 effect modules + `main.py` use it; eliminates one-palette-per-effect bloat.
+- [x] **Text label moved to end** — appended after `registry.write_to_xml()` so it never causes `get_or_create_layer` to return None for real effects.
 
 ### Medium priority
 - [x] **Per-model effect budgeting** — `CATEGORY_EFFECT_BUDGET` dict + `EffectBudget` class in `utils.py`; enforced in `get_or_create_layer` via `_active_budget` global; set per run in `main.py`.
@@ -530,7 +582,11 @@ librosa              # Beat detection, onset detection, audio analysis
 pychorus             # Time-lag repetition analysis for chorus detection
 numpy                # Audio processing
 scipy                # Bandpass/highpass filters for drum sub-separation
+torch                # Required by WhisperX forced alignment (lyrics word timing tier 2)
 demucs               # Stem separation (drums, bass, guitar, piano, vocals) — downloads ~300MB model on first run
+nltk                 # CMU pronouncing dict for phoneme breakdown in lyrics track
+whisperx             # Optional: forced word-level alignment on vocal stem (tier 2 lyrics)
+# openai-whisper     # Optional: phrase-level fallback if lrclib unavailable
 ```
 
 Lemonade must be running locally before generating Media sequences. Set `LEMONADE_URL` if it's not on the default port 8000.

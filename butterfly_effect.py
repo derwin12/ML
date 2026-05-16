@@ -1,8 +1,7 @@
 # butterfly_effect.py
 
-import xml.etree.ElementTree as ET
 import random
-from utils import section_effect_placements, section_colors, get_or_create_layer, place_effect
+from utils import section_effect_placements, section_colors, get_or_create_layer, place_effect, get_or_create_palette
 from param_sampler import sample_params
 
 BUTTERFLY_STYLES = ["Render All", "Explode", "Implode", "Left", "Right", "Fan Out", "Fan In"]
@@ -30,17 +29,14 @@ def add_butterfly_effects(eligible_elements, eligible_group_elements, seq_durati
         direction    = p.get("E_CHECKBOX_Butterfly_Direction", random.choice([0, 1]))
         colors_used  = p.get("E_SLIDER_Butterfly_Colors", random.randint(1, 4))
 
-        num_colors = random.randint(2, 4)
-        selected_indices = random.sample(range(1, 9), num_colors)
+        selected_indices = list(range(1, 3))
         _sc = section_colors(fixed_colors, structure, start_time)
         parts = [f"C_BUTTON_Palette{i+1}={_sc[i]}" for i in range(8)]
         for k in selected_indices:
             parts.append(f"C_CHECKBOX_Palette{k}=1")
         palette_str = ",".join(parts)
 
-        new_palette = ET.SubElement(color_palettes, "ColorPalette")
-        new_palette.text = palette_str
-        palette_id = len(color_palettes.findall("ColorPalette")) - 1
+        palette_id = get_or_create_palette(color_palettes, palette_str)
 
         settings_str = (f"E_CHOICE_Butterfly_Style={style},"
                         f"E_SLIDER_Butterfly_Chunks={chunks},"

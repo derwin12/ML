@@ -126,10 +126,26 @@ def extract_drum_onsets(drum_wav_path, preset="balanced"):
     return results
 
 
-def get_stem_onsets(stem_wav_path, stem_name):
-    """Generic onset detection for melodic stems. Returns list[int] ms."""
+def get_stem_onsets(stem_wav_path, stem_name, energy_threshold_db=-30.0):
+    """Generic onset detection for melodic stems. Returns list[int] ms.
+
+    energy_threshold_db: onsets below this RMS level (relative to peak) are
+    suppressed — eliminates breath/bleed noise when nothing is actually playing.
+    """
     y, sr = librosa.load(stem_wav_path, sr=None, mono=True)
     onset_times = librosa.onset.onset_detect(y=y, sr=sr, units='time')
+
+    # RMS over a short window around each onset; reject quiet ones
+    peak_rms = float(np.sqrt(np.mean(y ** 2))) if len(y) else 1e-9
+    threshold_linear = peak_rms * (10 ** (energy_threshold_db / 20.0))
+    hop = 512
+    frame_rms = np.array([
+        np.sqrt(np.mean(y[max(0, int(t * sr) - hop): int(t * sr) + hop] ** 2))
+        for t in onset_times
+    ])
+    mask = frame_rms >= threshold_linear
+    onset_times = onset_times[mask]
+
     ms_list = [int(t * 1000) for t in onset_times]
-    print(f"  {stem_name}: {len(ms_list)} onsets")
+    print(f"  {stem_name}: {len(ms_list)} onsets (after energy gate)")
     return ms_list

@@ -1,19 +1,17 @@
 # on_effect.py
 
-import xml.etree.ElementTree as ET
 import random
-from utils import section_effect_placements, alternating_beat_placements, get_or_create_layer, place_effect, section_colors
+from utils import section_effect_placements, alternating_beat_placements, get_or_create_layer, place_effect, section_colors, get_or_create_palette
 from param_sampler import sample_params, sample_beat_stride
 
 
-def _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, palette_id, registry=None, structure=None):
-    selected_indices = [random.randint(1, 8)]
+def _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, registry=None, structure=None):
+    selected_indices = [1]
     _sc = section_colors(fixed_colors, structure, start_time)
     parts = [f"C_BUTTON_Palette{i+1}={_sc[i]}" for i in range(8)]
     for k in selected_indices:
         parts.append(f"C_CHECKBOX_Palette{k}=1")
-    new_palette = ET.SubElement(color_palettes, "ColorPalette")
-    new_palette.text = ",".join(parts)
+    palette_id = get_or_create_palette(color_palettes, ",".join(parts))
 
     p = sample_params("On")
     shimmer = p.get("CHECKBOX_Shimmer", 0)
@@ -35,8 +33,7 @@ def add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, 
                 effect_layer = get_or_create_layer(elem, start_time, end_time)
                 if effect_layer is None:
                     continue
-                palette_id = len(color_palettes.findall("ColorPalette"))
-                _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, palette_id, registry, structure)
+                _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, registry, structure)
                 num_ons_added += 1
 
     # --- Sparse pass: section-weighted placement on other elements ---
@@ -52,8 +49,7 @@ def add_on_effects(eligible_elements, eligible_group_elements, seq_duration_ms, 
         effect_layer = get_or_create_layer(elem, start_time, end_time)
         if effect_layer is None:
             continue
-        palette_id = len(color_palettes.findall("ColorPalette"))
-        _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, palette_id, registry)
+        _place_on(effect_layer, start_time, end_time, color_palettes, fixed_colors, registry)
         num_ons_added += 1
 
     return num_ons_added

@@ -4,9 +4,8 @@
 # creating a left-to-right (or right-to-left) visual sweep at each phrase boundary.
 # Direction alternates phrase-by-phrase within a section.
 
-import xml.etree.ElementTree as ET
 import random
-from utils import get_or_create_layer, place_effect, section_intensity, get_section_for_beat, section_colors
+from utils import get_or_create_layer, place_effect, section_intensity, get_section_for_beat, section_colors, get_or_create_palette
 
 
 # Minimum section intensity to fire a sweep (skips intro/outro/breakdown)
@@ -66,11 +65,10 @@ def add_spatial_sweep_effects(
             continue
         section_sweep_counts[section_label] = count + 1
 
-        # Pick a single color for the whole sweep to keep it cohesive
-        color_idx = random.randint(0, 7)
+        # Always use slot 1 for deterministic palette deduplication
         _sc = section_colors(fixed_colors, structure, phrase_start)
         parts = [f"C_BUTTON_Palette{i + 1}={_sc[i]}" for i in range(8)]
-        parts.append(f"C_CHECKBOX_Palette{color_idx + 1}=1")
+        parts.append(f"C_CHECKBOX_Palette1=1")
         palette_str = ",".join(parts)
 
         # Alternate direction each phrase within a section
@@ -87,9 +85,7 @@ def add_spatial_sweep_effects(
             if effect_layer is None:
                 continue
 
-            new_palette = ET.SubElement(color_palettes, "ColorPalette")
-            new_palette.text = palette_str
-            palette_id = len(color_palettes.findall("ColorPalette")) - 1
+            palette_id = get_or_create_palette(color_palettes, palette_str)
 
             place_effect(effect_layer, "On", start_ms, end_ms, palette_id, "E1=100,E2=100", registry)
             num_added += 1

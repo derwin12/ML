@@ -1,8 +1,7 @@
 # wave_effect.py
 
-import xml.etree.ElementTree as ET
 import random
-from utils import section_effect_placements, section_colors, get_or_create_layer, place_effect
+from utils import section_effect_placements, section_colors, get_or_create_layer, place_effect, get_or_create_palette
 from param_sampler import sample_params
 
 def add_wave_effects(eligible_elements, eligible_group_elements, seq_duration_ms, color_palettes, fixed_colors, beats=None, structure=None, registry=None):
@@ -29,16 +28,13 @@ def add_wave_effects(eligible_elements, eligible_group_elements, seq_duration_ms
         wave_type = p.get("E_CHOICE_Wave_Type", random.choice(["Sine", "Triangle", "Square", "Decaying Sine", "Decaying Cosine"]))
         mirror    = p.get("E_CHECKBOX_Wave_Mirror", random.choice([0, 1]))
 
-        num_colors = random.randint(2, 3)
-        selected_indices = random.sample(range(1, 9), num_colors)
+        selected_indices = list(range(1, 3))
         _sc = section_colors(fixed_colors, structure, start_time)
         parts = [f"C_BUTTON_Palette{i+1}={_sc[i]}" for i in range(8)]
         for k in selected_indices:
             parts.append(f"C_CHECKBOX_Palette{k}=1")
 
-        new_palette = ET.SubElement(color_palettes, "ColorPalette")
-        new_palette.text = ",".join(parts)
-        palette_id = len(color_palettes.findall("ColorPalette")) - 1
+        palette_id = get_or_create_palette(color_palettes, ",".join(parts))
 
         settings_str = (
             f"E_SLIDER_Wave_Height={height},"
